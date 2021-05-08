@@ -1,3 +1,2 @@
-feature/*
-checkpoint/*
-*__pycache__
+__pycache__/
+dev/
