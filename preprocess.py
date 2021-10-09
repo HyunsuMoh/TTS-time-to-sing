@@ -117,7 +117,7 @@ def preprocess(filename, set_type, config):
     num_stride = text.size(0)//data_stride
 
     if not infer:
-        wave = dsp.load(wav_file, config.sample_rate)
+        wave = dsp.load(wav_file, config.sample_rate)[0]
         spec = dsp.spectrogram(wave, config).cpu().transpose(0, 1) # D x T -> T x D
         spec = torch.cat((torch.zeros(config.prev_length, config.fft_size//2 + 1), spec))
 
@@ -152,7 +152,7 @@ def preprocess(filename, set_type, config):
 
 def read_file_list(filename):
     with open(filename) as f:
-        file_list = f.read().split('\n')
+        file_list = f.read().splitlines()
 
     return file_list
 
