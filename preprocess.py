@@ -15,7 +15,7 @@ from file_utils import create_path
 from midi_utils import load_midi
 
 def load_text(filename):
-    text_file = open(filename)
+    text_file = open(filename, encoding='utf-8')
     text = text_file.read().replace(' ', '').replace('\n', '')
     text = korean_g2p.encode(text)
 
