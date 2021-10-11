@@ -75,7 +75,7 @@ def files4infer(filename, config):
     basename = os.path.basename(filename).replace('.txt', '')
     filepath = os.path.dirname(filename)
     if config.file_structure == 2:
-        filepath = '/'.join(filepath.split('/')[:-1])
+        filepath = os.sep.join(filepath.split(os.sep)[:-1])
 
     type_list = ['txt', 'mid']
     file_list = []
