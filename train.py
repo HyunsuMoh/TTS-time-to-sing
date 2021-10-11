@@ -7,11 +7,10 @@ import torch
 import torch.nn as nn
 from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
-
 from config_parser import Config
 from file_utils import create_path
-from torch_utils import set_device, save_checkpoint
-
+from torch_utils import set_device, save_checkpoint, load_checkpoint
+from optional import save_epoch, load_epoch
 import dataprocess
 from models import Generator, Discriminator
 from logger import Logger
@@ -65,11 +64,19 @@ def main():
     lossG_valid = AverageMeter()
     lossD_train = AverageMeter()
 
+    ## Add load_checkpoint method implementaion
+    Gname = checkpoint_path + "\\latest_G.pt"
+    Dname = checkpoint_path + "\\latest_D.pt"
+    objG = load_checkpoint(Gname, G, optimizerG, config.learn_rate)
+    objD = load_checkpoint(Dname, D, optimizerD, config.learn_rate)
+    cnt = load_epoch("latest_epoch.txt")
+    ##
+
     print('Training start')
-    for epoch in range(config.stop_epoch + 1):
+    for epoch in range(cnt, config.stop_epoch + 1):
         # Training Loop
-        G.train()
-        D.train()
+        objG[0].train()
+        objD[0].train()
         for batch in tqdm(dataloader.train, leave=False, ascii=True):
             x, y_prev, y = set_device(batch, config.device, config.use_cpu)
             y = y.unsqueeze(1)
@@ -130,6 +137,7 @@ def main():
         savename = os.path.join(checkpoint_path, 'latest_')
         save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps)
         save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps)
+        save_epoch(epoch)
         if epoch%config.save_epoch == 0:
             savename = os.path.join(checkpoint_path, 'epoch' + str(epoch) + '_')
             save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps)
