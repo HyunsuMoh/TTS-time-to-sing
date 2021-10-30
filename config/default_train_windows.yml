@@ -48,3 +48,4 @@ batch_size: 1 # Training batch size
 data_mode: 'single' # Dataloader mode, single: data on memory, multi: loading data with queue
 save_epoch: 25 # Step epoch for saving checkpoint 
 stop_epoch: 500 # Epoch for stopping training
+checkpoint_mode: 'continue' # The starting point of training, continue: from the recent checkpoint, new: from the beginning
