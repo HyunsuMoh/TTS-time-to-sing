@@ -65,9 +65,9 @@ def main():
 
     if(checkpoint_mode == 'continue') :
       logger = Logger(os.path.join(config.loaded_checkpoint_path, 'log'))
-      Gname = config.loaded_checkpoint_path + "/epoch25_G.pt"
-      Dname = config.loaded_checkpoint_path + "/epoch25_D.pt"
-      print("Gname : " + Gname)
+      Gname = config.loaded_checkpoint_path + "/epoch" + str(config.latest_epoch) + "_G.pt"
+      Dname = config.loaded_checkpoint_path + "/epoch" + str(config.latest_epoch) + "_D.pt"
+      # print("Gname : " + Gname)
 
       print("checkpoint path : " + config.loaded_checkpoint_path)
       objG = load_checkpoint(Gname, G, optimizerG, config.learn_rate)
