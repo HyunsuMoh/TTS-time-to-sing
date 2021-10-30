@@ -7,10 +7,11 @@ import torch
 import torch.nn as nn
 from torch.optim.lr_scheduler import StepLR
 from tqdm import tqdm
+
 from config_parser import Config
 from file_utils import create_path
 from torch_utils import set_device, save_checkpoint, load_checkpoint
-from optional import save_epoch, load_epoch
+
 import dataprocess
 from models import Generator, Discriminator
 from logger import Logger
@@ -40,11 +41,9 @@ def main():
     config = Config()
     config_basename = os.path.basename(config.config[0])
     print("Configuration file: \'%s\'" % (config_basename))
-
-    checkpoint_path = create_path(config.checkpoint_path, action=config.checkpoint_path_action)
-    config.save(os.path.join(checkpoint_path, config_basename))
-    logger = Logger(os.path.join(checkpoint_path, 'log'))
-
+    checkpoint_mode = config.checkpoint_mode
+    print("Checkpoint mode : " + checkpoint_mode)
+    print("Checkpoint path action : " + config.checkpoint_path_action)
     dataloader = dataprocess.load_train(config)
     step_size = config.step_epoch*len(dataloader.train)
 
@@ -57,79 +56,160 @@ def main():
     optimizerD = torch.optim.Adam(D.parameters(), lr=config.learn_rate, betas=config.betas, weight_decay=config.weight_decay)
     schedulerG = StepLR(optimizerG, step_size=step_size, gamma=config.decay_factor)
     schedulerD = StepLR(optimizerD, step_size=step_size, gamma=config.decay_factor)
-    
+        
     k = 0.0
     M = AverageMeter()
     lossG_train = AverageMeter()
     lossG_valid = AverageMeter()
     lossD_train = AverageMeter()
 
-    ## Add load_checkpoint method implementaion
-    Gname = checkpoint_path + "\\latest_G.pt"
-    Dname = checkpoint_path + "\\latest_D.pt"
-    objG = load_checkpoint(Gname, G, optimizerG, config.learn_rate)
-    objD = load_checkpoint(Dname, D, optimizerD, config.learn_rate)
-    cnt = load_epoch("latest_epoch.txt")
-    ##
+    if(checkpoint_mode == 'continue') :
+      logger = Logger(os.path.join(config.loaded_checkpoint_path, 'log'))
+      Gname = config.loaded_checkpoint_path + "/epoch25_G.pt"
+      Dname = config.loaded_checkpoint_path + "/epoch25_D.pt"
+      print("Gname : " + Gname)
 
-    print('Training start')
-    for epoch in range(cnt, config.stop_epoch + 1):
-        # Training Loop
+      print("checkpoint path : " + config.loaded_checkpoint_path)
+      objG = load_checkpoint(Gname, G, optimizerG, config.learn_rate)
+      objD = load_checkpoint(Dname, D, optimizerD, config.learn_rate)
+      cnt = config.latest_epoch + 1
+      
+      for epoch in range(cnt, config.stop_epoch+1):
         objG[0].train()
         objD[0].train()
         for batch in tqdm(dataloader.train, leave=False, ascii=True):
-            x, y_prev, y = set_device(batch, config.device, config.use_cpu)
-            y = y.unsqueeze(1)
+          x, y_prev, y = set_device(batch, config.device, config.use_cpu)
+          y = y.unsqueeze(1)
 
-            optimizerG.zero_grad()
-            y_gen = G(x, y_prev)
-            lossL1 = criterionL1(y_gen, y)
-            loss_advG = criterionAdv(D, y_gen)
-            lossG = lossL1 + loss_advG
-            lossG.backward()
-            optimizerG.step()
-            schedulerG.step()
+          optimizerG.zero_grad()
+          y_gen = G(x, y_prev)
+          lossL1 = criterionL1(y_gen, y)
+          loss_advG = criterionAdv(D, y_gen)
+          lossG = lossL1 + loss_advG
+          lossG.backward()
+          optimizerG.step()
+          schedulerG.step()
 
-            optimizerD.zero_grad()
-            loss_real = criterionAdv(D, y)
-            loss_fake = criterionAdv(D, y_gen.detach())
-            loss_advD = loss_real - k*loss_fake
-            loss_advD.backward()
-            optimizerD.step()
-            schedulerD.step()
+          optimizerD.zero_grad()
+          loss_real = criterionAdv(D, y)
+          loss_fake = criterionAdv(D, y_gen.detach())
+          loss_advD = loss_real - k*loss_fake
+          loss_advD.backward()
+          optimizerD.step()
+          schedulerD.step()
 
-            diff = torch.mean(config.gamma*loss_real - loss_fake)
-            k = k + config.lambda_k*diff.item()
-            k = min(max(k, 0), 1)
+          diff = torch.mean(config.gamma*loss_real - loss_fake)
+          k = k + config.lambda_k*diff.item()
+          k = min(max(k, 0), 1)
 
-            measure = (loss_real + torch.abs(diff)).data
-            M.step(measure, y.size(0))
+          measure = (loss_real + torch.abs(diff)).data
+          M.step(measure, y.size(0))
 
-            logger.log_train(lossL1, loss_advG, lossG, loss_real, loss_fake, loss_advD, M.avg, k, lossG_train.steps)
-            lossG_train.step(lossG.item(), y.size(0))
-            lossD_train.step(loss_advD.item(), y.size(0))
+          logger.log_train(lossL1, loss_advG, lossG, loss_real, loss_fake, loss_advD, M.avg, k, lossG_train.steps)
+          lossG_train.step(lossG.item(), y.size(0))
+          lossD_train.step(loss_advD.item(), y.size(0))
 
         # Validation Loop
         G.eval()
         D.eval()
         for batch in tqdm(dataloader.valid, leave=False, ascii=True):
-            x, y_prev, y = set_device(batch, config.device, config.use_cpu)
-            y = y.unsqueeze(1)
+          x, y_prev, y = set_device(batch, config.device, config.use_cpu)
+          y = y.unsqueeze(1)
 
-            y_gen = G(x, y_prev)
-            lossL1 = criterionL1(y_gen, y)
-            loss_advG = criterionAdv(D, y_gen)
-            lossG = lossL1 + loss_advG
-
-            logger.log_valid(lossL1, loss_advG, lossG, lossG_valid.steps)
-            lossG_valid.step(lossG.item(), y.size(0))
+          y_gen = G(x, y_prev)
+          lossL1 = criterionL1(y_gen, y)
+          loss_advG = criterionAdv(D, y_gen)
+          lossG = lossL1 + loss_advG
+          logger.log_valid(lossL1, loss_advG, lossG, lossG_valid.steps)
+          lossG_valid.step(lossG.item(), y.size(0))
 
         for param_group in optimizerG.param_groups:
-            learn_rate = param_group['lr']
-
+          learn_rate = param_group['lr']
+          
         print("[Epoch %d/%d] [loss G train: %.5f] [loss G valid: %.5f] [loss D train: %.5f] [lr: %.6f]" %
-            (epoch, config.stop_epoch, lossG_train.avg, lossG_valid.avg, lossD_train.avg, learn_rate))
+          (epoch, config.stop_epoch, lossG_train.avg, lossG_valid.avg, lossD_train.avg, learn_rate))
+         
+        lossG_train.reset()
+        lossG_valid.reset()
+        lossD_train.reset()
+
+        savename = os.path.join(config.loaded_checkpoint_path, 'latest_')
+        save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps)
+        save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps)
+        if epoch%config.save_epoch == 0:
+          savename = os.path.join(config.loaded_checkpoint_path, 'epoch' + str(epoch) + '_')
+          save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps)
+          save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps)
+      
+      print('Training finished')
+
+    else :
+      checkpoint_path = create_path(config.checkpoint_path, action=config.checkpoint_path_action)
+      config.save(os.path.join(checkpoint_path, config_basename))
+      logger = Logger(os.path.join(checkpoint_path, 'log'))
+
+      dataloader = dataprocess.load_train(config)
+      step_size = config.step_epoch*len(dataloader.train)
+      cnt = 0
+
+      print('Training start')
+      for epoch in range(cnt+1, config.stop_epoch + 1):
+      # Training Loop
+        G.train()
+        D.train()
         
+        for batch in tqdm(dataloader.train, leave=False, ascii=True):
+          x, y_prev, y = set_device(batch, config.device, config.use_cpu)
+          y = y.unsqueeze(1)
+
+          optimizerG.zero_grad()
+          y_gen = G(x, y_prev)
+          lossL1 = criterionL1(y_gen, y)
+          loss_advG = criterionAdv(D, y_gen)
+          lossG = lossL1 + loss_advG
+          lossG.backward()
+          optimizerG.step()
+          schedulerG.step()
+
+          optimizerD.zero_grad()
+          loss_real = criterionAdv(D, y)
+          loss_fake = criterionAdv(D, y_gen.detach())
+          loss_advD = loss_real - k*loss_fake
+          loss_advD.backward()
+          optimizerD.step()
+          schedulerD.step()
+
+          diff = torch.mean(config.gamma*loss_real - loss_fake)
+          k = k + config.lambda_k*diff.item()
+          k = min(max(k, 0), 1)
+
+          measure = (loss_real + torch.abs(diff)).data
+          M.step(measure, y.size(0))
+
+          logger.log_train(lossL1, loss_advG, lossG, loss_real, loss_fake, loss_advD, M.avg, k, lossG_train.steps)
+          lossG_train.step(lossG.item(), y.size(0))
+          lossD_train.step(loss_advD.item(), y.size(0))
+
+        # Validation Loop
+        G.eval()
+        D.eval()
+        for batch in tqdm(dataloader.valid, leave=False, ascii=True):
+          x, y_prev, y = set_device(batch, config.device, config.use_cpu)
+          y = y.unsqueeze(1)
+
+          y_gen = G(x, y_prev)
+          lossL1 = criterionL1(y_gen, y)
+          loss_advG = criterionAdv(D, y_gen)
+          lossG = lossL1 + loss_advG
+          logger.log_valid(lossL1, loss_advG, lossG, lossG_valid.steps)
+          lossG_valid.step(lossG.item(), y.size(0))
+
+        for param_group in optimizerG.param_groups:
+          learn_rate = param_group['lr']
+          
+        print("[Epoch %d/%d] [loss G train: %.5f] [loss G valid: %.5f] [loss D train: %.5f] [lr: %.6f]" %
+          (epoch, config.stop_epoch, lossG_train.avg, lossG_valid.avg, lossD_train.avg, learn_rate))
+         
         lossG_train.reset()
         lossG_valid.reset()
         lossD_train.reset()
@@ -137,13 +217,12 @@ def main():
         savename = os.path.join(checkpoint_path, 'latest_')
         save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps)
         save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps)
-        save_epoch(epoch)
         if epoch%config.save_epoch == 0:
-            savename = os.path.join(checkpoint_path, 'epoch' + str(epoch) + '_')
-            save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps)
-            save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps)
-
-    print('Training finished')
+          savename = os.path.join(checkpoint_path, 'epoch' + str(epoch) + '_')
+          save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps)
+          save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps)
+      
+      print('Training finished')
 
 if __name__ == "__main__":
     main()
