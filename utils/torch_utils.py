@@ -56,21 +56,25 @@ def load_weights(checkpoint_path):
 
     return state_dict
 
-def save_checkpoint(checkpoint_path, model, optimizer=None, learning_rate=None, iteration=None, verbose=False):
+def save_checkpoint(checkpoint_path, model=None, optimizer=None, learning_rate=None, iteration=None, verbose=False, epoch=None):
     checkpoint = {'state_dict': model.state_dict()}
     if optimizer is not None:
-        checkpoint['optimizer'] = optimizer.state_dict()
+      checkpoint['optimizer'] = optimizer.state_dict()
     if learning_rate is not None:
-        checkpoint['learning_rate'] = learning_rate
+      checkpoint['learning_rate'] = learning_rate
     if iteration is not None:
-        checkpoint['iteration'] = iteration
-    
+      checkpoint['iteration'] = iteration
+    if epoch is not None:
+      checkpoint['epoch'] = epoch
+      print("checkpoint epoch is " + str(checkpoint['epoch']))
+
     torch.save(checkpoint, checkpoint_path)
 
+    print("In save_checkpoint, iteration and epoch is : " + str(iteration) + " " + str(epoch))
     if verbose: 
-        print("Saving checkpoint to %s" % (checkpoint_path))
+      print("Saving checkpoint to %s" % (checkpoint_path))
 
-def load_checkpoint(checkpoint_path, model, optimizer=None, verbose=False):
+def load_checkpoint(checkpoint_path, model, optimizer=None, verbose=False, cnt=None):
     assert os.path.isfile(checkpoint_path)
 
     checkpoint = torch.load(checkpoint_path, map_location='cpu')
@@ -94,7 +98,11 @@ def load_checkpoint(checkpoint_path, model, optimizer=None, verbose=False):
     if 'iteration' in checkpoint:
         iteration = checkpoint['iteration']
         objects.append(iteration)
-
+    if 'epoch' in checkpoint:
+        cnt = checkpoint['epoch']
+        objects.append(cnt)
+        print("loaded epoch is " + str(epoch))
+  
     if verbose:
         print("Loaded checkpoint from %s" % (checkpoint_path))
 
