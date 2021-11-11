@@ -70,7 +70,7 @@ def save_checkpoint(checkpoint_path, model=None, optimizer=None, learning_rate=N
 
     torch.save(checkpoint, checkpoint_path)
 
-    print("In save_checkpoint, iteration and epoch is : " + str(iteration) + " " + str(epoch))
+    #print("In save_checkpoint, iteration and epoch is : " + str(iteration) + " " + str(epoch))
     if verbose: 
       print("Saving checkpoint to %s" % (checkpoint_path))
 
@@ -101,7 +101,7 @@ def load_checkpoint(checkpoint_path, model, optimizer=None, verbose=False, cnt=N
     if 'epoch' in checkpoint:
         cnt = checkpoint['epoch']
         objects.append(cnt)
-        print("loaded epoch is " + str(epoch))
+        # print("loaded epoch is " + str(cnt))
   
     if verbose:
         print("Loaded checkpoint from %s" % (checkpoint_path))

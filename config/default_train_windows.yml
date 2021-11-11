@@ -1,11 +1,9 @@
 # Path Configuration
 file_structure: 2 # File structure type, 1: all the files in one folder, 2: .txt, .mid, .wav are in separated folders
 dataset_path: 'sample_dataset' # Path for raw dataset containing txt, mid, wav
-feature_path: 'feature/default' # Path for feature created using preprocess.py
-checkpoint_path: 'checkpoint/default' # Path for checkpoint and tensorboard log created using train.py
+feature_path: 'feature\\default' # Path for feature created using preprocess.py
+checkpoint_path: 'checkpoint\\default' # Path for checkpoint and tensorboard log created using train.py
 checkpoint_path_action: 'overwrite' # Action to make path for checkpoint
-loaded_checkpoint_path: 'checkpoint/default_2'
-latest_epoch: 25
 
 # Feature Configuration 
 num_char: 47 # The types of characters
@@ -51,3 +49,8 @@ data_mode: 'single' # Dataloader mode, single: data on memory, multi: loading da
 save_epoch: 25 # Step epoch for saving checkpoint 
 stop_epoch: 500 # Epoch for stopping training
 checkpoint_mode: 'continue' # The starting point of training, continue: from the recent checkpoint, new: from the beginning
+
+# Load checkpoint
+load_checkpoint: True
+loaded_checkpoint_path_G: 'checkpoint\\default\\epoch25_G.pt'
+loaded_checkpoint_path_D: 'checkpoint\\default\\epoch25_D.pt'
