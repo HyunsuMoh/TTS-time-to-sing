@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 from config_parser import Config
 from file_utils import create_path
-from torch_utils import set_device, save_checkpoint
+from torch_utils import set_device, save_checkpoint, load_checkpoint
 
 import dataprocess
 from models import Generator, Discriminator
@@ -58,7 +58,19 @@ def main():
     optimizerD = torch.optim.Adam(D.parameters(), lr=config.learn_rate, betas=config.betas, weight_decay=config.weight_decay)
     schedulerG = StepLR(optimizerG, step_size=step_size, gamma=config.decay_factor)
     schedulerD = StepLR(optimizerD, step_size=step_size, gamma=config.decay_factor)
-    
+
+
+    # For loading checkpoint
+    mode = config.load_checkpoint
+    cnt = 1
+    if mode==True:
+      objG = load_checkpoint(config.loaded_checkpoint_path_G, G, optimizerG, config.learn_rate, cnt)
+      objD = load_checkpoint(config.loaded_checkpoint_path_D, D, optimizerD, config.learn_rate, cnt)
+      G = objG[0] # loaded Generator
+      D = objD[0] # loaded Discriminator
+      cnt = objG[4] # loaded epoch
+      
+
     k = 0.0
     M = AverageMeter()
     lossG_train = AverageMeter()
@@ -66,8 +78,9 @@ def main():
     lossD_train = AverageMeter()
 
     print('Training start')
-    for epoch in range(config.stop_epoch + 1):
+    for epoch in range(cnt, config.stop_epoch + 1):
         # Training Loop
+        # print("epoch in for loop : " + str(epoch))
         G.train()
         D.train()
         for batch in tqdm(dataloader.train, leave=False, ascii=True):
@@ -128,12 +141,12 @@ def main():
         lossD_train.reset()
 
         savename = os.path.join(checkpoint_path, 'latest_')
-        save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps)
-        save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps)
+        save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps, False, epoch+1)
+        save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps, False, epoch+1)
         if epoch%config.save_epoch == 0:
             savename = os.path.join(checkpoint_path, 'epoch' + str(epoch) + '_')
-            save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps)
-            save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps)
+            save_checkpoint(savename + 'G.pt', G, optimizerG, learn_rate, lossG_train.steps, False, epoch+1)
+            save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps, False, epoch+1)
 
     print('Training finished')
 
