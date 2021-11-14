@@ -78,7 +78,7 @@ def main():
     lossD_train = AverageMeter()
 
     print('Training start')
-    for epoch in range(cnt, config.stop_epoch + 1):
+    for epoch in range(cnt + 1, config.stop_epoch + 1):
         # Training Loop
         # print("epoch in for loop : " + str(epoch))
         G.train()
