@@ -51,6 +51,6 @@ stop_epoch: 500 # Epoch for stopping training
 checkpoint_mode: 'continue' # The starting point of training, continue: from the recent checkpoint, new: from the beginning
 
 # Load checkpoint
-load_checkpoint: True
+load_checkpoint: False
 loaded_checkpoint_path_G: 'checkpoint\\default\\epoch25_G.pt'
 loaded_checkpoint_path_D: 'checkpoint\\default\\epoch25_D.pt'
