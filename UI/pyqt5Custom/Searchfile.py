@@ -1,8 +1,6 @@
-import sys
-
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QGridLayout, QFileDialog, QLabel
 
-class _search_file(QFileDialog):
+class Searchfile(QFileDialog):
 
     def __init__(self):
         super().__init__()
