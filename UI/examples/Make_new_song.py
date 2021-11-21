@@ -11,8 +11,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
 from PyQt5.QtGui import QColor, QFontDatabase, QFont
 
-from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
-    TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
+from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
+    TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast,Searchfile
 import example_ios, Model_training
 
 

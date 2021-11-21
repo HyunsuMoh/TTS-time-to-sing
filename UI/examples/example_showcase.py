@@ -13,8 +13,6 @@ from PyQt5.QtGui import QColor, QFontDatabase
 
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, TitleBar, CodeTextEdit, Spinner, SegmentedButtonGroup
 
-
-
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
