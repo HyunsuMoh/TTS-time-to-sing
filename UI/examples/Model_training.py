@@ -92,7 +92,7 @@ class Model_training(QDialog):
 
         self.btnlyt2.setAlignment(Qt.AlignTop)
         self.btnlyt2.addWidget(QLabel(
-            "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>Song</span>"))
+            "<span style='font-size:27px; font-family:SF Pro Display; color:rgb(99,99,102);'>Song</span>"))
         self.btnlyt2.addSpacing(10)
 
         self.btn3 = StyledButton("Find")
@@ -140,4 +140,5 @@ class Model_training(QDialog):
         }, "press")
 
         self.btnlyt.addWidget(self.btn1, alignment=Qt.AlignTop | Qt.AlignHCenter)
+
 
