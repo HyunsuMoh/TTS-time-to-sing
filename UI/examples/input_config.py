@@ -1,38 +1,42 @@
 import sys
-from PyQt5.QtWidgets import QLabel, QPushButton, QWidget, QApplication, QLineEdit
+sys.path.append("../pyqt5Custom")
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
+from PyQt5.QtGui import QColor, QFontDatabase, QFont
 
-class Ui_MainWindow(QWidget):
+from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
+    TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
+from Textlabel import Textlabel
+import example_ios, Model_training
+
+class input_config(QDialog):
     def __init__(self):
-        super().__init__()
-        self.setupUi()
+        super(input_config, self).__init__()
+        QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
+        # app.setFont(QFont('data/BMDOHYEON_ttf.tff'))
 
-    def setupUi(self):
-        self.setWindowTitle('LineEdit')
-        self.resize(500, 500)
+        self.setMinimumSize(150, 37)
+        self.setGeometry(100, 100, 890, 610)
 
-        self.line_edit = QLineEdit(self)
-        self.line_edit.move(75, 75)
+        self.setAutoFillBackground(True)
+        p = self.palette()
+        p.setColor(self.backgroundRole(), QColor(255, 255, 255))
+        self.setPalette(p)
 
-        self.text_label = QLabel(self)
-        self.text_label.move(75, 125)
-        self.text_label.setText('Default')
+        self.layout = QVBoxLayout()
+        self.layout.setAlignment(Qt.AlignTop)
+        self.setLayout(self.layout)
+        self.layout.setContentsMargins(0, 0, 0, 0)
 
-
-
-        self.button = QPushButton(self)
-        self.button.move(75, 175)
-        self.button.setText('Get config')
-        self.button.clicked.connect(self.button_event)
-
-        self.show()
-
-    def button_event(self):
-        text = self.line_edit.text()  # line_edit text 값 가져오기
-        self.text_label.setText(text)  # label에 text 설정하기
+        self.textlabel = Textlabel()
+        self.textlabel.setupUi()
+        self.textlabel.button_event()
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    ui = Ui_MainWindow()
+    mw = input_config()
+    mw.show()
 
     sys.exit(app.exec_())
