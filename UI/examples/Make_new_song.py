@@ -11,8 +11,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
 from PyQt5.QtGui import QColor, QFontDatabase, QFont
 
-from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
-    TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
+from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
+    TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast,Searchfile
 import example_ios, Model_training
 
 
@@ -89,8 +89,8 @@ class Make_new_song(QDialog):
             "color": (255, 255, 255),
         }, "check-hover")
 
-        self.segbg.addButton("여자 목소리")
-        self.segbg.addButton("남자 목소리")
+        self.segbg.addButton("Default")
+        self.segbg.addButton("Another option")
         #    self.segbg.addButton("Third")
 
         self.btnlyt2.addWidget(self.segbg)
@@ -106,7 +106,7 @@ class Make_new_song(QDialog):
         self.ibtnlyt = QHBoxLayout()
         self.btnlyt2.addLayout(self.ibtnlyt)
 
-        self.ibtn = StyledButton("Image Icon", icon="data/homeiconw.png")
+        self.ibtn = StyledButton("Find", icon="data/TTS.png")
         self.ibtn.setFixedSize(140, 45)
         self.ibtn.anim_press.speed = 7.3
         self.ibtn.setStyleDict({
@@ -126,6 +126,8 @@ class Make_new_song(QDialog):
             "border-color": (130, 190, 255),
             "color": (255, 255, 255),
         }, "press")
+
+        """
 
         s = Spinner(1.5, QColor(255, 255, 255))
         s.animType = 0
@@ -150,11 +152,15 @@ class Make_new_song(QDialog):
             "border-color": (130, 190, 255),
             "color": (255, 255, 255),
         }, "press")
+        
+        """
 
         self.ibtnlyt.addWidget(self.ibtn)
+        """
         self.ibtnlyt.addWidget(self.ibtn2)
+        """
 
-        self.ibtnl = StyledButton("Loading", icon=Spinner(1.5, QColor(255, 255, 255)))
+        self.ibtnl = StyledButton("Making New Songs", icon=Spinner(1.5, QColor(255, 255, 255)))
         self.ibtnl.setMinimumSize(118, 38)
         self.ibtnl.anim_press.speed = 7.3
         self.ibtnl.setStyleDict({
@@ -178,7 +184,7 @@ class Make_new_song(QDialog):
         self.btnlyt2.addSpacing(15)
         self.btnlyt2.addWidget(self.ibtnl, alignment=Qt.AlignHCenter)
 
-        self.toast = Toast(self, text="Simple Toast with Spinner", icon=Spinner(1.3, QColor(255, 255, 255)))
+        self.toast = Toast(self, text="Making new Songs", icon=Spinner(1.3, QColor(255, 255, 255)))
         self.toast.setFixedWidth(287)
         self.toast.setStyleDict({
             "font-family": "SF Pro Display",
