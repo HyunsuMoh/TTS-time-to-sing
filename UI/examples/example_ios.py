@@ -3,7 +3,7 @@
 #   https://github.com/kadir014/pyqt5-custom-widgets  #
 #                                                     #
 #    This script is one of the pyqt5Custom examples   #
-
+import sys
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets
@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLa
 from PyQt5.QtGui import QColor, QFontDatabase, QIcon
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
-import sys
+
 import Make_new_song, Model_training
 
 
@@ -19,7 +19,6 @@ class MainWindow(QDialog):
     def __init__(self):
         super(MainWindow, self).__init__()
         QFontDatabase.addApplicationFont("data/SFPro.ttf")
-
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
 
@@ -312,6 +311,7 @@ class MainWindow(QDialog):
 
 
 if __name__ == "__main__":
+    sys.path.append('../pyqt5Custom')
     app = QApplication(sys.argv)
     mw = MainWindow()
     widget = QtWidgets.QStackedWidget()
