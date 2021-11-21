@@ -35,16 +35,6 @@ class Make_new_song(QDialog):
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.titlebar = TitleBar(self, title="Sogang and SmileGate")
-        self.titlebar.setStyleDict({
-            "background-color": (255, 255, 255),
-            "font-size": 17,
-            "border-radius": 6,
-            "font-family": "SF Pro Display"
-        })
-
-        self.layout.addWidget(self.titlebar, alignment=Qt.AlignTop)
-
         self.conlyt = QVBoxLayout()
         self.conlyt.setSpacing(0)
         self.conlyt.setContentsMargins(70, 15, 70, 0)
@@ -53,6 +43,7 @@ class Make_new_song(QDialog):
             "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>Making new songs</span>")
         ah = QLabel(
             "<span style='font-size:24px; font-family:SF Pro Display; color:rgb(89,89,92);'>기존 모델들을 바탕으로 새로운 노래 생성</span>")
+
         self.conlyt.addSpacing(90)
 
         self.btnslyt = QHBoxLayout()
@@ -186,5 +177,3 @@ class Make_new_song(QDialog):
         })
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
-
-

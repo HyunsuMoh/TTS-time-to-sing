@@ -8,8 +8,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
-from PyQt5.QtGui import QColor, QFontDatabase
-
+from PyQt5.QtGui import QColor, QFontDatabase, QIcon
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 import sys
@@ -30,26 +29,22 @@ class MainWindow(QDialog):
         self.setPalette(p)
 
         self.layout = QVBoxLayout()
+        self.layout.setAlignment(Qt.AlignTop)
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.titlebar = TitleBar(self, title="Sogang and SmileGate")
-        self.titlebar.setStyleDict({
-            "background-color": (255, 255, 255),
-            "font-size": 17,
-            "border-radius": 6,
-            "font-family": "SF Pro Display"
-        })
-
-        self.layout.addWidget(self.titlebar, alignment=Qt.AlignTop)
         self.conlyt = QVBoxLayout()
         self.conlyt.setSpacing(0)
-        self.conlyt.setContentsMargins(20, 0, 100, 0)
+        self.conlyt.setContentsMargins(70, 15, 70, 0)
         self.layout.addLayout(self.conlyt)
         h = QLabel("<span style='font-size:60px; font-family:SF Pro Display; color:rgb(28,28,30);'>TTS</span>")
         ah = QLabel(
             "<span style='font-size:30px; font-family:SF Pro Display; color:rgb(89,89,92);'>Time to Sing</span>")
-        self.conlyt.addSpacing(0)
+        h.setContentsMargins(100, 0, 0, 0)
+        ah.setContentsMargins(103, 0, 0, 0)
+        self.conlyt.addWidget(h)
+        self.conlyt.addWidget(ah)
+        self.conlyt.addSpacing(90)
 
         self.ibtnlyt = ImageBox(source="data/tts.png")
         self.layout.addWidget(self.ibtnlyt, alignment=Qt.AlignTop | Qt.AlignTop)
@@ -129,6 +124,10 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     mw = MainWindow()
     widget = QtWidgets.QStackedWidget()
+    widget.setWindowTitle("Sogang and SmileGate")
+    widget.setWindowIcon(QIcon('TTS.png'))
+
+    widget.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
     widget.addWidget(mw)
     widget.setFixedHeight(800)
     widget.setFixedWidth(1200)
