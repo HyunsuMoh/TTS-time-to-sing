@@ -110,6 +110,197 @@ class MainWindow(QDialog):
         self.btn1.clicked.connect(self.gotoNewSong)
         self.btnlyt.addWidget(self.btn1, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
 
+        """
+        self.btn3 = StyledButton("3")
+        self.btn3.setFixedSize(170, 54)
+        self.btn3.anim_press.speed = 5
+        self.btn3.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 122, 255),
+            "border-radius": 7,
+            "color": (0, 122, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 21
+        })
+        self.btn3.setStyleDict({
+            "color": (107, 178, 255),
+        }, "hover")
+        self.btn3.setStyleDict({
+            "background-color": (0, 122, 255),
+            "color": (255, 255, 255),
+        }, "press")
+        self.btn3.clicked.connect(self.gotoNewSong)
+        self.btnlyt.addWidget(self.btn3, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
+
+        self.btn4 = StyledButton("4")
+        self.btn4.setFixedSize(170, 54)
+        self.btn4.anim_press.speed = 5
+        self.btn4.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 122, 255),
+            "border-radius": 7,
+            "color": (0, 122, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 21
+        })
+        self.btn4.setStyleDict({
+            "color": (107, 178, 255),
+        }, "hover")
+        self.btn4.setStyleDict({
+            "background-color": (0, 122, 255),
+            "color": (255, 255, 255),
+        }, "press")
+        self.btn4.clicked.connect(self.gotoNewSong)
+        self.btnlyt.addWidget(self.btn4, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
+
+        self.btn5 = StyledButton("5")
+        self.btn5.setFixedSize(170, 54)
+        self.btn5.anim_press.speed = 5
+        self.btn5.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 122, 255),
+            "border-radius": 7,
+            "color": (0, 122, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 21
+        })
+        self.btn5.setStyleDict({
+            "color": (107, 178, 255),
+        }, "hover")
+        self.btn5.setStyleDict({
+            "background-color": (0, 122, 255),
+            "color": (255, 255, 255),
+        }, "press")
+        self.btn5.clicked.connect(self.gotoNewSong)
+        self.btnlyt.addWidget(self.btn5, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
+
+        self.btn6 = StyledButton("6")
+        self.btn6.setFixedSize(170, 54)
+        self.btn6.anim_press.speed = 5
+        self.btn6.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 122, 255),
+            "border-radius": 7,
+            "color": (0, 122, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 21
+        })
+        self.btn6.setStyleDict({
+            "color": (107, 178, 255),
+        }, "hover")
+        self.btn6.setStyleDict({
+            "background-color": (0, 122, 255),
+            "color": (255, 255, 255),
+        }, "press")
+        self.btn6.clicked.connect(self.gotoNewSong)
+        self.btnlyt.addWidget(self.btn6, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
+
+        self.btn7 = StyledButton("7")
+        self.btn7.setFixedSize(170, 54)
+        self.btn7.anim_press.speed = 5
+        self.btn7.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 122, 255),
+            "border-radius": 7,
+            "color": (0, 122, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 21
+        })
+        self.btn7.setStyleDict({
+            "color": (107, 178, 255),
+        }, "hover")
+        self.btn7.setStyleDict({
+            "background-color": (0, 122, 255),
+            "color": (255, 255, 255),
+        }, "press")
+        self.btn7.clicked.connect(self.gotoNewSong)
+        self.btnlyt.addWidget(self.btn7, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
+
+        self.btn8 = StyledButton("4")
+        self.btn8.setFixedSize(170, 54)
+        self.btn8.anim_press.speed = 5
+        self.btn8.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 122, 255),
+            "border-radius": 7,
+            "color": (0, 122, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 21
+        })
+        self.btn8.setStyleDict({
+            "color": (107, 178, 255),
+        }, "hover")
+        self.btn8.setStyleDict({
+            "background-color": (0, 122, 255),
+            "color": (255, 255, 255),
+        }, "press")
+        self.btn8.clicked.connect(self.gotoNewSong)
+        self.btnlyt.addWidget(self.btn8, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
+
+        self.btn9 = StyledButton("4")
+        self.btn9.setFixedSize(170, 54)
+        self.btn9.anim_press.speed = 5
+        self.btn9.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 122, 255),
+            "border-radius": 7,
+            "color": (0, 122, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 21
+        })
+        self.btn9.setStyleDict({
+            "color": (107, 178, 255),
+        }, "hover")
+        self.btn9.setStyleDict({
+            "background-color": (0, 122, 255),
+            "color": (255, 255, 255),
+        }, "press")
+        self.btn9.clicked.connect(self.gotoNewSong)
+        self.btnlyt.addWidget(self.btn9, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
+
+        self.btn10 = StyledButton("4")
+        self.btn10.setFixedSize(170, 54)
+        self.btn10.anim_press.speed = 5
+        self.btn10.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 122, 255),
+            "border-radius": 7,
+            "color": (0, 122, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 21
+        })
+        self.btn10.setStyleDict({
+            "color": (107, 178, 255),
+        }, "hover")
+        self.btn10.setStyleDict({
+            "background-color": (0, 122, 255),
+            "color": (255, 255, 255),
+        }, "press")
+        self.btn10.clicked.connect(self.gotoNewSong)
+        self.btnlyt.addWidget(self.btn10, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
+
+        self.btn11 = StyledButton("4")
+        self.btn11.setFixedSize(170, 54)
+        self.btn11.anim_press.speed = 5
+        self.btn11.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 122, 255),
+            "border-radius": 7,
+            "color": (0, 122, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 21
+        })
+        self.btn11.setStyleDict({
+            "color": (107, 178, 255),
+        }, "hover")
+        self.btn11.setStyleDict({
+            "background-color": (0, 122, 255),
+            "color": (255, 255, 255),
+        }, "press")
+        self.btn11.clicked.connect(self.gotoNewSong)
+        self.btnlyt.addWidget(self.btn11, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
+        """
+
     def gotoML(self):
         print("gotoML start")
         ml = Model_training.Model_training()
