@@ -8,16 +8,17 @@
 import sys
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
+from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
 from PyQt5.QtGui import QColor, QFontDatabase
-
+from PyQt5 import QtWidgets
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
+import example_ios, Make_new_song
 
 
-class MainWindow(QWidget):
+class Model_training(QDialog):
     def __init__(self):
-        super().__init__()
+        super(Model_training, self).__init__()
         QFontDatabase.addApplicationFont("data/SFPro.ttf")
 
         self.setMinimumSize(150, 37)
@@ -47,7 +48,8 @@ class MainWindow(QWidget):
         self.conlyt.setSpacing(0)
         self.conlyt.setContentsMargins(70, 15, 70, 0)
         self.layout.addLayout(self.conlyt)
-        h = QLabel("<span style='font-size:58px; font-family:SF Pro Display; color:rgb(28,28,30);'>Model Training</span>")
+        h = QLabel(
+            "<span style='font-size:58px; font-family:SF Pro Display; color:rgb(28,28,30);'>Model Training</span>")
         ah = QLabel("<span style='font-size:26px; font-family:SF Pro Display; color:rgb(89,89,92);'>신규 모델 학습</span>")
         h.setContentsMargins(100, 0, 0, 0)
         ah.setContentsMargins(103, 0, 0, 0)
@@ -139,10 +141,3 @@ class MainWindow(QWidget):
 
         self.btnlyt.addWidget(self.btn1, alignment=Qt.AlignTop | Qt.AlignHCenter)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    mw = MainWindow()
-    mw.show()
-
-    sys.exit(app.exec_())

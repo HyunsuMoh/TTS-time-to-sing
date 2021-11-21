@@ -6,20 +6,21 @@
 
 
 import sys
-
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
-from PyQt5.QtGui import QColor, QFontDatabase,QFont
+from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
+from PyQt5.QtGui import QColor, QFontDatabase, QFont
 
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
+import example_ios, Model_training
 
 
-class MainWindow(QWidget):
+class Make_new_song(QDialog):
     def __init__(self):
-        super().__init__()
+        super(Make_new_song, self).__init__()
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
-        app.setFont(QFont('data/BMDOHYEON_ttf.tff'))
+        # app.setFont(QFont('data/BMDOHYEON_ttf.tff'))
 
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
@@ -48,117 +49,17 @@ class MainWindow(QWidget):
         self.conlyt.setSpacing(0)
         self.conlyt.setContentsMargins(70, 15, 70, 0)
         self.layout.addLayout(self.conlyt)
-        h = QLabel("<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>Making new songs</span>")
-        ah = QLabel("<span style='font-size:24px; font-family:SF Pro Display; color:rgb(89,89,92);'>기존 모델들을 바탕으로 새로운 노래 생성</span>")
-        h.setContentsMargins(100, 0, 0, 0)
-        ah.setContentsMargins(103, 0, 0, 0)
-        self.conlyt.addWidget(h)
-        self.conlyt.addWidget(ah)
-
+        h = QLabel(
+            "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>Making new songs</span>")
+        ah = QLabel(
+            "<span style='font-size:24px; font-family:SF Pro Display; color:rgb(89,89,92);'>기존 모델들을 바탕으로 새로운 노래 생성</span>")
         self.conlyt.addSpacing(90)
-
-    #    self.btnslyt = QHBoxLayout()
-    #    self.conlyt.addLayout(self.btnslyt)
-    #    self.btnlyt = QVBoxLayout()
-    #    self.btnlyt.setSpacing(16)
-    #    self.btnslyt.addLayout(self.btnlyt)
-
-    #    self.btnlyt2 = QVBoxLayout()
-    #    self.btnslyt.addLayout(self.btnlyt2)
 
         self.btnslyt = QHBoxLayout()
         self.conlyt.addLayout(self.btnslyt)
         self.btnlyt2 = QVBoxLayout()
         self.btnlyt2.setSpacing(16)
         self.btnslyt.addLayout(self.btnlyt2)
-
-        """
-
-        self.btn2 = StyledButton("Default")
-        self.btn2.setFixedSize(170, 54)
-        self.btn2.anim_press.speed = 7.3
-        self.btn2.setStyleDict({
-            "background-color": (0, 122, 255),
-            "border-color": (0, 122, 255),
-            "border-radius": 7,
-            "color": (255, 255, 255),
-            "font-family": "SF Pro Display",
-            "font-size": 21,
-        })
-        self.btn2.setStyleDict({
-            "background-color": (36, 141, 255),
-            "border-color": (36, 141, 255)
-        }, "hover")
-        self.btn2.setStyleDict({
-            "background-color": (130, 190, 255),
-            "border-color": (130, 190, 255),
-            "color": (255, 255, 255),
-        }, "press")
-
-        self.btnlyt.addWidget(self.btn2, alignment=Qt.AlignTop | Qt.AlignHCenter)
-
-        self.btn3 = StyledButton("Quiet")
-        self.btn3.setFixedSize(170, 54)
-        self.btn3.anim_press.speed = 5
-        self.btn3.setStyleDict({
-            "background-color": (255, 255, 255),
-            "border-color": (255, 255, 255),
-            "border-radius": 7,
-            "color": (0, 122, 255),
-            "font-family": "SF Pro Display",
-            "font-size": 21
-        })
-        self.btn3.setStyleDict({
-            "color": (107, 178, 255),
-        }, "hover")
-        self.btn3.setStyleDict({
-            "color": (227, 227, 255),
-        }, "press")
-
-        self.btnlyt.addWidget(self.btn3, alignment=Qt.AlignTop | Qt.AlignHCenter)
-
-        self.btn1 = StyledButton("Outline")
-        self.btn1.setFixedSize(170, 54)
-        self.btn1.anim_press.speed = 5
-        self.btn1.setStyleDict({
-            "background-color": (255, 255, 255),
-            "border-color": (0, 122, 255),
-            "border-radius": 7,
-            "color": (0, 122, 255),
-            "font-family": "SF Pro Display",
-            "font-size": 21
-        })
-        self.btn1.setStyleDict({
-            "color": (107, 178, 255),
-        }, "hover")
-        self.btn1.setStyleDict({
-            "background-color": (0, 122, 255),
-            "color": (255, 255, 255),
-        }, "press")
-
-        self.btnlyt.addWidget(self.btn1, alignment=Qt.AlignTop | Qt.AlignHCenter)
-
-        self.btn4 = StyledButton("Flat")
-        self.btn4.setFixedSize(170, 54)
-        self.btn1.anim_press.speed = 5
-        self.btn4.setStyleDict({
-            "background-color": (247, 247, 247),
-            "border-color": (0, 0, 0, 0),
-            "border-radius": 7,
-            "color": (0, 122, 255),
-            "font-family": "SF Pro Display",
-            "font-size": 21
-        })
-        self.btn4.setStyleDict({
-            "background-color": (242, 242, 242),
-        }, "hover")
-        self.btn4.setStyleDict({
-            "background-color": (230, 230, 230),
-        }, "press")
-
-        self.btnlyt.addWidget(self.btn4, alignment=Qt.AlignTop | Qt.AlignHCenter)
-        
-        """
 
         self.btnlyt2.setAlignment(Qt.AlignTop)
         self.btnlyt2.addWidget(QLabel(
@@ -190,38 +91,13 @@ class MainWindow(QWidget):
 
         self.segbg.addButton("여자 목소리")
         self.segbg.addButton("남자 목소리")
-    #    self.segbg.addButton("Third")
+        #    self.segbg.addButton("Third")
 
         self.btnlyt2.addWidget(self.segbg)
 
         self.btnlyt2.addSpacing(10)
         self.btnlyt2.addWidget(QLabel(
             "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>Lyrics</span>"))
-        self.btnlyt2.addSpacing(10)
-
-        """
-        self.tglyt = QHBoxLayout()
-        self.tglyt.setAlignment(Qt.AlignLeft)
-        self.btnlyt2.addLayout(self.tglyt)
-
-        self.tgsw1 = ToggleSwitch(style="ios")
-        self.tgsw2 = ToggleSwitch(style="ios")
-        self.tgsw2.setEnabled(False)
-
-        self.tgsw1.setFixedWidth(120)
-        self.tgsw2.setFixedWidth(120)
-
-        @self.tgsw1.toggled.connect
-        def slot():
-            if self.tgsw1.isToggled():
-                self.tgsw2.setEnabled(True)
-            else:
-                self.tgsw2.setEnabled(False)
-
-        self.tglyt.addWidget(self.tgsw1)
-        self.tglyt.addWidget(self.tgsw2)
-        """
-
         self.btnlyt2.addSpacing(10)
         self.btnlyt2.addWidget(QLabel(
             "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>SheetMusic</span>"))
@@ -250,7 +126,6 @@ class MainWindow(QWidget):
             "border-color": (130, 190, 255),
             "color": (255, 255, 255),
         }, "press")
-
 
         s = Spinner(1.5, QColor(255, 255, 255))
         s.animType = 0
@@ -299,7 +174,6 @@ class MainWindow(QWidget):
             "border-color": (89, 227, 149),
             "color": (255, 255, 255),
         }, "press")
-        
 
         self.btnlyt2.addSpacing(15)
         self.btnlyt2.addWidget(self.ibtnl, alignment=Qt.AlignHCenter)
@@ -310,18 +184,7 @@ class MainWindow(QWidget):
             "font-family": "SF Pro Display",
             "font-size": 17
         })
-        
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
-        
 
 
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    mw = MainWindow()
-    mw.show()
-
-    sys.exit(app.exec_())
