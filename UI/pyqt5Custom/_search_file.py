@@ -2,7 +2,7 @@ import sys
 
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QGridLayout, QFileDialog, QLabel
 
-class file_search(QFileDialog):
+class _search_file(QFileDialog):
 
     def __init__(self):
         super().__init__()
@@ -69,12 +69,3 @@ class file_search(QFileDialog):
         FileFolder = QFileDialog.getExistingDirectory(self, 'Find Folder')
 
         self.label3.setText(FileFolder)
-
-"""
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-
-    ex = file_search()
-
-    app.exec_()
-"""
