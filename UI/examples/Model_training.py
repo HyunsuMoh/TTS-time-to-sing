@@ -34,16 +34,6 @@ class Model_training(QDialog):
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.titlebar = TitleBar(self, title="Sogang and SmileGate")
-        self.titlebar.setStyleDict({
-            "background-color": (255, 255, 255),
-            "font-size": 17,
-            "border-radius": 6,
-            "font-family": "SF Pro Display"
-        })
-
-        self.layout.addWidget(self.titlebar, alignment=Qt.AlignTop)
-
         self.conlyt = QVBoxLayout()
         self.conlyt.setSpacing(0)
         self.conlyt.setContentsMargins(70, 15, 70, 0)
@@ -140,5 +130,4 @@ class Model_training(QDialog):
         }, "press")
 
         self.btnlyt.addWidget(self.btn1, alignment=Qt.AlignTop | Qt.AlignHCenter)
-
 
