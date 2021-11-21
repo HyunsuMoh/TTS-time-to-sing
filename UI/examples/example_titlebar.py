@@ -10,10 +10,7 @@ import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QApplication, QVBoxLayout
 from PyQt5.QtGui import QColor, QFontDatabase, QBrush, QPalette, QLinearGradient
-
 from pyqt5Custom import TitleBar
-
-
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -28,7 +25,7 @@ class MainWindow(QWidget):
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.titlebar = TitleBar(self, title="Custom TitleBar!")
+        self.titlebar = TitleBar(self, title="Sogang and Smilegate")
         self.layout.addWidget(self.titlebar, alignment=Qt.AlignTop)
         self.titlebar.setStyleDict({
                 "background-color" : (255, 255, 255),
@@ -47,7 +44,7 @@ class MainWindow(QWidget):
         self.titlebar.maxButton.copyStyleDict(self.titlebar.closeButton)
         self.titlebar.minButton.copyStyleDict(self.titlebar.closeButton)
 
-
+        """
         self.anim = self.titlebar.newAnimation()
         self.anim.speed = 0.7
 
@@ -69,7 +66,7 @@ class MainWindow(QWidget):
                 })
 
         self.anim.start(loop = True)
-
+        """
 
 
 if __name__ == "__main__":
