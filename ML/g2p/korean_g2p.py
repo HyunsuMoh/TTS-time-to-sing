@@ -1,3 +1,4 @@
+import os
 import sys
 sys.path.append('../')
 
@@ -220,7 +221,7 @@ class Phone(object):
 
         return num
 
-def encode(graph, rulebook='./g2p/rulebook.txt'):
+def encode(graph, rulebook=os.path.join(os.path.dirname(__file__),'rulebook.txt')):
     [rule_in, rule_out] = readRules(rulebook)
         
     prono = graph2prono(graph, rule_in, rule_out)
