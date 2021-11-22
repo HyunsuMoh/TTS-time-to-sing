@@ -53,10 +53,10 @@ class Searchfile(QFileDialog):
 
         self.show()
 
-    def add_open(self):
+    def add_open(self, filename):
         FileOpen = QFileDialog.getOpenFileName(self, 'Open file', './')
-
-        self.label1.setText(FileOpen[0])
+        filename = filename + FileOpen[0]
+        return filename
 
     def add_save(self):
         FileSave = QFileDialog.getSaveFileName(self, 'Save file', './')

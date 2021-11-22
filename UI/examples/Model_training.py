@@ -8,12 +8,13 @@
 import sys
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
+from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
 from PyQt5.QtGui import QColor, QFontDatabase
 from PyQt5 import QtWidgets
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 import example_ios, Make_new_song
+from Searchfile import Searchfile
 
 
 class Model_training(QDialog):
@@ -34,16 +35,6 @@ class Model_training(QDialog):
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.titlebar = TitleBar(self, title="Sogang and SmileGate")
-        self.titlebar.setStyleDict({
-            "background-color": (255, 255, 255),
-            "font-size": 17,
-            "border-radius": 6,
-            "font-family": "SF Pro Display"
-        })
-
-        self.layout.addWidget(self.titlebar, alignment=Qt.AlignTop)
-
         self.conlyt = QVBoxLayout()
         self.conlyt.setSpacing(0)
         self.conlyt.setContentsMargins(70, 15, 70, 0)
@@ -58,15 +49,19 @@ class Model_training(QDialog):
 
         self.conlyt.addSpacing(90)
 
-        self.btnslyt = QHBoxLayout()
+        self.label1 = QLabel('label1', self)
+        self.label2 = QLabel('label2', self)
+        self.label3 = QLabel('label3', self)
+        self.btnslyt = QVBoxLayout()
+
         self.conlyt.addLayout(self.btnslyt)
-        self.btnlyt = QVBoxLayout()
+        self.btnlyt = QHBoxLayout()
         self.btnlyt.setSpacing(50)
         self.btnslyt.addLayout(self.btnlyt)
 
         self.btnlyt2 = QVBoxLayout()
         self.btnslyt.addLayout(self.btnlyt2)
-
+        self.btnslyt.addWidget(self.label1, alignment=Qt.AlignTop | Qt.AlignHCenter)
         self.btn2 = StyledButton("Find")
         self.btn2.setFixedSize(170, 54)
         self.btn2.anim_press.speed = 7.3
@@ -87,14 +82,14 @@ class Model_training(QDialog):
             "border-color": (130, 190, 255),
             "color": (255, 255, 255),
         }, "press")
-
+        self.btn2.clicked.connect(self.fileSearch)
         self.btnlyt.addWidget(self.btn2, alignment=Qt.AlignTop | Qt.AlignHCenter)
 
         self.btnlyt2.setAlignment(Qt.AlignTop)
         self.btnlyt2.addWidget(QLabel(
             "<span style='font-size:27px; font-family:SF Pro Display; color:rgb(99,99,102);'>Song</span>"))
         self.btnlyt2.addSpacing(10)
-
+        self.btnslyt.addWidget(self.label2, alignment=Qt.AlignTop | Qt.AlignHCenter)
         self.btn3 = StyledButton("Find")
         self.btn3.setFixedSize(170, 54)
         self.btn3.anim_press.speed = 5
@@ -115,9 +110,9 @@ class Model_training(QDialog):
             "border-color": (130, 190, 255),
             "color": (255, 255, 255),
         }, "press")
-
+        self.btn3.clicked.connect(self.fileSearch)
         self.btnlyt.addWidget(self.btn3, alignment=Qt.AlignTop | Qt.AlignHCenter)
-
+        self.btnslyt.addWidget(self.label3, alignment=Qt.AlignTop | Qt.AlignHCenter)
         self.btn1 = StyledButton("Find")
         self.btn1.setFixedSize(170, 54)
         self.btn1.anim_press.speed = 5
@@ -138,7 +133,14 @@ class Model_training(QDialog):
             "border-color": (130, 190, 255),
             "color": (255, 255, 255),
         }, "press")
-
+        self.btn1.clicked.connect(self.fileSearch)
         self.btnlyt.addWidget(self.btn1, alignment=Qt.AlignTop | Qt.AlignHCenter)
+
+
+    def fileSearch(self):
+        filename = ""
+        filename = Searchfile.add_open(self, filename)
+        self.label1.setText(filename)
+
 
 
