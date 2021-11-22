@@ -4,9 +4,9 @@
 #                                                     #
 #    This script is one of the pyqt5Custom examples   #
 
-
 import sys
-sys.path.append('../pyqt5Custom')
+sys.path.append("../pyqt5Custom")
+
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
@@ -14,6 +14,7 @@ from PyQt5.QtGui import QColor, QFontDatabase, QFont
 
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
+
 import example_ios, Model_training
 from Searchfile import Searchfile
 
