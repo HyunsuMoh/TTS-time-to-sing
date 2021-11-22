@@ -4,8 +4,10 @@
 #                                                     #
 #    This script is one of the pyqt5Custom examples   #
 
+import os
 import sys
-sys.path.append("../pyqt5Custom")
+sys.path.append(os.path.join(os.path.dirname(__file__), "../pyqt5Custom"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../bridge"))
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
@@ -17,6 +19,7 @@ from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, D
 
 import example_ios, Model_training
 from Searchfile import Searchfile
+from inference_ui import infer_test
 
 class Make_new_song(QDialog):
     def __init__(self):
@@ -173,6 +176,7 @@ class Make_new_song(QDialog):
             "border-color": (89, 227, 149),
             "color": (255, 255, 255),
         }, "press")
+        self.ibtnl.clicked.connect(infer_test)
 
         self.btnlyt2.addSpacing(15)
         self.btnlyt2.addWidget(self.ibtnl, alignment=Qt.AlignHCenter)

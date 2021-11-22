@@ -12,13 +12,13 @@ import dsp
 from config_parser import Config
 from torch_utils import set_device, load_weights
 
-import preprocess
+import preprocess_ui
 import dataprocess
 from models import Generator
 
 def start_infer(config):
     print("Processing text for \'%s\'." % (config.text_file))
-    data = preprocess.preprocess(config.text_file, 'infer', config)
+    data = preprocess_ui.preprocess(config=config, txt_file=config.text_file, mid_file=config.midi_file, set_type='infer')
     dataloader = dataprocess.load_infer(data, config)
 
     G = Generator(config)
@@ -51,5 +51,6 @@ def infer_test():
     print('test started')
     config = Config(['..\\..\\ML\\config\\default_train_windows.yml', '..\\..\\ML\\config\\default_infer_windows.yml'])
     config.text_file = '..\\..\\ML\\sample_dataset\\txt\\kr048a.txt'
-    config.checkpoint_file = '..\\..\\ML\\pretrained_sample.pt'
+    config.midi_file = '..\\..\\ML\\sample_dataset\\mid\\kr048a.mid'
+    config.checkpoint_file = '..\\..\\..\\pretrained_sample.pt'
     start_infer(config)
