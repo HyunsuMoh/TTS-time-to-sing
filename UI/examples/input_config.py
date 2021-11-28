@@ -33,10 +33,3 @@ class input_config(QDialog):
         self.textlabel.setupUi()
         self.textlabel.button_event()
 
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    mw = input_config()
-    mw.show()
-
-    sys.exit(app.exec_())

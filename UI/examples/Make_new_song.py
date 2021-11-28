@@ -22,7 +22,6 @@ class Make_new_song(QDialog):
     def __init__(self):
         super(Make_new_song, self).__init__()
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
-        # app.setFont(QFont('data/BMDOHYEON_ttf.tff'))
 
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
@@ -120,38 +119,7 @@ class Make_new_song(QDialog):
             "color": (255, 255, 255),
         }, "press")
 
-        """
-
-        s = Spinner(1.5, QColor(255, 255, 255))
-        s.animType = 0
-        s.speed = 2
-        self.ibtn2 = StyledButton("Spinner Icon", icon=s)
-        self.ibtn2.setFixedSize(140, 45)
-        self.ibtn2.anim_press.speed = 7.3
-        self.ibtn2.setStyleDict({
-            "background-color": (0, 122, 255),
-            "border-color": (0, 122, 255),
-            "border-radius": 7,
-            "color": (255, 255, 255),
-            "font-family": "SF Pro Display",
-            "font-size": 18,
-        })
-        self.ibtn2.setStyleDict({
-            "background-color": (36, 141, 255),
-            "border-color": (36, 141, 255)
-        }, "hover")
-        self.ibtn2.setStyleDict({
-            "background-color": (130, 190, 255),
-            "border-color": (130, 190, 255),
-            "color": (255, 255, 255),
-        }, "press")
-        
-        """
-
         self.ibtnlyt.addWidget(self.ibtn)
-        """
-        self.ibtnlyt.addWidget(self.ibtn2)
-        """
 
         self.ibtnl = StyledButton("Making New Songs", icon=Spinner(1.5, QColor(255, 255, 255)))
         self.ibtnl.setMinimumSize(118, 38)
