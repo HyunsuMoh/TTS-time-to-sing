@@ -8,7 +8,7 @@
 import sys
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QStackedWidget, QDialog, QFileDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
+from PyQt5.QtWidgets import QDialog, QFileDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
 from PyQt5.QtGui import QColor, QFontDatabase
 from PyQt5 import QtWidgets
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
@@ -31,10 +31,12 @@ class Model_training(QDialog):
         p = self.palette()
         p.setColor(self.backgroundRole(), QColor(255, 255, 255))
         self.setPalette(p)
+
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignTop)
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
+
         self.conlyt = QVBoxLayout()
         self.conlyt.setSpacing(0)
         self.conlyt.setContentsMargins(70, 15, 70, 0)
@@ -50,7 +52,7 @@ class Model_training(QDialog):
         self.conlyt.addWidget(self.back)
         self.conlyt.addWidget(h)
         self.conlyt.addWidget(ah)
-        print("here4")
+
         self.conlyt.addSpacing(90)
         self.back.setFixedSize(100, 54)
         self.back.anim_press.speed = 7.3
@@ -70,6 +72,10 @@ class Model_training(QDialog):
         self.conlyt.addLayout(self.btnslyt)
         self.btnlyt = QVBoxLayout()
         self.labellyt = QVBoxLayout()
+        self.btnlyt = QVBoxLayout()
+        self.btnlyt.setSpacing(50)
+        self.btnslyt.addLayout(self.btnlyt)
+
         self.btnlyt2 = QVBoxLayout()
         self.btnlyt.setSpacing(30)
         self.labellyt.setSpacing(30)

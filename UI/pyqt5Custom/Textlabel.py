@@ -6,22 +6,20 @@ class Textlabel(QWidget):
         self.setupUi()
 
     def setupUi(self):
-        #self.setWindowTitle('LineEdit')
-        #self.resize(500, 500)
 
-        self.line_edit = QLineEdit(self)
-        self.line_edit.move(75, 75)
+        line_edit = QLineEdit(self)
+        line_edit.move(75, 75)
 
-        self.text_label = QLabel(self)
-        self.text_label.move(75, 125)
-        self.text_label.setText('Default')
+        text_label = QLabel(self)
+        text_label.move(75, 125)
+        text_label.setText('Default')
 
-        self.button = QPushButton(self)
-        self.button.move(75, 175)
-        self.button.setText('Get config')
-        self.button.clicked.connect(self.button_event)
+        button = QPushButton(self)
+        button.move(75, 175)
+        button.setText('Get config')
+        button.clicked.connect(self.button_event)
 
-        self.show()
+        return line_edit, text_label, button
 
     def button_event(self):
         text = self.line_edit.text()  # line_edit text 값 가져오기
