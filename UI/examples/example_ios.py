@@ -4,6 +4,7 @@
 #                                                     #
 #    This script is one of the pyqt5Custom examples   #
 import sys
+import time
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets
@@ -12,19 +13,7 @@ from PyQt5.QtGui import QColor, QFontDatabase, QIcon
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 
-import Make_new_song, Model_training
-
-wg = QtWidgets.QStackedWidget()
-
-
-def gotoNext():
-    global wg
-    wg.setCurrentIndex(wg.currentIndex() + 1)
-
-
-def gotoPrev():
-    global wg
-    wg.setCurrentIndex(wg.currentIndex() - 1)
+import Make_new_song, Model_training, input_config
 
 
 class MainWindow(QDialog):
@@ -94,7 +83,7 @@ class MainWindow(QDialog):
             "border-color": (0, 0, 0),
             "color": (0, 0, 0),
         }, "press")
-        self.btn2.clicked.connect(gotoNext())
+        self.btn2.clicked.connect(lambda: switchWidget(1))
         self.btnlyt.addWidget(self.btn2, alignment=Qt.AlignBottom | Qt.AlignHCenter)
 
         self.btn1 = StyledButton("Generate Song")
@@ -119,39 +108,40 @@ class MainWindow(QDialog):
             "color": (0, 0, 0),
         }, "press")
 
-        self.btn1.clicked.connect(gotoNext())
+        self.btn1.clicked.connect(lambda: switchWidget(2))
         self.btnlyt.addWidget(self.btn1, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
-        self.deleteLater()
 
-    def gotoML(self):
-        global wg
-        wg.setCurrentIndex(1)
-
-    def gotoNewSong(self):
-        global wg
-        wg.setCurrentIndex(2)
-
+def switchWidget(num):
+    global wg
+    wg.setCurrentIndex(num)
 
 if __name__ == "__main__":
+
     sys.path.append('../pyqt5Custom')
     app = QApplication(sys.argv)
-    mw = MainWindow()
-
+    wg = QtWidgets.QStackedWidget()
     wg.setWindowTitle("Sogang and SmileGate")
     wg.setWindowIcon(QIcon('TTS.png'))
     wg.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
-    # print("current page " + str(widget.currentIndex()))
+    mw = MainWindow()
     wg.addWidget(mw)
-    # print("current page " + str(widget.currentIndex()))
-    ml = Model_training.Model_training()
-    ml.deleteLater()
-    wg.addWidget(ml)
 
+    ml = Model_training.Model_training()
+    wg.addWidget(ml)
+    ml.back.clicked.connect(lambda: wg.setCurrentIndex(0))
+    ml.next.clicked.connect(lambda: wg.setCurrentIndex(3))
     ns = Make_new_song.Make_new_song()
-    ns.deleteLater()
+    ns.next.clicked.connect(lambda: wg.setCurrentIndex(3))
+    ns.back.clicked.connect(lambda: wg.setCurrentIndex(0))
     wg.addWidget(ns)
+
+    ic = input_config.input_config()
+    wg.addWidget(ic)
+
     wg.setFixedHeight(800)
     wg.setFixedWidth(1200)
+
+    switchWidget(0)
     wg.show()
 
     sys.exit(app.exec_())

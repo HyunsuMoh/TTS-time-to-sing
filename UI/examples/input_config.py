@@ -45,7 +45,7 @@ class input_config(QDialog):
 
         self.input1 = QVBoxLayout()
         self.layout.addLayout(self.input1)
-        #self.input2.addWidget(self.text_label, alignment=Qt.AlignTop | Qt.AlignHCenter)
+        # self.input2.addWidget(self.text_label, alignment=Qt.AlignTop | Qt.AlignHCenter)
 
         self.button = StyledButton("Input")
         self.button.setFixedSize(120, 30)
@@ -100,20 +100,5 @@ class input_config(QDialog):
         self.text_label2.setText(text)  # label에 text 설정하기
 
 
-if __name__ == "__main__":
-
-    app = QApplication(sys.argv)
-
-    fontDB = QFontDatabase()
-    fontDB.addApplicationFont('BMDOHYEON_ttf.ttf')
-    app.setFont(QFont('BMDOHYEON_ttf'))
-    #QFont font;
-    #font.setFamily(QString("맑은 고딕"));
-    #application.setFont(font);
-
-    mw = input_config()
-    mw.show()
-
-    sys.exit(app.exec_())
 
 
