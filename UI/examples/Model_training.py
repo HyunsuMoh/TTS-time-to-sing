@@ -55,7 +55,7 @@ class Model_training(QDialog):
         self.btnslyt = QVBoxLayout()
 
         self.conlyt.addLayout(self.btnslyt)
-        self.btnlyt = QHBoxLayout()
+        self.btnlyt = QVBoxLayout()
         self.btnlyt.setSpacing(50)
         self.btnslyt.addLayout(self.btnlyt)
 
