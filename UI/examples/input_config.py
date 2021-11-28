@@ -1,5 +1,6 @@
+import os
 import sys
-sys.path.append("../pyqt5Custom")
+sys.path.append(os.path.join(os.path.dirname(__file__), "../pyqt5Custom"))
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt

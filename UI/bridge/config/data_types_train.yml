@@ -1,0 +1,100 @@
+# Path Configuration
+dataset_text_path: # Path for raw dataset containing txt
+  type: 'DirectoryPath'
+dataset_midi_path: # Path for raw dataset containing mid
+  type: 'DirectoryPath'
+dataset_wav_path: # Path for raw dataset containing wav
+  type: 'DirectoryPath'
+feature_path: # Path for feature created using preprocess.py
+  type: 'DirectoryPath'
+checkpoint_path: # Path for checkpoint and tensorboard log created using train.py
+  type: 'DirectoryPath'
+checkpoint_path_action: # Action to make path for checkpoint
+  type: 'MultiSelection'
+  option: ['duplicate', 'overwrite']
+
+# Feature Configuration
+num_char: # The types of characters
+  type: 'Int'
+min_note: # Minimum MIDI note value
+  type: 'Int'
+num_note: # The number of MIDI notes
+  type: 'Int'
+length_c: # Specificed consonant length
+  type: 'Int'
+
+sample_rate: # Audio sampling rate
+  type: 'Int'
+preemphasis: # Pre-emphasis filter coefficient
+  type: 'Float'
+min_db: # Minimum dB level of spectrogram
+  type: 'float'
+max_db: # Maximum dB level of spectrogram
+  type: 'float'
+clip_val: # Maximum value of normalized spectrogram (if clip_val: 0.8, normalized spectrogram range: -0.8 ~ 0.8)
+  type: 'float'
+spec_power:
+  type: 'float'
+
+fft_size: # FFT size for fast-Fourier transform
+  type: 'Int'
+win_size: # Window size for fast-Fourier transform
+  type: 'Int'
+hop_size: # Hop size for fast-Fourier transform
+  type: 'Int'
+
+spec_length: # The length of generated spectrogram per iteration
+  type: 'Int'
+prev_length: # The length of previous-time spectrogram per iteration
+  type: 'Int'
+data_stride: # Amount of stride to increase the number of data in a epoch
+  type: 'Int'
+
+# Model Configuration
+size_factor: # Factor for model size
+  type: 'Int'
+text_embed_size: # Embedding dimension for text
+  type: 'Int'
+note_embed_size: # Embedding dimension for note
+  type: 'Int'
+gamma: # Gamma value for BEGAN objective
+  type: 'Float'
+lambda_k: # Lambda k value for BEGAN objective
+  type: 'Float'
+
+# Optimizer Configuration
+learn_rate: # Learning rate for training
+  type: 'Float'
+decay_factor: # Learning rate decay amount per every step epoch
+  type: 'Float'
+step_epoch: # Step epoch for learning rate decay
+  type: 'Int'
+betas: # Beta values for Adam optimizer
+  type: 'FloatList'
+weight_decay: # Weight decay value
+  type: 'Float'
+
+# Train Configuration
+num_proc: # The number of processes especially for preprocess.py
+  type: 'Int'
+use_cpu: # Forcing code to use cpu and ignore 'device'
+  type: 'Bool'
+device: # List of CUDA device indices
+  type: 'IntList'
+batch_size: # Training batch size
+  type: 'Int'
+data_mode: # Dataloader mode, single: data on memory, multi: loading data with queue
+  type: 'MultiSelection'
+  option: ['single', 'multi']
+save_epoch: # Step epoch for saving checkpoint
+  type: 'Int'
+stop_epoch: # Epoch for stopping training
+  type: 'Int'
+
+# Load checkpoint
+load_checkpoint:
+  type: 'Bool'
+loaded_checkpoint_path_G:
+  type: 'FilePath'
+loaded_checkpoint_path_D:
+  type: 'FilePath'

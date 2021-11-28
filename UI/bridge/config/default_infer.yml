@@ -1,0 +1,10 @@
+# Path Configuration
+text_file: '' # Text file path for inference
+midi_file: '' # Midi file path for inference
+checkpoint_file: '' # Model checkpoint file path to load
+
+# Infer Configuration
+num_proc: 1 # Number of processes, might be used for non-auto-regressive inference
+batch_size: 1 # Inference batch size, might be used for non-auto-regressive inference
+use_cpu: true # Forcing code to use cpu and ignore 'device'
+device: [0] # List of CUDA device indices
