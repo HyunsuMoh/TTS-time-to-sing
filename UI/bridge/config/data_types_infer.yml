@@ -1,0 +1,17 @@
+# Path Configuration
+text_file: # Text file path for inference
+  type: 'FilePath'
+midi_file: # Midi file path for inference
+  type: 'FilePath'
+checkpoint_file: # Model checkpoint file path to load
+  type: 'FilePath'
+
+# Infer Configuration
+num_proc: # Number of processes, might be used for non-auto-regressive inference
+  type: 'Int'
+batch_size: # Inference batch size, might be used for non-auto-regressive inference
+  type: 'Int'
+use_cpu: # Forcing code to use cpu and ignore 'device'
+  type: 'Bool'
+device: # List of CUDA device indices
+  type: 'IntList'
