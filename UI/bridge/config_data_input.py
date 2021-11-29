@@ -2,7 +2,7 @@ from abc import *
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout, \
-    QPushButton, QLineEdit, QTableWidget, QComboBox
+    QPushButton, QLineEdit, QTableWidget, QComboBox, QCheckBox
 from PyQt5.QtGui import QColor, QFontDatabase, QFont
 
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
@@ -17,6 +17,9 @@ class InputForm(metaclass=ABCMeta):
     def getValue(self):
         pass
 
+    def setValue(self, value):
+        pass
+
 
 class TextInputForm(InputForm):
     def __init__(self, label, value):
@@ -27,6 +30,9 @@ class TextInputForm(InputForm):
     def getValue(self):
         self.value = self.widget.text()
         return self.value
+
+    def setValue(self, value):
+        self.widget.setText(str(value))
 
 
 class IntInputForm(TextInputForm):
@@ -44,16 +50,14 @@ class FloatInputForm(TextInputForm):
 class IntListInputForm(TextInputForm):
     def getValue(self):
         datastr = self.widget.text()
-        datastr.strip('[]')
-        strlist = datastr.split(',')
+        strlist = datastr.strip('[]').split(',')
         self.value = [int(str.strip()) for str in strlist]
 
 
 class FloatListInputForm(TextInputForm):
     def getValue(self):
         datastr = self.widget.text()
-        datastr.strip('[]')
-        strlist = datastr.split(',')
+        strlist = datastr.strip('[]').split(',')
         self.value = [float(str.strip()) for str in strlist]
 
 
@@ -68,11 +72,21 @@ class MultipleSelectionInputForm(InputForm):
         self.value = self.widget.currentText()
         return self.value
 
+    def setValue(self, value):
+        index = self.widget.findData(value)
+        if index >= 0:
+            self.widget.setCurrentIndex(index)
 
-class BoolSelectionInputForm(MultipleSelectionInputForm):
+
+class BoolSelectionInputForm(InputForm):
     def __init__(self, label, value):
-        super().__init__(label, value, ['True', 'False'])
+        super().__init__(label, value)
+        self.widget = QCheckBox()
+        self.widget.setChecked(value)
 
     def getValue(self):
-        self.value = True if self.widget.currentText() == 'True' else False
+        self.value = self.widget.isChecked()
         return self.value
+
+    def setValue(self, value):
+        self.widget.setChecked(value)

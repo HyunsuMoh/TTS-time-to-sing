@@ -28,13 +28,13 @@ sample_rate: # Audio sampling rate
 preemphasis: # Pre-emphasis filter coefficient
   type: 'Float'
 min_db: # Minimum dB level of spectrogram
-  type: 'float'
+  type: 'Float'
 max_db: # Maximum dB level of spectrogram
-  type: 'float'
+  type: 'Float'
 clip_val: # Maximum value of normalized spectrogram (if clip_val: 0.8, normalized spectrogram range: -0.8 ~ 0.8)
-  type: 'float'
+  type: 'Float'
 spec_power:
-  type: 'float'
+  type: 'Float'
 
 fft_size: # FFT size for fast-Fourier transform
   type: 'Int'
