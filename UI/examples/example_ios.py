@@ -123,19 +123,17 @@ if __name__ == "__main__":
     wg.setWindowTitle("Sogang and SmileGate")
     wg.setWindowIcon(QIcon('TTS.png'))
     wg.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
-    mw = MainWindow()
+
+    mw = MainWindow() # index [0]
     wg.addWidget(mw)
 
-    ml = Model_training.Model_training()
+    ml = Model_training.Model_training(switchWidget) # index [1]
     wg.addWidget(ml)
-    ml.back.clicked.connect(lambda: wg.setCurrentIndex(0))
-    ml.next.clicked.connect(lambda: wg.setCurrentIndex(3))
-    ns = Make_new_song.Make_new_song()
-    ns.next.clicked.connect(lambda: wg.setCurrentIndex(3))
-    ns.back.clicked.connect(lambda: wg.setCurrentIndex(0))
+
+    ns = Make_new_song.Make_new_song(switchWidget) # index [2]
     wg.addWidget(ns)
 
-    ic = input_config.input_config()
+    ic = input_config.input_config() # index [3]
     wg.addWidget(ic)
 
     wg.setFixedHeight(800)

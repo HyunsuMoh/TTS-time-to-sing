@@ -12,12 +12,12 @@ from Searchfile import Searchfile
 
 
 class Model_training(QDialog):
-    def __init__(self):
+    def __init__(self, switchWidget):
         super(Model_training, self).__init__()
         QFontDatabase.addApplicationFont("data/SFPro.ttf")
-
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
+        self.switchWidget = switchWidget
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -39,7 +39,8 @@ class Model_training(QDialog):
         self.layout.addLayout(self.switchButton)
         self.next = StyledButton("Next")
         self.back = StyledButton("Back")
-
+        self.back.clicked.connect(lambda: self.switchpage(0))
+        self.next.clicked.connect(lambda: self.switchpage(3))
         h = QLabel(
             "<span style='font-size:58px; font-family:SF Pro Display; color:rgb(28,28,30);'>Model Training</span>")
         ah = QLabel("<span style='font-size:26px; font-family:SF Pro Display; color:rgb(89,89,92);'>신규 모델 학습</span>")
@@ -200,7 +201,8 @@ class Model_training(QDialog):
         filename = Searchfile.add_open(self, filename)
         labelName.setText(filename)
 
-
+    def switchpage(self, num):
+        self.switchWidget(num)
 
 
 

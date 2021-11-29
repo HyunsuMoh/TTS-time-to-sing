@@ -16,14 +16,15 @@ from PyQt5.QtGui import QColor, QFontDatabase, QFont
 
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
+from inference_ui import infer_test
 
 class Make_new_song(QDialog):
-    def __init__(self):
+    def __init__(self, switchWidget):
         super(Make_new_song, self).__init__()
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
-
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
+        self.switchWidget = switchWidget
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -44,7 +45,11 @@ class Make_new_song(QDialog):
         self.layout.addLayout(self.switchButton)
         self.next = StyledButton("Next")
         self.back = StyledButton("Back")
-
+        self.back.clicked.connect(lambda: self.switchpage(0))
+        self.next.clicked.connect(lambda: self.switchpage(3))
+        #self.back.clicked.connect(self.switchingPage)
+        #self.back.clicked.connect(lambda: self.wg.setCurrentIndex(0))
+        #self.next.clicked.connect(lambda: self.wg.setCurrentIndex(3))
         h = QLabel(
             "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>Making new songs</span>")
         ah = QLabel(
@@ -193,6 +198,7 @@ class Make_new_song(QDialog):
             "border-color": (102, 71, 214),
             "color": (255, 255, 255),
         }, "press")
+        self.ibtnl.clicked.connect(infer_test)
 
         self.btnlyt2.addSpacing(15)
         self.btnlyt2.addWidget(self.ibtnl, alignment=Qt.AlignHCenter)
@@ -205,3 +211,6 @@ class Make_new_song(QDialog):
         })
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
+
+    def switchpage(self, num):
+        self.switchWidget(num)
