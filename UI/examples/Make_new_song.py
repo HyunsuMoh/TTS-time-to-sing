@@ -9,6 +9,9 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../pyqt5Custom"))
 sys.path.append(os.path.join(os.path.dirname(__file__), "../bridge"))
 
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../ML/utils"))
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
@@ -17,6 +20,8 @@ from PyQt5.QtGui import QColor, QFontDatabase, QFont
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 from inference_ui import infer_test
+from input_config import input_config
+from config_parser import Config
 
 class Make_new_song(QDialog):
     def __init__(self, switchWidget):
@@ -24,7 +29,9 @@ class Make_new_song(QDialog):
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
-        self.switchWidget = switchWidget
+        self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_infer.yml"),
+                              os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
+        self.configWidget = input_config('infer', self.config)
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -45,8 +52,8 @@ class Make_new_song(QDialog):
         self.layout.addLayout(self.switchButton)
         self.next = StyledButton("Next")
         self.back = StyledButton("Back")
-        self.back.clicked.connect(lambda: self.switchpage(0))
-        self.next.clicked.connect(lambda: self.switchpage(3))
+        self.back.clicked.connect(lambda: switchWidget(0))
+        self.next.clicked.connect(self.configWidget.load)
         #self.back.clicked.connect(self.switchingPage)
         #self.back.clicked.connect(lambda: self.wg.setCurrentIndex(0))
         #self.next.clicked.connect(lambda: self.wg.setCurrentIndex(3))
@@ -211,6 +218,3 @@ class Make_new_song(QDialog):
         })
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
-
-    def switchpage(self, num):
-        self.switchWidget(num)
