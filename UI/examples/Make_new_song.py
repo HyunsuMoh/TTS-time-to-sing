@@ -19,12 +19,13 @@ from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, D
 from inference_ui import infer_test
 
 class Make_new_song(QDialog):
-    def __init__(self, switchWidget):
+    def __init__(self):
         super(Make_new_song, self).__init__()
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
+        # app.setFont(QFont('data/BMDOHYEON_ttf.tff'))
+
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
-        self.switchWidget = switchWidget
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -211,6 +212,3 @@ class Make_new_song(QDialog):
         })
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
-
-    def switchpage(self, num):
-        self.switchWidget(num)
