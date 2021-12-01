@@ -4,7 +4,9 @@
 #                                                     #
 #    This script is one of the pyqt5Custom examples   #
 import sys
-import time
+import yaml
+sys.path.append("../pyqt5Custom")
+sys.path.append("../bridge")
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets
@@ -14,7 +16,8 @@ from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, Color
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 
 import Make_new_song, Model_training, input_config
-
+from config_data_input import *
+from config_parser import Config
 
 class MainWindow(QDialog):
     def __init__(self):
@@ -133,7 +136,8 @@ if __name__ == "__main__":
     ns = Make_new_song.Make_new_song(switchWidget) # index [2]
     wg.addWidget(ns)
 
-    ic = input_config.input_config() # index [3]
+    config = Config(["../bridge/config/default_train.yml"])
+    ic = input_config.input_config('train', config, lambda: {print('close')}) # index [3]
     wg.addWidget(ic)
 
     wg.setFixedHeight(800)
