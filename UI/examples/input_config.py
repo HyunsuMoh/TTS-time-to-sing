@@ -19,10 +19,10 @@ from config_data_input import *
 from config_parser import Config
 
 class input_config(QDialog):
-    def __init__(self, mode, config, close_action=None):
+    def __init__(self, mode, config, close_action, next_action):
         def ok_action():
             self.table.setConfig(config)
-            cancel_action()
+            next_action()
 
         def cancel_action():
             if close_action is not None:
@@ -37,17 +37,20 @@ class input_config(QDialog):
         button_style = {
             'normal': {
                 "background-color": (255, 255, 255),
-                "border-color": (0, 122, 255),
+                "border-color": (154, 84, 237),
                 "border-radius": 7,
-                "color": (0, 122, 255),
+                "color": (154, 84, 237),
                 "font-family": "SF Pro Display",
                 "font-size": 15
             },
             'hover' : {
-                "color": (107, 178, 255),
+                "background-color": (154, 84, 237),
+                "border-color": (154, 84, 237),
+                "color": (255, 255, 255),
             },
             'press' : {
-                "background-color": (0, 122, 255),
+                "background-color": (154, 84, 237),
+                "border-color": (154, 84, 237),
                 "color": (255, 255, 255),
             }
         }
@@ -67,15 +70,42 @@ class input_config(QDialog):
         load_button.setStyleDict(button_style['hover'], "hover")
         load_button.setStyleDict(button_style['press'], "press")
         ok_button.setStyleDict({
-            "background-color": (0, 122, 255),
-            "border-color": (0, 122, 255),
+            'normal': {
+                "background-color": (154, 84, 237),
+                "border-color": (154, 84, 237),
+                "border-radius": 7,
+                "color": (255, 255, 255),
+                "font-family": "SF Pro Display",
+                "font-size": 15
+            },
+            'hover' : {
+                "background-color": (102, 71, 214),
+                "border-color": (102, 71, 214),
+            },
+            'press' : {
+                "background-color": (102, 71, 214),
+                "border-color": (102, 71, 214),
+                "color": (255, 255, 255),
+            }
+        })
+        ok_button.setStyleDict({
+            "background-color": (154, 84, 237),
+            "border-color": (154, 84, 237),
             "border-radius": 7,
             "color": (255, 255, 255),
             "font-family": "SF Pro Display",
             "font-size": 15,
         })
-        ok_button.setStyleDict(button_style['hover'], "hover")
-        ok_button.setStyleDict(button_style['press'], "press")
+        ok_button.setStyleDict({
+            "background-color": (102, 71, 214),
+            "border-color": (102, 71, 214)
+        }, "hover")
+        ok_button.setStyleDict({
+            "background-color": (102, 71, 214),
+            "border-color": (102, 71, 214),
+            "color": (255, 255, 255),
+        }, "press")
+
         cancel_button.setStyleDict(button_style['normal'])
         cancel_button.setStyleDict(button_style['hover'], "hover")
         cancel_button.setStyleDict(button_style['press'], "press")

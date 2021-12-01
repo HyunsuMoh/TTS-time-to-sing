@@ -86,7 +86,7 @@ class MainWindow(QDialog):
             "border-color": (0, 0, 0),
             "color": (0, 0, 0),
         }, "press")
-        self.btn2.clicked.connect(lambda: switchWidget(1))
+        self.btn2.clicked.connect(lambda: switchWidget(2)) #
         self.btnlyt.addWidget(self.btn2, alignment=Qt.AlignBottom | Qt.AlignHCenter)
 
         self.btn1 = StyledButton("Generate Song")
@@ -133,12 +133,17 @@ if __name__ == "__main__":
     ml = Model_training.Model_training(switchWidget) # index [1]
     wg.addWidget(ml)
 
-    ns = Make_new_song.Make_new_song(switchWidget) # index [2]
+    config = Config(["../bridge/config/default_train.yml"])
+    ic1 = input_config.input_config('train', config, lambda: switchWidget(0), lambda: switchWidget(1))  # index [2](for train)
+    wg.addWidget(ic1)
+
+    ns = Make_new_song.Make_new_song(switchWidget) # index [3]
     wg.addWidget(ns)
 
     config = Config(["../bridge/config/default_train.yml"])
-    ic = input_config.input_config('train', config, lambda: {print('close')}) # index [3]
-    wg.addWidget(ic)
+    ic2 = input_config.input_config('train', config, lambda: switchWidget(0), lambda: switchWidget(3))  # index [4](for infer)
+    wg.addWidget(ic2)
+
 
     wg.setFixedHeight(800)
     wg.setFixedWidth(1200)

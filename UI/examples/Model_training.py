@@ -37,10 +37,10 @@ class Model_training(QDialog):
         self.switchButton.setSpacing(50)
         self.layout.addLayout(self.conlyt)
         self.layout.addLayout(self.switchButton)
-        self.next = StyledButton("Next")
+        self.next = StyledButton("Training Start")
         self.back = StyledButton("Back")
-        self.back.clicked.connect(lambda: self.switchpage(0))
-        self.next.clicked.connect(lambda: self.switchpage(3))
+        self.back.clicked.connect(lambda: self.switchpage(2))
+        self.next.clicked.connect(lambda: self.switchpage(2))
         h = QLabel(
             "<span style='font-size:58px; font-family:SF Pro Display; color:rgb(28,28,30);'>Model Training</span>")
         ah = QLabel("<span style='font-size:26px; font-family:SF Pro Display; color:rgb(89,89,92);'>신규 모델 학습</span>")
@@ -74,7 +74,7 @@ class Model_training(QDialog):
             "color": (0, 0, 0),
         }, "press")
 
-        self.next.setFixedSize(100, 54)
+        self.next.setFixedSize(120, 54)
         self.next.anim_press.speed = 7.3
         self.next.setStyleDict({
             "background-color": (0, 0, 0),
@@ -95,9 +95,9 @@ class Model_training(QDialog):
             "color": (0, 0, 0),
         }, "press")
 
-        self.label1 = QLabel('label1', self)
-        self.label2 = QLabel('label2', self)
-        self.label3 = QLabel('label3', self)
+        self.label1 = QLabel('', self)
+        self.label2 = QLabel('', self)
+        self.label3 = QLabel('', self)
 
         self.btnslyt = QHBoxLayout()
         self.conlyt.addLayout(self.btnslyt)
