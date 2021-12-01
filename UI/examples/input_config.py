@@ -190,5 +190,3 @@ if __name__ == "__main__":
     mw.show()
 
     sys.exit(app.exec_())
-
-

@@ -12,8 +12,11 @@ from PyQt5.QtGui import QColor, QFontDatabase, QIcon
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 
-import Make_new_song, Model_training
 
+#import infer_test
+#import torch
+
+import Make_new_song, Model_training
 
 class MainWindow(QDialog):
     def __init__(self):
@@ -21,12 +24,11 @@ class MainWindow(QDialog):
         QFontDatabase.addApplicationFont("data/SFPro.ttf")
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
-
         self.setAutoFillBackground(True)
+
         p = self.palette()
         p.setColor(self.backgroundRole(), QColor(255, 255, 255))
         self.setPalette(p)
-
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignTop)
         self.setLayout(self.layout)

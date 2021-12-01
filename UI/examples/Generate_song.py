@@ -4,6 +4,7 @@
 #                                                     #
 #    This script is one of the pyqt5Custom examples   #
 
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../ML/utils"))
 import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../pyqt5Custom"))
@@ -16,15 +17,15 @@ from PyQt5.QtGui import QColor, QFontDatabase, QFont
 
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
+
 from inference_ui import infer_test
 
-class Make_new_song(QDialog):
-    def __init__(self, switchWidget):
-        super(Make_new_song, self).__init__()
+class Generate_song(QDialog):
+    def __init__(self):
+        super(Generate_song, self).__init__()
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
-        self.switchWidget = switchWidget
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -45,8 +46,6 @@ class Make_new_song(QDialog):
         self.layout.addLayout(self.switchButton)
         self.next = StyledButton("Next")
         self.back = StyledButton("Back")
-        self.back.clicked.connect(lambda: self.switchpage(0))
-        self.next.clicked.connect(lambda: self.switchpage(3))
         #self.back.clicked.connect(self.switchingPage)
         #self.back.clicked.connect(lambda: self.wg.setCurrentIndex(0))
         #self.next.clicked.connect(lambda: self.wg.setCurrentIndex(3))
@@ -140,7 +139,7 @@ class Make_new_song(QDialog):
 
         self.segbg.addButton("Default")
         self.segbg.addButton("Another option")
-        #    self.segbg.addButton("Third")
+        self.segbg.addButton("Third")
 
         self.btnlyt2.addWidget(self.segbg)
 
@@ -212,5 +211,18 @@ class Make_new_song(QDialog):
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
 
-    def switchpage(self, num):
-        self.switchWidget(num)
+if __name__ == "__main__":
+    sys.path.append('../pyqt5Custom')
+    app = QApplication(sys.argv)
+    #mw = Make_new_song()
+    mw = Generate_song()
+    widget = QtWidgets.QStackedWidget()
+    widget.setWindowTitle("Sogang and SmileGate")
+
+    widget.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint | Qt.WindowMaximizeButtonHint)
+    widget.addWidget(mw)
+    widget.setFixedHeight(800)
+    widget.setFixedWidth(1200)
+    widget.show()
+
+    sys.exit(app.exec_())
