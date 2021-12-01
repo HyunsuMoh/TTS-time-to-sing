@@ -136,10 +136,6 @@ if __name__ == "__main__":
     ns = Make_new_song.Make_new_song(switchWidget) # index [2]
     wg.addWidget(ns)
 
-    config = Config(["../bridge/config/default_train.yml"])
-    ic = input_config.input_config('train', config, lambda: {print('close')}) # index [3]
-    wg.addWidget(ic)
-
     wg.setFixedHeight(800)
     wg.setFixedWidth(1200)
 
