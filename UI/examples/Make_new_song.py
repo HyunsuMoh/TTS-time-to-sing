@@ -16,19 +16,15 @@ from PyQt5.QtGui import QColor, QFontDatabase, QFont
 
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
-
-import example_ios, Model_training
-from Searchfile import Searchfile
 from inference_ui import infer_test
 
 class Make_new_song(QDialog):
-    def __init__(self):
+    def __init__(self, switchWidget):
         super(Make_new_song, self).__init__()
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
-        # app.setFont(QFont('data/BMDOHYEON_ttf.tff'))
-
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
+        self.switchWidget = switchWidget
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -42,14 +38,70 @@ class Make_new_song(QDialog):
 
         self.conlyt = QVBoxLayout()
         self.conlyt.setSpacing(0)
-        self.conlyt.setContentsMargins(70, 15, 70, 0)
+        self.conlyt.setContentsMargins(70, 15, 70, 70)
+        self.switchButton = QHBoxLayout()
+        self.switchButton.setSpacing(50)
         self.layout.addLayout(self.conlyt)
+        self.layout.addLayout(self.switchButton)
+        self.next = StyledButton("Next")
+        self.back = StyledButton("Back")
+        self.back.clicked.connect(lambda: self.switchpage(0))
+        self.next.clicked.connect(lambda: self.switchpage(3))
+        #self.back.clicked.connect(self.switchingPage)
+        #self.back.clicked.connect(lambda: self.wg.setCurrentIndex(0))
+        #self.next.clicked.connect(lambda: self.wg.setCurrentIndex(3))
         h = QLabel(
             "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>Making new songs</span>")
         ah = QLabel(
             "<span style='font-size:24px; font-family:SF Pro Display; color:rgb(89,89,92);'>기존 모델들을 바탕으로 새로운 노래 생성</span>")
 
+        self.conlyt.addWidget(h)
+        self.conlyt.addWidget(ah)
+        self.switchButton.addWidget(self.back)
+        self.switchButton.addWidget(self.next)
         self.conlyt.addSpacing(90)
+
+        self.back.setFixedSize(90, 44)
+        self.back.anim_press.speed = 7.3
+        self.back.setStyleDict({
+            "background-color": (0, 0, 0),
+            "border-color": (0, 0, 0),
+            "border-radius": 7,
+            "color": (255, 255, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 18,
+        })
+        self.back.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 0, 0),
+            "color": (0, 0, 0),
+        }, "hover")
+        self.back.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 0, 0),
+            "color": (0, 0, 0),
+        }, "press")
+
+        self.next.setFixedSize(90, 44)
+        self.next.anim_press.speed = 7.3
+        self.next.setStyleDict({
+            "background-color": (0, 0, 0),
+            "border-color": (0, 0, 0),
+            "border-radius": 7,
+            "color": (255, 255, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 18,
+        })
+        self.next.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 0, 0),
+            "color": (0, 0, 0),
+        }, "hover")
+        self.next.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (0, 0, 0),
+            "color": (0, 0, 0),
+        }, "press")
 
         self.btnslyt = QHBoxLayout()
         self.conlyt.addLayout(self.btnslyt)
@@ -66,22 +118,23 @@ class Make_new_song(QDialog):
         self.segbg.setFixedSize(349, 36)
         self.segbg.setStyleDict({
             "background-color": (255, 255, 255),
-            "border-color": (0, 122, 255),
+            "border-color": (154, 84, 237),
             "border-radius": 7,
-            "color": (0, 122, 255),
+            "color": (154, 84, 237),
             "font-family": "SF Pro Display",
             "font-size": 15,
             "font-subpixel-aa": True
         })
         self.segbg.setStyleDict({
-            "color": (107, 178, 255),
+            "background-color": (154, 84, 237),
+            "color": (255, 255, 255),
         }, "hover")
         self.segbg.setStyleDict({
-            "background-color": (0, 122, 255),
+            "background-color": (154, 84, 237),
             "color": (255, 255, 255),
         }, "press")
         self.segbg.setStyleDict({
-            "background-color": (61, 154, 255),
+            "background-color": (154, 84, 237),
             "color": (255, 255, 255),
         }, "check-hover")
 
@@ -106,74 +159,43 @@ class Make_new_song(QDialog):
         self.ibtn.setFixedSize(140, 45)
         self.ibtn.anim_press.speed = 7.3
         self.ibtn.setStyleDict({
-            "background-color": (0, 122, 255),
-            "border-color": (0, 122, 255),
+            "background-color": (154, 84, 237),
+            "border-color": (154, 84, 237),
             "border-radius": 7,
             "color": (255, 255, 255),
             "font-family": "SF Pro Display",
             "font-size": 18,
         })
         self.ibtn.setStyleDict({
-            "background-color": (36, 141, 255),
-            "border-color": (36, 141, 255)
+            "background-color": (102, 71, 214),
+            "border-color": (102, 71, 214)
         }, "hover")
         self.ibtn.setStyleDict({
-            "background-color": (130, 190, 255),
-            "border-color": (130, 190, 255),
+            "background-color": (102, 71, 214),
+            "border-color": (102, 71, 214),
             "color": (255, 255, 255),
         }, "press")
-
-        """
-
-        s = Spinner(1.5, QColor(255, 255, 255))
-        s.animType = 0
-        s.speed = 2
-        self.ibtn2 = StyledButton("Spinner Icon", icon=s)
-        self.ibtn2.setFixedSize(140, 45)
-        self.ibtn2.anim_press.speed = 7.3
-        self.ibtn2.setStyleDict({
-            "background-color": (0, 122, 255),
-            "border-color": (0, 122, 255),
-            "border-radius": 7,
-            "color": (255, 255, 255),
-            "font-family": "SF Pro Display",
-            "font-size": 18,
-        })
-        self.ibtn2.setStyleDict({
-            "background-color": (36, 141, 255),
-            "border-color": (36, 141, 255)
-        }, "hover")
-        self.ibtn2.setStyleDict({
-            "background-color": (130, 190, 255),
-            "border-color": (130, 190, 255),
-            "color": (255, 255, 255),
-        }, "press")
-        
-        """
 
         self.ibtnlyt.addWidget(self.ibtn)
-        """
-        self.ibtnlyt.addWidget(self.ibtn2)
-        """
 
         self.ibtnl = StyledButton("Making New Songs", icon=Spinner(1.5, QColor(255, 255, 255)))
-        self.ibtnl.setMinimumSize(118, 38)
+        self.ibtnl.setFixedSize(200, 47)
         self.ibtnl.anim_press.speed = 7.3
         self.ibtnl.setStyleDict({
-            "background-color": (52, 199, 89),
-            "border-color": (2, 199, 89),
+            "background-color": (154, 84, 237),
+            "border-color": (154, 84, 237),
             "border-radius": 39,
             "color": (255, 255, 255),
             "font-family": "SF Pro Display",
             "font-size": 18,
         })
         self.ibtnl.setStyleDict({
-            "background-color": (47, 212, 119),
-            "border-color": (47, 212, 119)
+            "background-color": (102, 71, 214),
+            "border-color": (102, 71, 214)
         }, "hover")
         self.ibtnl.setStyleDict({
-            "background-color": (89, 227, 149),
-            "border-color": (89, 227, 149),
+            "background-color": (102, 71, 214),
+            "border-color": (102, 71, 214),
             "color": (255, 255, 255),
         }, "press")
         self.ibtnl.clicked.connect(infer_test)
@@ -189,3 +211,6 @@ class Make_new_song(QDialog):
         })
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
+
+    def switchpage(self, num):
+        self.switchWidget(num)

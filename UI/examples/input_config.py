@@ -5,6 +5,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../bridge"))
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../ML/utils"))
 
 import yaml
+sys.path.append("../pyqt5Custom")
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout, \
