@@ -19,17 +19,14 @@ from config_data_input import *
 from config_parser import Config
 
 class input_config(QDialog):
-    def __init__(self, mode, config, close_action, next_action):
+    def __init__(self, mode, config):
         def ok_action():
             self.table.setConfig(config)
-            next_action()
-
-        def cancel_action():
-            if close_action is not None:
-                close_action()
+            self.close()
 
         super(input_config, self).__init__()
-        self.table = input_config_table(mode, config)
+        self.config = config
+        self.table = input_config_table(mode)
 
         self.setWindowTitle("Configurations")
         self.setMinimumSize(600, 600)
@@ -96,16 +93,8 @@ class input_config(QDialog):
             "font-family": "SF Pro Display",
             "font-size": 15,
         })
-        ok_button.setStyleDict({
-            "background-color": (102, 71, 214),
-            "border-color": (102, 71, 214)
-        }, "hover")
-        ok_button.setStyleDict({
-            "background-color": (102, 71, 214),
-            "border-color": (102, 71, 214),
-            "color": (255, 255, 255),
-        }, "press")
-
+        ok_button.setStyleDict(button_style['hover'], "hover")
+        ok_button.setStyleDict(button_style['press'], "press")
         cancel_button.setStyleDict(button_style['normal'])
         cancel_button.setStyleDict(button_style['hover'], "hover")
         cancel_button.setStyleDict(button_style['press'], "press")
@@ -113,7 +102,7 @@ class input_config(QDialog):
         save_button.clicked.connect(lambda: {self.table.saveConfigFile(config)})
         load_button.clicked.connect(lambda: {self.table.loadConfigFile(config)})
         ok_button.clicked.connect(ok_action)
-        cancel_button.clicked.connect(cancel_action)
+        cancel_button.clicked.connect(self.close)
 
         button_layout.addStretch()
         button_layout.addWidget(save_button, alignment=Qt.AlignVCenter)
@@ -130,9 +119,13 @@ class input_config(QDialog):
         grid.addLayout(button_layout, 0, 1)
         grid.addLayout(tablehbox, 0, 0)
 
+    def load(self):
+        self.table.loadConfig(self.config)
+        self.show()
+
 
 class input_config_table(QTableWidget):
-    def __init__(self, mode, config):
+    def __init__(self, mode):
         super(input_config_table, self).__init__()
         #QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
         # app.setFont(QFont('data/BMDOHYEON_ttf.tff'))
@@ -162,29 +155,31 @@ class input_config_table(QTableWidget):
         self.table_item = []
         for item in data_type_info:
             if data_type_info[item]['type'] == 'Int':
-                self.table_item.append(IntInputForm(item, getattr(config, item)))
+                self.table_item.append(IntInputForm(item, 0))
             elif data_type_info[item]['type'] == 'Float':
-                self.table_item.append(FloatInputForm(item, getattr(config, item)))
+                self.table_item.append(FloatInputForm(item, 0.0))
             elif data_type_info[item]['type'] == 'IntList':
-                self.table_item.append(IntListInputForm(item, getattr(config, item)))
+                self.table_item.append(IntListInputForm(item, [0]))
             elif data_type_info[item]['type'] == 'FloatList':
-                self.table_item.append(FloatListInputForm(item, getattr(config, item)))
+                self.table_item.append(FloatListInputForm(item, [0.0]))
             elif data_type_info[item]['type'] == 'MultiSelection':
-                self.table_item.append(MultipleSelectionInputForm(item, getattr(config, item), data_type_info[item]['option']))
+                self.table_item.append(MultipleSelectionInputForm(item, data_type_info[item]['option'][0], data_type_info[item]['option']))
             elif data_type_info[item]['type'] == 'Bool':
-                self.table_item.append(BoolSelectionInputForm(item, getattr(config, item)))
+                self.table_item.append(BoolSelectionInputForm(item, False))
             else:
-                self.table_item.append(TextInputForm(item, getattr(config, item)))
+                self.table_item.append(TextInputForm(item, ''))
         self.setRowCount(len(self.table_item))
         self.setColumnCount(2)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         for i in range(len(self.table_item)):
             item = self.table_item[i]
-            self.setItem(i, 0, QTableWidgetItem(item.label))
+            labelItem = QTableWidgetItem(item.label)
+            labelItem.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+            self.setItem(i, 0, labelItem)
             self.setCellWidget(i, 1, item.widget)
 
     def loadConfigFile(self, config):
-        filename = QFileDialog.getOpenFileName(self, 'Load from File', os.path.join(os.path.dirname(__file__), "../bridge/config"), filter='*.yml')
+        filename = QFileDialog.getOpenFileName(self, 'Load from File', '', filter='*.yml')
         if filename is not None and filename[0]:
             config = Config(filename[0:-1])
             self.loadConfig(config)
@@ -217,7 +212,7 @@ if __name__ == "__main__":
     #application.setFont(font);
 
     config = Config(["../bridge/config/default_train.yml"])
-    mw = input_config('train', config, lambda: {print('close')})
+    mw = input_config('train', config)
     mw.show()
 
     sys.exit(app.exec_())

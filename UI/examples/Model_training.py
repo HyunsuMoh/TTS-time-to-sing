@@ -4,11 +4,16 @@
 #                                                     #
 #    This script is one of the pyqt5Custom examples   #
 
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../ML/utils"))
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QLabel
 from PyQt5.QtGui import QColor, QFontDatabase
 from pyqt5Custom import StyledButton
 from Searchfile import Searchfile
+from input_config import input_config
+from config_parser import Config
 
 
 class Model_training(QDialog):
@@ -17,7 +22,8 @@ class Model_training(QDialog):
         QFontDatabase.addApplicationFont("data/SFPro.ttf")
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
-        self.switchWidget = switchWidget
+        self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
+        self.configWidget = input_config('train', self.config)
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -39,8 +45,8 @@ class Model_training(QDialog):
         self.layout.addLayout(self.switchButton)
         self.next = StyledButton("Training Start")
         self.back = StyledButton("Back")
-        self.back.clicked.connect(lambda: self.switchpage(2))
-        self.next.clicked.connect(lambda: self.switchpage(2))
+        self.back.clicked.connect(lambda: switchWidget(0))
+        self.next.clicked.connect(self.configWidget.load)
         h = QLabel(
             "<span style='font-size:58px; font-family:SF Pro Display; color:rgb(28,28,30);'>Model Training</span>")
         ah = QLabel("<span style='font-size:26px; font-family:SF Pro Display; color:rgb(89,89,92);'>신규 모델 학습</span>")
@@ -200,9 +206,6 @@ class Model_training(QDialog):
         filename = ""
         filename = Searchfile.add_open(self, filename)
         labelName.setText(filename)
-
-    def switchpage(self, num):
-        self.switchWidget(num)
 
 
 

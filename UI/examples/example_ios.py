@@ -111,7 +111,7 @@ class MainWindow(QDialog):
             "color": (0, 0, 0),
         }, "press")
 
-        self.btn1.clicked.connect(lambda: switchWidget(3))
+        self.btn1.clicked.connect(lambda: switchWidget(2))
         self.btnlyt.addWidget(self.btn1, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
 
 def switchWidget(num):
@@ -130,18 +130,11 @@ if __name__ == "__main__":
     mw = MainWindow() # index [0]
     wg.addWidget(mw)
 
-    sp1 = select_path.Select_path(lambda: switchWidget(2)) # index [1]
-    wg.addWidget(sp1)
-
-    ml = Model_training.Model_training(switchWidget) # index [2]
+    ml = Model_training.Model_training(switchWidget) # index [1]
     wg.addWidget(ml)
 
-    sp2 = select_path.Select_path(lambda: switchWidget(4)) # index [3]
-    wg.addWidget(sp2)
-
-    ns = Make_new_song.Make_new_song(switchWidget) # index [4]
+    ns = Make_new_song.Make_new_song(switchWidget) # index [2]
     wg.addWidget(ns)
-
 
     wg.setFixedHeight(800)
     wg.setFixedWidth(1200)
