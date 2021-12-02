@@ -122,6 +122,7 @@ class Make_new_song(QDialog):
         self.btnlyt2.addSpacing(10)
 
         self.segbg = SegmentedButtonGroup(radio=True)
+
         self.segbg.setFixedSize(349, 36)
         self.segbg.setStyleDict({
             "background-color": (255, 255, 255),
@@ -148,7 +149,6 @@ class Make_new_song(QDialog):
         self.segbg.addButton("Default")
         self.segbg.addButton("Another option")
         #    self.segbg.addButton("Third")
-
         self.btnlyt2.addWidget(self.segbg)
 
         self.btnlyt2.addSpacing(10)

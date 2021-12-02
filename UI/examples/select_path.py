@@ -1,29 +1,19 @@
-#                 PyQt5 Custom Widgets                #
-#                GPL 3.0 - Kadir Aksoy                #
-#   https://github.com/kadir014/pyqt5-custom-widgets  #
-#                                                     #
-#    This script is one of the pyqt5Custom examples   #
-
-import os
 import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), "../../ML/utils"))
+
+sys.path.append("../pyqt5Custom")
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QLabel, QCheckBox
+from PyQt5.QtWidgets import QDialog, QHBoxLayout, QCheckBox, QVBoxLayout, QLabel, QApplication, QWidget
 from PyQt5.QtGui import QColor, QFontDatabase
 from pyqt5Custom import StyledButton
 from Searchfile import Searchfile
-from input_config import input_config
-from config_parser import Config
 
 
-class Model_training(QDialog):
-    def __init__(self, switchWidget):
-        super(Model_training, self).__init__()
+class Select_path(QDialog):
+    def __init__(self, next_action):
+        super(Select_path, self).__init__()
         QFontDatabase.addApplicationFont("data/SFPro.ttf")
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
-        self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
-        self.configWidget = input_config('train', self.config)
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -31,54 +21,38 @@ class Model_training(QDialog):
         self.setPalette(p)
 
         self.layout = QVBoxLayout()
-        self.layout.setAlignment(Qt.AlignTop | Qt.AlignVCenter)
+        self.layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         self.setLayout(self.layout)
-        self.layout.setContentsMargins(0, 0, 0, 0)
 
         self.conlyt = QVBoxLayout()
         self.conlyt.setSpacing(0)
-        # self.conlyt.setContentsMargins(0, 0, 0, 0)
-        self.conlyt.setContentsMargins(70, 15, 70, 60)
-        self.switchButton = QHBoxLayout()
-        self.switchButton.setContentsMargins(200, 0, 0, 30)
-        self.switchButton.setSpacing(200)
-        self.layout.addLayout(self.conlyt)
-        self.layout.addLayout(self.switchButton)
+        self.conlyt.setContentsMargins(0, 0, 70, 0)
         h = QLabel(
-            "<span style='font-size:58px; font-family:SF Pro Display; color:rgb(28,28,30);'>\U0001F5A5 Model Training</span>")
-        ah = QLabel("<span style='font-size:26px; font-family:SF Pro Display; color:rgb(89,89,92);'>File & Directory selection</span>")
-        h.setContentsMargins(100, 50, 0, 0)
-        ah.setContentsMargins(100, 30, 0, 0)
-
+            "<span style='font-size:50px; font-family:SF Pro Display; color:rgb(28,28,30);'>\U0001F5A5 Config setting</span>")
+        h.setContentsMargins(20, 0, 0, 50)
         self.conlyt.addWidget(h)
-        self.conlyt.addWidget(ah)
-        self.conlyt.addSpacing(30)
-        self.next = StyledButton("Config setting")
-        self.back = StyledButton("Back")
-        self.start = StyledButton("Training Start")
-        self.back.clicked.connect(lambda: switchWidget(0))
-        self.next.clicked.connect(self.configWidget.load)
-        #self.start.clicked.connect()
-
-        self.switchButton.addWidget(self.back)
-        self.switchButton.addWidget(self.next)
-        self.switchButton.addWidget(self.start)
+        self.layout.addLayout(self.conlyt)
+        self.layout.setContentsMargins(50, 50, 0, 0)
         self.list = QHBoxLayout()
-        self.list.setSpacing(15)
+        self.list.setSpacing(10)
         self.conlyt.addLayout(self.list)
+        self.next = StyledButton("OK")
+        self.conlyt.addWidget(self.next)
+        self.next.clicked.connect(lambda: next_action)
 
         self.findBtns = QVBoxLayout()
         self.texts = QVBoxLayout()
         self.labels = QVBoxLayout()
         self.findBtns.setSpacing(35)
         self.texts.setSpacing(33)
-        self.texts.setContentsMargins(50, 0, 30, 0)
+        self.texts.setContentsMargins(50,0,30,0)
         self.labels.setSpacing(40)
         self.findBtns.setAlignment(Qt.AlignVCenter)
         self.list.addLayout(self.texts)
         self.list.addLayout(self.findBtns)
         self.list.addLayout(self.labels)
+
 
         button_style = {
             'normal': {
@@ -87,7 +61,7 @@ class Model_training(QDialog):
                 "border-radius": 7,
                 "color": (255, 255, 255),
                 "font-family": "SF Pro Display",
-                "font-size": 21,
+                "font-size": 21
             },
             'hover': {
                 "background-color": (102, 71, 214),
@@ -96,48 +70,18 @@ class Model_training(QDialog):
             'press': {
                 "background-color": (102, 71, 214),
                 "border-color": (102, 71, 214),
+                "color": (255, 255, 255),
             }
         }
-
-        button_style2 = {
-            'normal': {
-                "background-color": (255, 255, 255),
-                "border-color": (154, 84, 237),
-                "border-radius": 7,
-                "color": (154, 84, 237),
-                "font-family": "SF Pro Display",
-                "font-size": 18,
-            },
-            'hover': {
-                "background-color": (154, 84, 237),
-                "border-color": (154, 84, 237),
-                "color": (255, 255, 255),
-                "font-size": 18,
-            },
-            'press': {
-                "background-color": (154, 84, 237),
-                "border-color": (154, 84, 237),
-                "color": (255, 255, 255),
-                "font-size": 18,
-            }
-        }
-
-        self.back.setFixedSize(100, 54)
-        self.back.anim_press.speed = 7.3
-        self.back.setStyleDict(button_style2['normal'], "default")
-        self.back.setStyleDict(button_style2['hover'], "hover")
-        self.back.setStyleDict(button_style2['press'], "press")
-
-        self.next.setFixedSize(120, 54)
-        self.next.anim_press.speed = 7.3
-        self.next.setStyleDict(button_style2['normal'], "default")
-        self.next.setStyleDict(button_style2['hover'], "hover")
-        self.next.setStyleDict(button_style2['press'], "press")
-
-        self.start.setFixedSize(120, 54)
-        self.start.setStyleDict(button_style2['normal'], "default")
-        self.start.setStyleDict(button_style2['hover'], "hover")
-        self.start.setStyleDict(button_style2['press'], "press")
+        self.next.setFixedSize(70,40)
+        self.next.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (154, 84, 237),
+            "color": (154, 84, 237),
+        })
+        self.next.setStyleDict(button_style['normal'], "hover")
+        self.next.setStyleDict(button_style['normal'], "press")
+        self.next.setContentsMargins(0,0,0,0)
 
         self.label1 = QLabel('', self)
         self.text1 = QLabel(
@@ -165,7 +109,7 @@ class Model_training(QDialog):
         self.btn2.clicked.connect(lambda: self.dirSearch(self.label2))
         self.btn2.setContentsMargins(0, 3, 0, 0)
         self.text2.setContentsMargins(20, 3, 0, 0)
-        self.label2.setContentsMargins(20, 5, 0, 0)
+        self.label2.setContentsMargins(20, 10, 0, 0)
 
         self.label3 = QLabel('', self)
         self.text3 = QLabel(
@@ -178,7 +122,7 @@ class Model_training(QDialog):
         self.btn3.setStyleDict(button_style['press'], "press")
         self.btn3.clicked.connect(lambda: self.dirSearch(self.label3))
         self.text3.setContentsMargins(20, 3, 0, 0)
-        self.label3.setContentsMargins(20, 5, 0, 0)
+        self.label3.setContentsMargins(20, 10, 0, 0)
 
         self.label4 = QLabel('', self)
         self.text4 = QLabel(
@@ -191,7 +135,7 @@ class Model_training(QDialog):
         self.btn4.setStyleDict(button_style['press'], "press")
         self.btn4.clicked.connect(lambda: self.dirSearch(self.label4))
         self.text4.setContentsMargins(20, 3, 0, 0)
-        self.label4.setContentsMargins(20, 5, 0, 0)
+        self.label4.setContentsMargins(20, 10, 0, 0)
 
         self.label5 = QLabel('', self)
         self.text5 = QLabel(
@@ -204,7 +148,7 @@ class Model_training(QDialog):
         self.btn5.setStyleDict(button_style['press'], "press")
         self.btn5.clicked.connect(lambda: self.dirSearch(self.label5))
         self.text5.setContentsMargins(20, 3, 0, 0)
-        self.label5.setContentsMargins(20, 5, 0, 0)
+        self.label5.setContentsMargins(20, 10, 0, 0)
 
         self.label6 = QLabel('', self)
         self.text6 = QLabel(
@@ -213,14 +157,13 @@ class Model_training(QDialog):
         self.checkbox6.setStyleSheet(
             "QCheckBox::indicator"
             "{"
-            "width :20px;"
-            "height :20px;"
+            "width :30px;"
+            "height :30px;"
             "}"
         )
-        self.checkbox6.setContentsMargins(0, 0, 0, 0)
+        self.checkbox6.setContentsMargins(0, 30, 0, 0)
         self.checkbox6.stateChanged.connect(self.changeCheckState)
         self.text6.setContentsMargins(20, 3, 0, 0)
-        self.label6.setContentsMargins(23, 5, 0, 0)
 
         self.label7 = QLabel('', self)
         self.text7 = QLabel(
@@ -233,7 +176,7 @@ class Model_training(QDialog):
         self.btn7.setStyleDict(button_style['press'], "press")
         self.btn7.clicked.connect(lambda: self.fileSearch(self.label7))
         self.text7.setContentsMargins(20, 3, 0, 0)
-        self.label7.setContentsMargins(20, 5, 0, 0)
+        self.label7.setContentsMargins(20, 10, 0, 0)
 
         self.label8 = QLabel('', self)
         self.text8 = QLabel(
@@ -246,7 +189,7 @@ class Model_training(QDialog):
         self.btn8.setStyleDict(button_style['press'], "press")
         self.btn8.clicked.connect(lambda: self.fileSearch(self.label8))
         self.text8.setContentsMargins(20, 3, 0, 0)
-        self.label8.setContentsMargins(20, 5, 0, 0)
+        self.label8.setContentsMargins(20, 10, 0, 0)
 
         self.texts.addWidget(self.text1)
         self.texts.addWidget(self.text2)
@@ -266,6 +209,7 @@ class Model_training(QDialog):
         self.findBtns.addWidget(self.btn7)
         self.findBtns.addWidget(self.btn8)
 
+
         self.labels.addWidget(self.label1)
         self.labels.addWidget(self.label2)
         self.labels.addWidget(self.label3)
@@ -274,6 +218,7 @@ class Model_training(QDialog):
         self.labels.addWidget(self.label6)
         self.labels.addWidget(self.label7)
         self.labels.addWidget(self.label8)
+
 
     def changeCheckState(self, state):
         if state == Qt.Checked:
@@ -292,4 +237,11 @@ class Model_training(QDialog):
         labelName.setText(filename)
 
 
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    mw = Select_path()
+    mw.show()
 
+    mw.setFixedHeight(800)
+    mw.setFixedWidth(1200)
+    sys.exit(app.exec_())
