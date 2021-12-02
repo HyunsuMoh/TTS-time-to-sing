@@ -17,10 +17,13 @@ from PyQt5.QtGui import QColor, QFontDatabase, QFont
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 
+from Searchfile import Searchfile
 from inference_ui import infer_test
+
 
 class Make_new_song(QDialog):
     def __init__(self, switchWidget):
+
         super(Make_new_song, self).__init__()
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
         self.setMinimumSize(150, 37)
@@ -50,14 +53,12 @@ class Make_new_song(QDialog):
         self.next = StyledButton("Next")
         self.back = StyledButton("Back")
 
-        self.lyrics = QLabel('', self)
-        self.sheetmusic = QLabel('', self)
-
         self.back.clicked.connect(lambda: self.switchpage(0))
         self.next.clicked.connect(lambda: self.switchpage(3))
         #self.back.clicked.connect(self.switchingPage)
         #self.back.clicked.connect(lambda: self.wg.setCurrentIndex(0))
         #self.next.clicked.connect(lambda: self.wg.setCurrentIndex(3))
+
         h = QLabel(
             "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>Making new songs</span>")
         ah = QLabel(
@@ -113,16 +114,26 @@ class Make_new_song(QDialog):
             "color": (0, 0, 0),
         }, "press")
 
+        self.label1 = QLabel('label1', self)
+        self.label2 = QLabel('lable2', self)
+        self.label3 = QLabel('label3', self)
+
         self.btnslyt = QHBoxLayout()
         self.conlyt.addLayout(self.btnslyt)
         self.btnlyt2 = QVBoxLayout()
         self.btnlyt2.setSpacing(16)
         self.btnslyt.addLayout(self.btnlyt2)
 
+        self.labeloc1 = QVBoxLayout()
+        self.labeloc1.setSpacing(30)
+        self.labeloc1.setContentsMargins(100, 30, 0, 30)
+
+
         self.btnlyt2.setAlignment(Qt.AlignTop)
         self.btnlyt2.addWidget(QLabel(
             "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>Choosing Model</span>"))
         self.btnlyt2.addSpacing(10)
+
 
         self.segbg = SegmentedButtonGroup(radio=True)
         self.segbg.setFixedSize(349, 36)
@@ -148,11 +159,16 @@ class Make_new_song(QDialog):
             "color": (255, 255, 255),
         }, "check-hover")
 
-        self.segbg.addButton("Default")
+        self.labeloc1.addWidget(self.label1, alignment=Qt.AlignHCenter | Qt.AlignBottom)
 
+        self.segbg.addButton("Default")
+        #self.segbg.addButton(self)
         self.segbg.addButton("Another option")
         #    self.segbg.addButton("Third")
 
+        #self.segbg.clicked.connect(lambda: self.fileSearch(self.label1))
+
+        #self.segbg[0].clicked.connect(lambda : self.fileSearch(self.label1))
         self.btnlyt2.addWidget(self.segbg)
 
         self.btnlyt2.addSpacing(10)
@@ -162,25 +178,28 @@ class Make_new_song(QDialog):
 
         self.btnlyt2.addSpacing(10)
 
-        """
+        self.ibtnlyt = QHBoxLayout()
         self.btnlyt2.addWidget(QLabel(
             "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>SheetMusic</span>"))
         self.btnlyt2.addSpacing(10)
-        """
-
-        self.ibtnlyt = QVBoxLayout()
-        self.btnlyt2.addWidget(QLabel(
-            "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>SheetMusic</span>"))
-        self.btnlyt2.addSpacing(10)
-
         self.btnlyt2.addLayout(self.ibtnlyt)
 
+        self.labeloc2 = QHBoxLayout()
+        self.labeloc2.setSpacing(100)
+        self.labeloc2.setContentsMargins(100, 30, 0, 30)
 
+        self.labeloc2.addWidget(self.label2, alignment=Qt.AlignHCenter | Qt.AlignBottom)
         self.ibtn = StyledButton("Find", icon="data/TTS.png")
+
         self.ibtn.setFixedSize(140, 45)
         self.ibtn.anim_press.speed = 7.3
 
-        self.ibtn.clicked.connect(self.add_open)
+        #self.layout.addWidget(self.label2)
+        #self.layout.addWidget(self.ibtn)
+
+
+        #self.ibtn.clicked.connect(self.add_open)
+        self.ibtn.clicked.connect(lambda: self.fileSearch(self.label2))
 
         self.ibtn.setStyleDict({
             "background-color": (154, 84, 237),
@@ -205,15 +224,14 @@ class Make_new_song(QDialog):
 
         self.ibtnlyt.addWidget(self.ibtn)
 
-
-
-
+        self.labeloc2.addWidget(self.label3, alignment=Qt.AlignCenter | Qt.AlignCenter)
         self.ibtn2 = StyledButton("Find", icon="data/TTS.png")
         self.ibtn2.setFixedSize(140, 45)
         self.ibtn2.anim_press.speed = 7.3
 
         #self.ibtn2.clicked.connect(lambda: {self.add_open})
-        self.ibtn2.clicked.connect(self.add_open)
+        #self.ibtn2.clicked.connect(self.add_open)
+        self.ibtn2.clicked.connect(lambda: self.fileSearch(self.label3))
 
         self.ibtn2.setStyleDict({
             "background-color": (154, 84, 237),
@@ -273,10 +291,10 @@ class Make_new_song(QDialog):
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
 
-    def add_open(self, filename):
-        FileOpen = QFileDialog.getOpenFileName(self, 'Open file', './')
-        filename = filename + FileOpen[0]
-        return filename
+    def fileSearch(self, labelName):
+        filename = ""
+        filename = Searchfile.add_open(self, filename)
+        labelName.setText(filename)
 
     def switchpage(self, num):
         self.switchWidget(num)
