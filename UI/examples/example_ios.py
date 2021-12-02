@@ -15,7 +15,7 @@ from PyQt5.QtGui import QColor, QFontDatabase, QIcon
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 
-import Make_new_song, Model_training, input_config
+import Make_new_song, Model_training, input_config, select_path
 from config_data_input import *
 from config_parser import Config
 
@@ -86,7 +86,7 @@ class MainWindow(QDialog):
             "border-color": (0, 0, 0),
             "color": (0, 0, 0),
         }, "press")
-        self.btn2.clicked.connect(lambda: switchWidget(2)) #
+        self.btn2.clicked.connect(lambda: switchWidget(1)) #
         self.btnlyt.addWidget(self.btn2, alignment=Qt.AlignBottom | Qt.AlignHCenter)
 
         self.btn1 = StyledButton("Generate Song")
@@ -111,7 +111,7 @@ class MainWindow(QDialog):
             "color": (0, 0, 0),
         }, "press")
 
-        self.btn1.clicked.connect(lambda: switchWidget(2))
+        self.btn1.clicked.connect(lambda: switchWidget(3))
         self.btnlyt.addWidget(self.btn1, alignment=Qt.AlignBaseline | Qt.AlignHCenter)
 
 def switchWidget(num):
@@ -130,19 +130,17 @@ if __name__ == "__main__":
     mw = MainWindow() # index [0]
     wg.addWidget(mw)
 
-    ml = Model_training.Model_training(switchWidget) # index [1]
+    sp1 = select_path.Select_path(lambda: switchWidget(2)) # index [1]
+    wg.addWidget(sp1)
+
+    ml = Model_training.Model_training(switchWidget) # index [2]
     wg.addWidget(ml)
 
-    config = Config(["../bridge/config/default_train.yml"])
-    ic1 = input_config.input_config('train', config, lambda: switchWidget(0), lambda: switchWidget(1))  # index [2](for train)
-    wg.addWidget(ic1)
+    sp2 = select_path.Select_path(lambda: switchWidget(4)) # index [3]
+    wg.addWidget(sp2)
 
-    ns = Make_new_song.Make_new_song(switchWidget) # index [3]
+    ns = Make_new_song.Make_new_song(switchWidget) # index [4]
     wg.addWidget(ns)
-
-    config = Config(["../bridge/config/default_train.yml"])
-    ic2 = input_config.input_config('train', config, lambda: switchWidget(0), lambda: switchWidget(3))  # index [4](for infer)
-    wg.addWidget(ic2)
 
 
     wg.setFixedHeight(800)

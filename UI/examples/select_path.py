@@ -9,7 +9,7 @@ from Searchfile import Searchfile
 
 
 class Select_path(QDialog):
-    def __init__(self):
+    def __init__(self, next_action):
         super(Select_path, self).__init__()
         QFontDatabase.addApplicationFont("data/SFPro.ttf")
         self.setMinimumSize(150, 37)
@@ -24,30 +24,35 @@ class Select_path(QDialog):
         self.layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         self.setLayout(self.layout)
-        self.layout.setContentsMargins(0, 0, 0, 0)
 
         self.conlyt = QVBoxLayout()
         self.conlyt.setSpacing(0)
-        self.conlyt.setContentsMargins(70, 0, 70, 0)
+        self.conlyt.setContentsMargins(0, 0, 70, 0)
         h = QLabel(
-            "<span style='font-size:50px; font-family:SF Pro Display; color:rgb(28,28,30);'>Config setting</span>")
-        h.setContentsMargins(30, 0, 0, 50)
+            "<span style='font-size:50px; font-family:SF Pro Display; color:rgb(28,28,30);'>\U0001F5A5 Config setting</span>")
+        h.setContentsMargins(20, 0, 0, 50)
         self.conlyt.addWidget(h)
         self.layout.addLayout(self.conlyt)
-        self.layout.setContentsMargins(0, 100, 0, 0)
+        self.layout.setContentsMargins(50, 50, 0, 0)
         self.list = QHBoxLayout()
         self.list.setSpacing(10)
         self.conlyt.addLayout(self.list)
+        self.next = StyledButton("OK")
+        self.conlyt.addWidget(self.next)
+        self.next.clicked.connect(lambda: next_action)
+
         self.findBtns = QVBoxLayout()
         self.texts = QVBoxLayout()
         self.labels = QVBoxLayout()
         self.findBtns.setSpacing(35)
         self.texts.setSpacing(33)
+        self.texts.setContentsMargins(50,0,30,0)
         self.labels.setSpacing(40)
         self.findBtns.setAlignment(Qt.AlignVCenter)
         self.list.addLayout(self.texts)
         self.list.addLayout(self.findBtns)
         self.list.addLayout(self.labels)
+
 
         button_style = {
             'normal': {
@@ -68,6 +73,15 @@ class Select_path(QDialog):
                 "color": (255, 255, 255),
             }
         }
+        self.next.setFixedSize(70,40)
+        self.next.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (154, 84, 237),
+            "color": (154, 84, 237),
+        })
+        self.next.setStyleDict(button_style['normal'], "hover")
+        self.next.setStyleDict(button_style['normal'], "press")
+        self.next.setContentsMargins(0,0,0,0)
 
         self.label1 = QLabel('', self)
         self.text1 = QLabel(
@@ -195,6 +209,7 @@ class Select_path(QDialog):
         self.findBtns.addWidget(self.btn7)
         self.findBtns.addWidget(self.btn8)
 
+
         self.labels.addWidget(self.label1)
         self.labels.addWidget(self.label2)
         self.labels.addWidget(self.label3)
@@ -203,6 +218,7 @@ class Select_path(QDialog):
         self.labels.addWidget(self.label6)
         self.labels.addWidget(self.label7)
         self.labels.addWidget(self.label8)
+
 
     def changeCheckState(self, state):
         if state == Qt.Checked:
