@@ -41,22 +41,30 @@ class MainWindow(QDialog):
         self.conlyt.setSpacing(0)
         self.conlyt.setContentsMargins(70, 15, 70, 0)
         self.layout.addLayout(self.conlyt)
-        h = QLabel("<span style='font-size:60px; font-family:SF Pro Display; color:rgb(28,28,30);'>TTS</span>")
+        self.ibtnlyt = ImageBox(source="data/tts.png")
+        self.layout.addWidget(self.ibtnlyt, alignment=Qt.AlignHCenter | Qt.AlignCenter)
+
+        h = QLabel("<span style='font-size:60px; font-family:SF Pro Display; color:rgb(28,28,30);'>\U0001F5A5 Time To Sing </span>")
+
         ah = QLabel(
-            "<span style='font-size:30px; font-family:SF Pro Display; color:rgb(89,89,92);'>Time to Sing</span>")
-        h.setContentsMargins(100, 0, 0, 0)
-        ah.setContentsMargins(103, 0, 0, 0)
+            "<span style='font-size:25px; font-family:SF Pro Display; color:rgb(89,89,92);'>노래하는 TTS program</span>")
+
+
+        h.setContentsMargins(140, 0, 0, 0)
+        ah.setContentsMargins(240, 0, 0, 0)
         self.conlyt.addWidget(h)
         self.conlyt.addWidget(ah)
         self.conlyt.addSpacing(90)
 
+        """
         self.ibtnlyt = ImageBox(source="data/tts.png")
         self.layout.addWidget(self.ibtnlyt, alignment=Qt.AlignTop | Qt.AlignTop)
+        """
 
         self.btnslyt = QHBoxLayout()
         self.conlyt.addLayout(self.btnslyt)
 
-        self.btnlyt = QVBoxLayout()
+        self.btnlyt = QHBoxLayout()
         self.btnlyt.setSpacing(110)
 
         self.btnslyt.addLayout(self.btnlyt)

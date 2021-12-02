@@ -11,21 +11,21 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "../bridge"))
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout
+from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout,QFileDialog, QLabel
 from PyQt5.QtGui import QColor, QFontDatabase, QFont
 
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
+
 from inference_ui import infer_test
 
 class Make_new_song(QDialog):
-    def __init__(self):
+    def __init__(self, switchWidget):
         super(Make_new_song, self).__init__()
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
-        # app.setFont(QFont('data/BMDOHYEON_ttf.tff'))
-
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
+        self.switchWidget = switchWidget
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -34,18 +34,25 @@ class Make_new_song(QDialog):
 
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignTop)
+
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
         self.conlyt = QVBoxLayout()
         self.conlyt.setSpacing(0)
         self.conlyt.setContentsMargins(70, 15, 70, 70)
+
         self.switchButton = QHBoxLayout()
         self.switchButton.setSpacing(50)
         self.layout.addLayout(self.conlyt)
         self.layout.addLayout(self.switchButton)
+
         self.next = StyledButton("Next")
         self.back = StyledButton("Back")
+
+        self.lyrics = QLabel('', self)
+        self.sheetmusic = QLabel('', self)
+
         self.back.clicked.connect(lambda: self.switchpage(0))
         self.next.clicked.connect(lambda: self.switchpage(3))
         #self.back.clicked.connect(self.switchingPage)
@@ -58,6 +65,7 @@ class Make_new_song(QDialog):
 
         self.conlyt.addWidget(h)
         self.conlyt.addWidget(ah)
+
         self.switchButton.addWidget(self.back)
         self.switchButton.addWidget(self.next)
         self.conlyt.addSpacing(90)
@@ -72,6 +80,7 @@ class Make_new_song(QDialog):
             "font-family": "SF Pro Display",
             "font-size": 18,
         })
+
         self.back.setStyleDict({
             "background-color": (255, 255, 255),
             "border-color": (0, 0, 0),
@@ -140,6 +149,7 @@ class Make_new_song(QDialog):
         }, "check-hover")
 
         self.segbg.addButton("Default")
+
         self.segbg.addButton("Another option")
         #    self.segbg.addButton("Third")
 
@@ -148,17 +158,30 @@ class Make_new_song(QDialog):
         self.btnlyt2.addSpacing(10)
         self.btnlyt2.addWidget(QLabel(
             "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>Lyrics</span>"))
+
+
         self.btnlyt2.addSpacing(10)
+
+        """
+        self.btnlyt2.addWidget(QLabel(
+            "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>SheetMusic</span>"))
+        self.btnlyt2.addSpacing(10)
+        """
+
+        self.ibtnlyt = QVBoxLayout()
         self.btnlyt2.addWidget(QLabel(
             "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>SheetMusic</span>"))
         self.btnlyt2.addSpacing(10)
 
-        self.ibtnlyt = QHBoxLayout()
         self.btnlyt2.addLayout(self.ibtnlyt)
+
 
         self.ibtn = StyledButton("Find", icon="data/TTS.png")
         self.ibtn.setFixedSize(140, 45)
         self.ibtn.anim_press.speed = 7.3
+
+        self.ibtn.clicked.connect(self.add_open)
+
         self.ibtn.setStyleDict({
             "background-color": (154, 84, 237),
             "border-color": (154, 84, 237),
@@ -167,17 +190,52 @@ class Make_new_song(QDialog):
             "font-family": "SF Pro Display",
             "font-size": 18,
         })
+
         self.ibtn.setStyleDict({
             "background-color": (102, 71, 214),
             "border-color": (102, 71, 214)
         }, "hover")
+
         self.ibtn.setStyleDict({
             "background-color": (102, 71, 214),
             "border-color": (102, 71, 214),
             "color": (255, 255, 255),
         }, "press")
 
+
         self.ibtnlyt.addWidget(self.ibtn)
+
+
+
+
+        self.ibtn2 = StyledButton("Find", icon="data/TTS.png")
+        self.ibtn2.setFixedSize(140, 45)
+        self.ibtn2.anim_press.speed = 7.3
+
+        #self.ibtn2.clicked.connect(lambda: {self.add_open})
+        self.ibtn2.clicked.connect(self.add_open)
+
+        self.ibtn2.setStyleDict({
+            "background-color": (154, 84, 237),
+            "border-color": (154, 84, 237),
+            "border-radius": 7,
+            "color": (255, 255, 255),
+            "font-family": "SF Pro Display",
+            "font-size": 18,
+        })
+
+        self.ibtn2.setStyleDict({
+            "background-color": (102, 71, 214),
+            "border-color": (102, 71, 214)
+        }, "hover")
+        self.ibtn2.setStyleDict({
+            "background-color": (102, 71, 214),
+            "border-color": (102, 71, 214),
+            "color": (255, 255, 255),
+        }, "press")
+
+
+        self.ibtnlyt.addWidget(self.ibtn2)
 
         self.ibtnl = StyledButton("Making New Songs", icon=Spinner(1.5, QColor(255, 255, 255)))
         self.ibtnl.setFixedSize(200, 47)
@@ -190,6 +248,7 @@ class Make_new_song(QDialog):
             "font-family": "SF Pro Display",
             "font-size": 18,
         })
+
         self.ibtnl.setStyleDict({
             "background-color": (102, 71, 214),
             "border-color": (102, 71, 214)
@@ -199,6 +258,7 @@ class Make_new_song(QDialog):
             "border-color": (102, 71, 214),
             "color": (255, 255, 255),
         }, "press")
+
         self.ibtnl.clicked.connect(infer_test)
 
         self.btnlyt2.addSpacing(15)
@@ -212,3 +272,11 @@ class Make_new_song(QDialog):
         })
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
+
+    def add_open(self, filename):
+        FileOpen = QFileDialog.getOpenFileName(self, 'Open file', './')
+        filename = filename + FileOpen[0]
+        return filename
+
+    def switchpage(self, num):
+        self.switchWidget(num)
