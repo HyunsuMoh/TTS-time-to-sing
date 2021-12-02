@@ -59,7 +59,8 @@ def preprocess(config, txt_file, mid_file, wav_file='', set_type='infer'):
         data_list.append(data)
 
     if not infer:
-        basename = os.path.basename(filename)
+        #basename = os.path.basename(filename)
+        basename = "folder"
         savename = os.path.join(config.feature_path, set_type, basename + '.pt')
         torch.save(data_list, savename)
         print(basename)
@@ -91,8 +92,9 @@ def start_preprocess(config):
     else:
         for set_type in set_list:
             for f in file_list[set_type]:
-                f_txt, f_mid, f_wav = files4train(f)
-                preprocess(config=config, file_txt=f_txt, file_mid=f_mid, file_wav=f_wav, set_type=set_type)
+                f_txt, f_mid, f_wav = files4train(f, config)
+                # preprocess(config=config, file_txt=f_txt, file_mid=f_mid, file_wav=f_wav, set_type=set_type)
+                preprocess(config=config, txt_file=f_txt, mid_file=f_mid, wav_file=f_wav, set_type=set_type)
 
     # Creating Files Indices
     for set_type in set_list:
