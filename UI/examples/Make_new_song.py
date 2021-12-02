@@ -23,21 +23,20 @@ from inference_ui import infer_test
 
 class Make_new_song(QDialog):
     def __init__(self, switchWidget):
-
         super(Make_new_song, self).__init__()
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
+
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
         self.switchWidget = switchWidget
-
         self.setAutoFillBackground(True)
+
         p = self.palette()
         p.setColor(self.backgroundRole(), QColor(255, 255, 255))
-        self.setPalette(p)
 
+        self.setPalette(p)
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignTop)
-
         self.setLayout(self.layout)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
@@ -47,6 +46,7 @@ class Make_new_song(QDialog):
 
         self.switchButton = QHBoxLayout()
         self.switchButton.setSpacing(50)
+
         self.layout.addLayout(self.conlyt)
         self.layout.addLayout(self.switchButton)
 
@@ -55,12 +55,10 @@ class Make_new_song(QDialog):
 
         self.back.clicked.connect(lambda: self.switchpage(0))
         self.next.clicked.connect(lambda: self.switchpage(3))
-        #self.back.clicked.connect(self.switchingPage)
-        #self.back.clicked.connect(lambda: self.wg.setCurrentIndex(0))
-        #self.next.clicked.connect(lambda: self.wg.setCurrentIndex(3))
 
         h = QLabel(
             "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>Making new songs</span>")
+
         ah = QLabel(
             "<span style='font-size:24px; font-family:SF Pro Display; color:rgb(89,89,92);'>기존 모델들을 바탕으로 새로운 노래 생성</span>")
 
@@ -69,6 +67,7 @@ class Make_new_song(QDialog):
 
         self.switchButton.addWidget(self.back)
         self.switchButton.addWidget(self.next)
+
         self.conlyt.addSpacing(90)
 
         self.back.setFixedSize(90, 44)
@@ -87,6 +86,7 @@ class Make_new_song(QDialog):
             "border-color": (0, 0, 0),
             "color": (0, 0, 0),
         }, "hover")
+
         self.back.setStyleDict({
             "background-color": (255, 255, 255),
             "border-color": (0, 0, 0),
@@ -118,7 +118,7 @@ class Make_new_song(QDialog):
         self.label2 = QLabel('lable2', self)
         self.label3 = QLabel('label3', self)
 
-        self.btnslyt = QHBoxLayout()
+        self.btnslyt = QVBoxLayout()
         self.conlyt.addLayout(self.btnslyt)
         self.btnlyt2 = QVBoxLayout()
         self.btnlyt2.setSpacing(16)
@@ -134,7 +134,7 @@ class Make_new_song(QDialog):
             "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>Choosing Model</span>"))
         self.btnlyt2.addSpacing(10)
 
-
+        """
         self.segbg = SegmentedButtonGroup(radio=True)
         self.segbg.setFixedSize(349, 36)
         self.segbg.setStyleDict({
@@ -170,12 +170,11 @@ class Make_new_song(QDialog):
 
         #self.segbg[0].clicked.connect(lambda : self.fileSearch(self.label1))
         self.btnlyt2.addWidget(self.segbg)
+        """
 
         self.btnlyt2.addSpacing(10)
         self.btnlyt2.addWidget(QLabel(
             "<span style='font-size:17px; font-family:SF Pro Display; color:rgb(99,99,102);'>Lyrics</span>"))
-
-
         self.btnlyt2.addSpacing(10)
 
         self.ibtnlyt = QHBoxLayout()
