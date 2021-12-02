@@ -59,8 +59,8 @@ def preprocess(config, txt_file, mid_file, wav_file='', set_type='infer'):
         data_list.append(data)
 
     if not infer:
-        #basename = os.path.basename(filename)
-        basename = "folder"
+        tmp = os.path.basename(txt_file)
+        basename = os.path.splitext(tmp)[0]
         savename = os.path.join(config.feature_path, set_type, basename + '.pt')
         torch.save(data_list, savename)
         print(basename)
