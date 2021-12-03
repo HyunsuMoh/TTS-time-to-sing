@@ -37,9 +37,6 @@ class Make_new_song(QDialog):
                               os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
         self.configWidget = input_config('infer', self.config)
 
-        self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
-        self.configWidget = input_config('infer', self.config)
-
         self.setAutoFillBackground(True)
         p = self.palette()
         p.setColor(self.backgroundRole(), QColor(255, 255, 255))
