@@ -29,8 +29,10 @@ class input_config(QDialog):
         self.table = input_config_table(mode)
 
         self.setWindowTitle("Configurations")
+
         self.setMinimumSize(600, 600)
         button_layout = QtWidgets.QVBoxLayout()
+
         button_style = {
             'normal': {
                 "background-color": (255, 255, 255),
@@ -66,6 +68,7 @@ class input_config(QDialog):
         load_button.setStyleDict(button_style['normal'])
         load_button.setStyleDict(button_style['hover'], "hover")
         load_button.setStyleDict(button_style['press'], "press")
+
         ok_button.setStyleDict({
             'normal': {
                 "background-color": (154, 84, 237),
@@ -93,6 +96,7 @@ class input_config(QDialog):
             "font-family": "SF Pro Display",
             "font-size": 15,
         })
+
         ok_button.setStyleDict(button_style['hover'], "hover")
         ok_button.setStyleDict(button_style['press'], "press")
         cancel_button.setStyleDict(button_style['normal'])
@@ -203,10 +207,10 @@ class input_config_table(QTableWidget):
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
-
     fontDB = QFontDatabase()
     fontDB.addApplicationFont('BMDOHYEON_ttf.ttf')
     app.setFont(QFont('BMDOHYEON_ttf'))
+
     #QFont font;
     #font.setFamily(QString("맑은 고딕"));
     #application.setFont(font);
@@ -216,5 +220,3 @@ if __name__ == "__main__":
     mw.show()
 
     sys.exit(app.exec_())
-
-
