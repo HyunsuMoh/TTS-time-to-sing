@@ -38,7 +38,7 @@ class Make_new_song(QDialog):
         self.configWidget = input_config('infer', self.config)
 
         self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
-        self.configWidget = input_config('train', self.config)
+        self.configWidget = input_config('infer', self.config)
 
         self.setAutoFillBackground(True)
         p = self.palette()
