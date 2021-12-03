@@ -74,7 +74,7 @@ class Make_new_song(QDialog):
         #self.start = StyledButton("Training Start")
         self.back.clicked.connect(lambda: switchWidget(0))
         #self.ibtnl.clicked.connect(infer_test)
-        #self.next.clicked.connect(self.configWidget.load)
+        self.next.clicked.connect(self.configWidget.load)
         #self.start.clicked.connect(train_test)
 
         self.switchButton.addWidget(self.back)
@@ -277,14 +277,9 @@ class Make_new_song(QDialog):
         filename = Searchfile.add_open(self, filename)
         labelName.setText(filename)
 
-    """
-    
-
     def default_checkpoint(self, labelName):
         config.checkpoint_file = '..\\..\\..\\pretrained_sample.pt'
         labelName.setText(config.checkpoint_file)
-
-    
 
     def CheckPointSearch(self, labelName):
         filename = ""
