@@ -52,6 +52,7 @@ class IntListInputForm(TextInputForm):
         datastr = self.widget.text()
         strlist = datastr.strip('[]').split(',')
         self.value = [int(str.strip()) for str in strlist]
+        return self.value
 
 
 class FloatListInputForm(TextInputForm):
@@ -59,6 +60,7 @@ class FloatListInputForm(TextInputForm):
         datastr = self.widget.text()
         strlist = datastr.strip('[]').split(',')
         self.value = [float(str.strip()) for str in strlist]
+        return self.value
 
 
 class MultipleSelectionInputForm(InputForm):

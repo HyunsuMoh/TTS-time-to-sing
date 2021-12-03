@@ -63,7 +63,7 @@ class Searchfile(QFileDialog):
 
         self.label2.setText(FileSave[0])
 
-    def find_folder(self):
+    def find_folder(self, filename):
         FileFolder = QFileDialog.getExistingDirectory(self, 'Find Folder')
-
-        self.label3.setText(FileFolder)
+        filename = filename + FileFolder
+        return filename

@@ -15,7 +15,7 @@ from PyQt5.QtGui import QColor, QFontDatabase, QIcon
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 
-import Make_new_song, Model_training, input_config
+import Make_new_song, Model_training
 from config_data_input import *
 from config_parser import Config
 
@@ -94,7 +94,7 @@ class MainWindow(QDialog):
             "border-color": (0, 0, 0),
             "color": (0, 0, 0),
         }, "press")
-        self.btn2.clicked.connect(lambda: switchWidget(1))
+        self.btn2.clicked.connect(lambda: switchWidget(1)) #
         self.btnlyt.addWidget(self.btn2, alignment=Qt.AlignBottom | Qt.AlignHCenter)
 
         self.btn1 = StyledButton("Generate Song")
@@ -143,10 +143,6 @@ if __name__ == "__main__":
 
     ns = Make_new_song.Make_new_song(switchWidget) # index [2]
     wg.addWidget(ns)
-
-    config = Config(["../bridge/config/default_train.yml"])
-    ic = input_config.input_config('train', config, lambda: {print('close')}) # index [3]
-    wg.addWidget(ic)
 
     wg.setFixedHeight(800)
     wg.setFixedWidth(1200)

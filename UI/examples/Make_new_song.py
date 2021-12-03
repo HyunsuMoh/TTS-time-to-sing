@@ -9,6 +9,9 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../pyqt5Custom"))
 sys.path.append(os.path.join(os.path.dirname(__file__), "../bridge"))
 
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../ML/utils"))
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout,QFileDialog, QLabel
@@ -17,6 +20,8 @@ from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, D
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 from Searchfile import Searchfile
 from inference_ui import infer_test
+from input_config import input_config
+from config_parser import Config
 
 from input_config import input_config
 from config_parser import Config
@@ -28,7 +33,9 @@ class Make_new_song(QDialog):
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
-        self.switchWidget = switchWidget
+        self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_infer.yml"),
+                              os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
+        self.configWidget = input_config('infer', self.config)
 
         self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
         self.configWidget = input_config('train', self.config)
@@ -284,8 +291,3 @@ class Make_new_song(QDialog):
         #filename = Searchfile.add_open(self, filename)
         filename = QFileDialog.getOpenFileName(self,'Load Checkpoint', '..\\..\\..\\', filter = '*.pt')
         labelName.setText(filename)
-        
-    """
-
-    def switchpage(self, num):
-        self.switchWidget(num)
