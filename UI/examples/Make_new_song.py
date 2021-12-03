@@ -58,7 +58,7 @@ class Make_new_song(QDialog):
         #self.back.clicked.connect(lambda: self.wg.setCurrentIndex(0))
         #self.next.clicked.connect(lambda: self.wg.setCurrentIndex(3))
         h = QLabel(
-            "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>Making new songs</span>")
+            "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>\U0001F399 Making new songs</span>")
         ah = QLabel(
             "<span style='font-size:24px; font-family:SF Pro Display; color:rgb(89,89,92);'>기존 모델들을 바탕으로 새로운 노래 생성</span>")
 

@@ -15,7 +15,7 @@ from PyQt5.QtGui import QColor, QFontDatabase, QIcon
 from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
 
-import Make_new_song, Model_training, input_config, select_path
+import Make_new_song, Model_training
 from config_data_input import *
 from config_parser import Config
 

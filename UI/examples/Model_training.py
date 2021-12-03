@@ -7,13 +7,15 @@
 import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../ML/utils"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../bridge"))
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QLabel, QCheckBox
 from PyQt5.QtGui import QColor, QFontDatabase
-from pyqt5Custom import StyledButton
+from pyqt5Custom import StyledButton, Spinner
 from Searchfile import Searchfile
 from input_config import input_config
 from config_parser import Config
+from training_ui import train_test
 
 
 class Model_training(QDialog):
@@ -47,19 +49,21 @@ class Model_training(QDialog):
         self.layout.addLayout(self.switchButton)
         h = QLabel(
             "<span style='font-size:58px; font-family:SF Pro Display; color:rgb(28,28,30);'>\U0001F5A5 Model Training</span>")
-        ah = QLabel("<span style='font-size:26px; font-family:SF Pro Display; color:rgb(89,89,92);'>File & Directory selection</span>")
+        ah = QLabel(
+            "<span style='font-size:26px; font-family:SF Pro Display; color:rgb(89,89,92);'>\U0001F5C2 File & Directory selection</span>")
         h.setContentsMargins(100, 50, 0, 0)
-        ah.setContentsMargins(100, 30, 0, 0)
+        ah.setContentsMargins(110, 30, 0, 0)
 
         self.conlyt.addWidget(h)
         self.conlyt.addWidget(ah)
         self.conlyt.addSpacing(30)
         self.next = StyledButton("Config setting")
         self.back = StyledButton("Back")
-        self.start = StyledButton("Training Start")
+        self.start = StyledButton("Training Start", icon=Spinner(1.5, QColor(0, 255, 255)))
         self.back.clicked.connect(lambda: switchWidget(0))
         self.next.clicked.connect(self.configWidget.load)
-        #self.start.clicked.connect()
+        self.start.clicked.connect(train_test)
+        # self.start.clicked.connect()
 
         self.switchButton.addWidget(self.back)
         self.switchButton.addWidget(self.next)
@@ -72,7 +76,7 @@ class Model_training(QDialog):
         self.texts = QVBoxLayout()
         self.labels = QVBoxLayout()
         self.findBtns.setSpacing(35)
-        self.texts.setSpacing(33)
+        self.texts.setSpacing(31)
         self.texts.setContentsMargins(50, 0, 30, 0)
         self.labels.setSpacing(40)
         self.findBtns.setAlignment(Qt.AlignVCenter)
@@ -106,19 +110,19 @@ class Model_training(QDialog):
                 "border-radius": 7,
                 "color": (154, 84, 237),
                 "font-family": "SF Pro Display",
-                "font-size": 18,
+                "font-size": 16,
             },
             'hover': {
                 "background-color": (154, 84, 237),
                 "border-color": (154, 84, 237),
                 "color": (255, 255, 255),
-                "font-size": 18,
+                "font-size": 16,
             },
             'press': {
                 "background-color": (154, 84, 237),
                 "border-color": (154, 84, 237),
                 "color": (255, 255, 255),
-                "font-size": 18,
+                "font-size": 16,
             }
         }
 
@@ -290,6 +294,3 @@ class Model_training(QDialog):
         filename = ""
         filename = Searchfile.find_folder(self, filename)
         labelName.setText(filename)
-
-
-
