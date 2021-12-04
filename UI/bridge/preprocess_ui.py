@@ -78,8 +78,8 @@ def start_preprocess(config):
         path = os.path.join(config.feature_path, set_type)
         create_path(path, action='overwrite')
 
-        list_file = set_type + '_list.txt'
-        file_list[set_type] = read_file_list(os.path.join(config.dataset_path, list_file))
+        list_file = config.dataset_train_list if set_type == 'train' else config.dataset_valid_list
+        file_list[set_type] = read_file_list(list_file)
 
     # Extracting Features
     if config.num_proc > 1:
@@ -92,8 +92,9 @@ def start_preprocess(config):
     else:
         for set_type in set_list:
             for f in file_list[set_type]:
-                f_txt, f_mid, f_wav = files4train(f, config)
-                # preprocess(config=config, file_txt=f_txt, file_mid=f_mid, file_wav=f_wav, set_type=set_type)
+                f_txt = os.path.join(config.dataset_text_path, (f + '.txt'))
+                f_mid = os.path.join(config.dataset_midi_path, (f + '.mid'))
+                f_wav = os.path.join(config.dataset_wav_path, (f + '.wav'))
                 preprocess(config=config, txt_file=f_txt, mid_file=f_mid, wav_file=f_wav, set_type=set_type)
 
     # Creating Files Indices
