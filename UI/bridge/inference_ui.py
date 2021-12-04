@@ -42,7 +42,7 @@ def start_infer(config):
     spec = torch.cat(spec, dim=1).transpose(1, 2) # T x D -> D x T
     wave = dsp.inv_spectrogram(spec, config)
 
-    savename = config.checkpoint_file.replace('.pt', '_') + os.path.basename(config.text_file).replace('.txt', '.wav')
+    savename = config.target_path
     dsp.save(savename, wave, config.sample_rate)
 
     print("Audio saved to \'%s\'." % (savename))
@@ -53,4 +53,5 @@ def infer_test():
     config.text_file = '..\\..\\ML\\sample_dataset\\txt\\kr048a.txt'
     config.midi_file = '..\\..\\ML\\sample_dataset\\mid\\kr048a.mid'
     config.checkpoint_file = '..\\..\\..\\pretrained_sample.pt'
+    config.target_path = '..\\..\\..\\generated_voice.wav'
     start_infer(config)

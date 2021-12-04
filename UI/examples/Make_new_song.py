@@ -34,6 +34,7 @@ class Make_new_song(QDialog):
         self.setGeometry(100, 100, 890, 610)
         self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_infer.yml"),
                               os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
+        self.config.checkpoint_file = os.path.join(__file__[0:__file__.find('UI')], 'default_checkpoint.pt')
         self.configWidget = input_config('infer', self.config)
 
         self.setAutoFillBackground(True)

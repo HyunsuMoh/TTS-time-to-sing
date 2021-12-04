@@ -5,6 +5,8 @@ midi_file: # Midi file path for inference
   type: 'FilePath'
 checkpoint_file: # Model checkpoint file path to load
   type: 'FilePath'
+target_path:
+  type: 'FilePath'
 
 # Infer Configuration
 num_proc: # Number of processes, might be used for non-auto-regressive inference
