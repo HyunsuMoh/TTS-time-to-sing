@@ -58,7 +58,7 @@ class Make_new_song(QDialog):
         self.layout.addLayout(self.conlyt)
         self.layout.addLayout(self.switchButton)
         h = QLabel(
-            "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>\U0001F399 Making new songs</span>")
+            "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>\U0001F399 Generate new song</span>")
         ah = QLabel(
             "<span style='font-size:24px; font-family:SF Pro Display; color:rgb(89,89,92);'>학습된 버츄얼싱어가 부르는 새로운 노래 생성</span>")
 
@@ -238,7 +238,7 @@ class Make_new_song(QDialog):
         self.btnslyt.addLayout(self.btnlyt2)
 
 
-        self.ibtnl = StyledButton("Making New Songs", icon=Spinner(1.5, QColor(0, 255, 255)))
+        self.ibtnl = StyledButton("Generate", icon=Spinner(1.5, QColor(0, 255, 255)))
         self.ibtnl.setFixedSize(200, 47)
         self.ibtnl.anim_press.speed = 7.3
 
