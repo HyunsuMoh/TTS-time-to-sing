@@ -268,7 +268,7 @@ class Make_new_song(QDialog):
         filename = QFileDialog.getSaveFileName(self, 'Target path', './', filter=extension)[0]
         labelName.setText(filename)
         if filename:
-            setattr(self.config, 'target_path', './')
+            setattr(self.config, 'target_path', filename)
 
     def default_checkpoint(self, labelName):
         config.checkpoint_file = '..\\..\\..\\pretrained_sample.pt'
