@@ -9,10 +9,9 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../ML/utils"))
 sys.path.append(os.path.join(os.path.dirname(__file__), "../bridge"))
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QLabel, QCheckBox
+from PyQt5.QtWidgets import QDialog, QHBoxLayout, QFileDialog, QVBoxLayout, QLabel, QCheckBox
 from PyQt5.QtGui import QColor, QFontDatabase
 from pyqt5Custom import StyledButton, Spinner
-from Searchfile import Searchfile
 from input_config import input_config
 from config_parser import Config
 from training_ui import train_test
@@ -235,7 +234,7 @@ class Model_training(QDialog):
         self.btn7.setStyleDict(button_style['normal'])
         self.btn7.setStyleDict(button_style['hover'], "hover")
         self.btn7.setStyleDict(button_style['press'], "press")
-        self.btn7.clicked.connect(lambda: self.fileSearch(self.label7, "loaded_checkpoint_path_G"))
+        self.btn7.clicked.connect(lambda: self.fileSearch(self.label7, "loaded_checkpoint_path_G", '*.pt'))
         self.text7.setContentsMargins(20, 3, 0, 0)
         self.label7.setContentsMargins(20, 5, 0, 0)
 
@@ -248,7 +247,7 @@ class Model_training(QDialog):
         self.btn8.setStyleDict(button_style['normal'])
         self.btn8.setStyleDict(button_style['hover'], "hover")
         self.btn8.setStyleDict(button_style['press'], "press")
-        self.btn8.clicked.connect(lambda: self.fileSearch(self.label8, "loaded_checkpoint_path_D"))
+        self.btn8.clicked.connect(lambda: self.fileSearch(self.label8, "loaded_checkpoint_path_D", '*.pt'))
         self.text8.setContentsMargins(20, 3, 0, 0)
         self.label8.setContentsMargins(20, 5, 0, 0)
 
@@ -287,14 +286,13 @@ class Model_training(QDialog):
             self.label6.setText("Create a new checkpoint to proceed with the learning")
             setattr(self.config, "load_checkpoint", False)
 
-    def fileSearch(self, labelName, configLabel):
-        filename = ""
-        filename = Searchfile.add_open(self, filename)
+    def fileSearch(self, labelName, configLabel, extension):
+        fileOpen = QFileDialog.getOpenFileName(self, 'Open file', './', filter=extension)
+        filename = fileOpen[0]
         labelName.setText(filename)
         setattr(self.config, configLabel, filename)
 
     def dirSearch(self, labelName, configLabel):
-        filename = ""
-        filename = Searchfile.find_folder(self, filename)
+        filename = QFileDialog.getExistingDirectory(self, 'Find folder', './')
         labelName.setText(filename)
         setattr(self.config, configLabel, filename)
