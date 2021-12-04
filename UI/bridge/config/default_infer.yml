@@ -2,6 +2,7 @@
 text_file: '' # Text file path for inference
 midi_file: '' # Midi file path for inference
 checkpoint_file: '' # Model checkpoint file path to load
+target_path: ''
 
 # Infer Configuration
 num_proc: 1 # Number of processes, might be used for non-auto-regressive inference
