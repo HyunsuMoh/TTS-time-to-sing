@@ -2,9 +2,10 @@
 dataset_text_path: '' # Path for raw dataset containing txt
 dataset_midi_path: '' # Path for raw dataset containing mid
 dataset_wav_path: '' # Path for raw dataset containing wav
+dataset_train_list: ''
+dataset_valid_list: ''
 feature_path: '' # Path for feature created using preprocess.py
 checkpoint_path: '' # Path for checkpoint and tensorboard log created using train.py
-checkpoint_path_action: 'duplicate' # Action to make path for checkpoint
 
 # Feature Configuration
 num_char: 47 # The types of characters

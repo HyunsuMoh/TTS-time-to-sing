@@ -5,13 +5,14 @@ dataset_midi_path: # Path for raw dataset containing mid
   type: 'DirectoryPath'
 dataset_wav_path: # Path for raw dataset containing wav
   type: 'DirectoryPath'
+dataset_train_list:
+  type: 'FilePath'
+dataset_valid_list:
+  type: 'FilePath'
 feature_path: # Path for feature created using preprocess.py
   type: 'DirectoryPath'
 checkpoint_path: # Path for checkpoint and tensorboard log created using train.py
   type: 'DirectoryPath'
-checkpoint_path_action: # Action to make path for checkpoint
-  type: 'MultiSelection'
-  option: ['duplicate', 'overwrite']
 
 # Feature Configuration
 num_char: # The types of characters

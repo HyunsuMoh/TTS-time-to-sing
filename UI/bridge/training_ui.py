@@ -19,37 +19,14 @@ import preprocess_ui
 import dataprocess
 from models import Generator, Discriminator
 from logger import Logger
-
-class AverageMeter(object):
-    def __init__(self):
-        self.steps = 0
-        self.reset()
-
-    def reset(self):
-        self.val = 0.0
-        self.sum = 0.0
-        self.num = 0
-        self.avg = 0.0
-
-    def step(self, val, num=1):
-        self.val = val
-        self.sum += num*val
-        self.num += num
-        self.steps += 1
-        self.avg = self.sum/self.num
-
-def criterionAdv(D, x):
-    return torch.mean(torch.abs(D(x) - x))
+from train import AverageMeter, criterionAdv
 
 def start_train(config):
-    #config_basename = os.path.basename(config.config[0])
-
-
-    config_basename = '..\\..\\ML\\config\\default_train_windows.yml'
+    config_basename = os.path.basename(config.config[0])
     print("Configuration file: \'%s\'" % (config_basename))
 
-    checkpoint_path = create_path(config.checkpoint_path, action=config.checkpoint_path_action)
-    #config.save(os.path.join(checkpoint_path, config_basename))
+    checkpoint_path = create_path(config.checkpoint_path, action='overwrite')
+    config.save(os.path.join(checkpoint_path, config_basename))
     logger = Logger(os.path.join(checkpoint_path, 'log'))
     dataloader = dataprocess.load_train(config)
     step_size = config.step_epoch * len(dataloader.train)
@@ -162,6 +139,8 @@ def train_test():
     config.dataset_wav_path = '..\\..\\ML\\sample_dataset\\wav'
     config.dataset_text_path = '..\\..\\ML\\sample_dataset\\txt'
     config.dataset_midi_path = '..\\..\\ML\\sample_dataset\\mid'
+    config.dataset_train_list = '..\\..\\ML\\sample_dataset\\train_list.txt'
+    config.dataset_valid_list = '..\\..\\ML\\sample_dataset\\valid_list.txt'
     preprocess_ui.start_preprocess(config)
     start_train(config)
 
