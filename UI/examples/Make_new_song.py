@@ -18,7 +18,6 @@ from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLa
 from PyQt5.QtGui import QColor, QFontDatabase, QFont
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
-from Searchfile import Searchfile
 from inference_ui import infer_test
 from input_config import input_config
 from config_parser import Config
@@ -67,17 +66,12 @@ class Make_new_song(QDialog):
 
         self.next = StyledButton("Config setting")
         self.back = StyledButton("Back")
-        #self.ibtnl = StyledButton("Making New Songs", icon=Spinner(1.5, QColor(0, 255, 255)))
-
-        #self.start = StyledButton("Training Start")
         self.back.clicked.connect(lambda: switchWidget(0))
-        #self.ibtnl.clicked.connect(infer_test)
         self.next.clicked.connect(self.configWidget.load)
-        #self.start.clicked.connect(train_test)
+
 
         self.switchButton.addWidget(self.back)
         self.switchButton.addWidget(self.next)
-        #self.switchButton.addWidget(self.start)
 
         self.list = QHBoxLayout()
         self.list.setSpacing(15)
@@ -148,27 +142,6 @@ class Make_new_song(QDialog):
         self.next.setStyleDict(button_style2['normal'], "default")
         self.next.setStyleDict(button_style2['hover'], "hover")
         self.next.setStyleDict(button_style2['press'], "press")
-        """
-        self.ibtnl = StyledButton("Making New Songs", icon=Spinner(1.5, QColor(0, 255, 255)))
-        self.ibtnl.setFixedSize(200, 47)
-        self.ibtnl.anim_press.speed = 7.3
-
-        self.ibtnl.setStyleDict(button_style2['normal'], "default")
-        self.ibtnl.setStyleDict(button_style2['hover'], "hover")
-        self.ibtnl.setStyleDict(button_style2['press'], "press")
-        self.ibtnl.clicked.connect(infer_test)
-
-        self.btnlyt2.addSpacing(15)
-        self.btnlyt2.addWidget(self.ibtnl, alignment=Qt.AlignHCenter)
-
-        self.toast = Toast(self, text="Making new Songs", icon=Spinner(1.3, QColor(255, 255, 255)))
-        self.toast.setFixedWidth(287)
-        self.toast.setStyleDict({
-            "font-family": "SF Pro Display",
-            "font-size": 17
-        })
-        self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
-        """
 
         self.label1 = QLabel('', self)
         self.text1 = QLabel(
@@ -179,8 +152,7 @@ class Make_new_song(QDialog):
         self.btn1.setStyleDict(button_style['normal'])
         self.btn1.setStyleDict(button_style['hover'], "hover")
         self.btn1.setStyleDict(button_style['press'], "press")
-        #self.btn1.clicked.connect(lambda: self.default_checkpoint(self.label1))
-        self.btn1.clicked.connect(lambda: self.fileSearch(self.label1))
+        self.btn1.clicked.connect(lambda: self.fileSearch(self.label1, "checkpoint_file", '*.pt'))
         self.btn1.setContentsMargins(0, 3, 0, 0)
         self.text1.setContentsMargins(20, 3, 0, 0)
         self.label1.setContentsMargins(20, 5, 0, 0)
@@ -194,7 +166,7 @@ class Make_new_song(QDialog):
         self.btn2.setStyleDict(button_style['normal'])
         self.btn2.setStyleDict(button_style['hover'], "hover")
         self.btn2.setStyleDict(button_style['press'], "press")
-        self.btn2.clicked.connect(lambda: self.fileSearch(self.label2))
+        self.btn2.clicked.connect(lambda: self.fileSearch(self.label2, "checkpoint_file", '*.pt'))
         self.btn2.setContentsMargins(0, 3, 0, 0)
         self.text2.setContentsMargins(20, 3, 0, 0)
         self.label2.setContentsMargins(20, 5, 0, 0)
@@ -208,7 +180,7 @@ class Make_new_song(QDialog):
         self.btn3.setStyleDict(button_style['normal'])
         self.btn3.setStyleDict(button_style['hover'], "hover")
         self.btn3.setStyleDict(button_style['press'], "press")
-        self.btn3.clicked.connect(lambda: self.fileSearch(self.label3))
+        self.btn3.clicked.connect(lambda: self.fileSearch(self.label3, "text_file", '*.txt'))
         self.btn3.setContentsMargins(0, 3, 0, 0)
         self.text3.setContentsMargins(20, 3, 0, 0)
         self.label3.setContentsMargins(20, 5, 0, 0)
@@ -222,22 +194,38 @@ class Make_new_song(QDialog):
         self.btn4.setStyleDict(button_style['normal'])
         self.btn4.setStyleDict(button_style['hover'], "hover")
         self.btn4.setStyleDict(button_style['press'], "press")
-        self.btn4.clicked.connect(lambda: self.fileSearch(self.label4))
+        self.btn4.clicked.connect(lambda: self.fileSearch(self.label4, "midi_file", '*.mid'))
         self.text4.setContentsMargins(20, 3, 0, 0)
         self.label4.setContentsMargins(20, 5, 0, 0)
 
+        self.label5 = QLabel('', self)
+        self.text5 = QLabel(
+            "<span style='font-size:24px; font-family:SF Pro Display; color:rgb(28,28,30);'>Target path</span>")
+        self.btn5 = StyledButton("Choose")
+        self.btn5.setFixedSize(100, 34)
+        self.btn5.anim_press.speed = 7.3
+        self.btn5.setStyleDict(button_style['normal'])
+        self.btn5.setStyleDict(button_style['hover'], "hover")
+        self.btn5.setStyleDict(button_style['press'], "press")
+        self.btn5.clicked.connect(lambda: self.fileSave(self.label5, '*.wav'))
+        self.text5.setContentsMargins(20, 3, 0, 0)
+        self.label5.setContentsMargins(20, 5, 0, 0)
+
         self.texts.addWidget(self.text1)
         self.texts.addWidget(self.text2)
+        self.texts.addWidget(self.text5)
         self.texts.addWidget(self.text3)
         self.texts.addWidget(self.text4)
 
         self.findBtns.addWidget(self.btn1)
         self.findBtns.addWidget(self.btn2)
+        self.findBtns.addWidget(self.btn5)
         self.findBtns.addWidget(self.btn3)
         self.findBtns.addWidget(self.btn4)
 
         self.labels.addWidget(self.label1)
         self.labels.addWidget(self.label2)
+        self.labels.addWidget(self.label5)
         self.labels.addWidget(self.label3)
         self.labels.addWidget(self.label4)
 
@@ -270,10 +258,17 @@ class Make_new_song(QDialog):
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
 
-    def fileSearch(self, labelName):
-        filename = ""
-        filename = Searchfile.add_open(self, filename)
+    def fileSearch(self, labelName, configLabel, extension):
+        fileOpen = QFileDialog.getOpenFileName(self, 'open file', './', filter=extension)
+        filename = fileOpen[0]
         labelName.setText(filename)
+        setattr(self.config, configLabel, filename)
+
+    def fileSave(self, labelName, extension):
+        filename = QFileDialog.getSaveFileName(self, 'Target path', './', filter=extension)[0]
+        labelName.setText(filename)
+        if filename:
+            setattr(self.config, 'target_path', filename)
 
     def default_checkpoint(self, labelName):
         config.checkpoint_file = '..\\..\\..\\pretrained_sample.pt'
