@@ -17,13 +17,14 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout,QFileDialog, QLabel
 from PyQt5.QtGui import QColor, QFontDatabase, QFont
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
-    TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
+    TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner
 from inference_ui import infer_test
 from input_config import input_config
 from config_parser import Config
 
 from input_config import input_config
 from config_parser import Config
+from progressbar import Progressbar
 # from training_ui import train_test
 
 class Make_new_song(QDialog):
@@ -32,6 +33,7 @@ class Make_new_song(QDialog):
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
+        self.switchWidget = switchWidget
         self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_infer.yml"),
                               os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
         self.config.checkpoint_file = os.path.join(__file__[0:__file__.find('UI')], 'default_checkpoint.pt')
@@ -58,7 +60,7 @@ class Make_new_song(QDialog):
         h = QLabel(
             "<span style='font-size:48px; font-family:SF Pro Display; color:rgb(28,28,30);'>\U0001F399 Making new songs</span>")
         ah = QLabel(
-            "<span style='font-size:24px; font-family:SF Pro Display; color:rgb(89,89,92);'>기존 모델들을 바탕으로 새로운 노래 생성</span>")
+            "<span style='font-size:24px; font-family:SF Pro Display; color:rgb(89,89,92);'>학습된 버츄얼싱어가 부르는 새로운 노래 생성</span>")
 
         self.conlyt.addWidget(h)
         self.conlyt.addWidget(ah)
@@ -244,19 +246,10 @@ class Make_new_song(QDialog):
         self.ibtnl.setStyleDict(button_style2['hover'], "hover")
         self.ibtnl.setStyleDict(button_style2['press'], "press")
 
-        self.ibtnl.clicked.connect(infer_test)
+        self.ibtnl.clicked.connect(self.connect_make_new_song)
 
         self.btnlyt2.addSpacing(15)
         self.btnlyt2.addWidget(self.ibtnl, alignment=Qt.AlignHCenter)
-
-        self.toast = Toast(self, text="Making new Songs", icon=Spinner(1.3, QColor(255, 255, 255)))
-        self.toast.setFixedWidth(287)
-        self.toast.setStyleDict({
-            "font-family": "SF Pro Display",
-            "font-size": 17
-        })
-
-        self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
 
     def fileSearch(self, labelName, configLabel, extension):
         fileOpen = QFileDialog.getOpenFileName(self, 'open file', './', filter=extension)
@@ -269,6 +262,10 @@ class Make_new_song(QDialog):
         labelName.setText(filename)
         if filename:
             setattr(self.config, 'target_path', filename)
+
+    def connect_make_new_song(self):
+        # self.switchWidget(3)
+        infer_test()
 
     def default_checkpoint(self, labelName):
         config.checkpoint_file = '..\\..\\..\\pretrained_sample.pt'
