@@ -179,7 +179,7 @@ class Make_new_song(QDialog):
         self.btn1.setStyleDict(button_style['hover'], "hover")
         self.btn1.setStyleDict(button_style['press'], "press")
         #self.btn1.clicked.connect(lambda: self.default_checkpoint(self.label1))
-        self.btn1.clicked.connect(lambda: self.fileSearch(self.label1))
+        self.btn1.clicked.connect(lambda: self.fileSearch(self.label1, "checkpoint_file"))
         self.btn1.setContentsMargins(0, 3, 0, 0)
         self.text1.setContentsMargins(20, 3, 0, 0)
         self.label1.setContentsMargins(20, 5, 0, 0)
@@ -193,7 +193,7 @@ class Make_new_song(QDialog):
         self.btn2.setStyleDict(button_style['normal'])
         self.btn2.setStyleDict(button_style['hover'], "hover")
         self.btn2.setStyleDict(button_style['press'], "press")
-        self.btn2.clicked.connect(lambda: self.fileSearch(self.label2))
+        self.btn2.clicked.connect(lambda: self.fileSearch(self.label2, "checkpoint_file"))
         self.btn2.setContentsMargins(0, 3, 0, 0)
         self.text2.setContentsMargins(20, 3, 0, 0)
         self.label2.setContentsMargins(20, 5, 0, 0)
@@ -207,7 +207,7 @@ class Make_new_song(QDialog):
         self.btn3.setStyleDict(button_style['normal'])
         self.btn3.setStyleDict(button_style['hover'], "hover")
         self.btn3.setStyleDict(button_style['press'], "press")
-        self.btn3.clicked.connect(lambda: self.fileSearch(self.label3))
+        self.btn3.clicked.connect(lambda: self.fileSearch(self.label3, "text_file"))
         self.btn3.setContentsMargins(0, 3, 0, 0)
         self.text3.setContentsMargins(20, 3, 0, 0)
         self.label3.setContentsMargins(20, 5, 0, 0)
@@ -221,7 +221,7 @@ class Make_new_song(QDialog):
         self.btn4.setStyleDict(button_style['normal'])
         self.btn4.setStyleDict(button_style['hover'], "hover")
         self.btn4.setStyleDict(button_style['press'], "press")
-        self.btn4.clicked.connect(lambda: self.fileSearch(self.label4))
+        self.btn4.clicked.connect(lambda: self.fileSearch(self.label4, "midi_file"))
         self.text4.setContentsMargins(20, 3, 0, 0)
         self.label4.setContentsMargins(20, 5, 0, 0)
 
@@ -269,10 +269,11 @@ class Make_new_song(QDialog):
 
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
 
-    def fileSearch(self, labelName):
+    def fileSearch(self, labelName, configLabel):
         filename = ""
         filename = Searchfile.add_open(self, filename)
         labelName.setText(filename)
+        setattr(self.config, configLabel, filename)
 
     def default_checkpoint(self, labelName):
         config.checkpoint_file = '..\\..\\..\\pretrained_sample.pt'

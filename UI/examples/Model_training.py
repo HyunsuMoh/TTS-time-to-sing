@@ -152,7 +152,7 @@ class Model_training(QDialog):
         self.btn1.setStyleDict(button_style['normal'])
         self.btn1.setStyleDict(button_style['hover'], "hover")
         self.btn1.setStyleDict(button_style['press'], "press")
-        self.btn1.clicked.connect(lambda: self.dirSearch(self.label1))
+        self.btn1.clicked.connect(lambda: self.dirSearch(self.label1, "dataset_text_path"))
         self.btn1.setContentsMargins(0, 3, 0, 0)
         self.text1.setContentsMargins(20, 3, 0, 0)
         self.label1.setContentsMargins(20, 5, 0, 0)
@@ -166,7 +166,7 @@ class Model_training(QDialog):
         self.btn2.setStyleDict(button_style['normal'])
         self.btn2.setStyleDict(button_style['hover'], "hover")
         self.btn2.setStyleDict(button_style['press'], "press")
-        self.btn2.clicked.connect(lambda: self.dirSearch(self.label2))
+        self.btn2.clicked.connect(lambda: self.dirSearch(self.label2, "dataset_midi_path"))
         self.btn2.setContentsMargins(0, 3, 0, 0)
         self.text2.setContentsMargins(20, 3, 0, 0)
         self.label2.setContentsMargins(20, 5, 0, 0)
@@ -180,7 +180,7 @@ class Model_training(QDialog):
         self.btn3.setStyleDict(button_style['normal'])
         self.btn3.setStyleDict(button_style['hover'], "hover")
         self.btn3.setStyleDict(button_style['press'], "press")
-        self.btn3.clicked.connect(lambda: self.dirSearch(self.label3))
+        self.btn3.clicked.connect(lambda: self.dirSearch(self.label3, "dataset_wav_path"))
         self.text3.setContentsMargins(20, 3, 0, 0)
         self.label3.setContentsMargins(20, 5, 0, 0)
 
@@ -193,7 +193,7 @@ class Model_training(QDialog):
         self.btn4.setStyleDict(button_style['normal'])
         self.btn4.setStyleDict(button_style['hover'], "hover")
         self.btn4.setStyleDict(button_style['press'], "press")
-        self.btn4.clicked.connect(lambda: self.dirSearch(self.label4))
+        self.btn4.clicked.connect(lambda: self.dirSearch(self.label4, "config.feature_path"))
         self.text4.setContentsMargins(20, 3, 0, 0)
         self.label4.setContentsMargins(20, 5, 0, 0)
 
@@ -206,7 +206,7 @@ class Model_training(QDialog):
         self.btn5.setStyleDict(button_style['normal'])
         self.btn5.setStyleDict(button_style['hover'], "hover")
         self.btn5.setStyleDict(button_style['press'], "press")
-        self.btn5.clicked.connect(lambda: self.dirSearch(self.label5))
+        self.btn5.clicked.connect(lambda: self.dirSearch(self.label5, "checkpoint_path"))
         self.text5.setContentsMargins(20, 3, 0, 0)
         self.label5.setContentsMargins(20, 5, 0, 0)
 
@@ -235,7 +235,7 @@ class Model_training(QDialog):
         self.btn7.setStyleDict(button_style['normal'])
         self.btn7.setStyleDict(button_style['hover'], "hover")
         self.btn7.setStyleDict(button_style['press'], "press")
-        self.btn7.clicked.connect(lambda: self.fileSearch(self.label7))
+        self.btn7.clicked.connect(lambda: self.fileSearch(self.label7, "loaded_checkpoint_path_G"))
         self.text7.setContentsMargins(20, 3, 0, 0)
         self.label7.setContentsMargins(20, 5, 0, 0)
 
@@ -248,7 +248,7 @@ class Model_training(QDialog):
         self.btn8.setStyleDict(button_style['normal'])
         self.btn8.setStyleDict(button_style['hover'], "hover")
         self.btn8.setStyleDict(button_style['press'], "press")
-        self.btn8.clicked.connect(lambda: self.fileSearch(self.label8))
+        self.btn8.clicked.connect(lambda: self.fileSearch(self.label8, "loaded_checkpoint_path_D"))
         self.text8.setContentsMargins(20, 3, 0, 0)
         self.label8.setContentsMargins(20, 5, 0, 0)
 
@@ -282,15 +282,19 @@ class Model_training(QDialog):
     def changeCheckState(self, state):
         if state == Qt.Checked:
             self.label6.setText("Continue learning with the selected checkpoint")
+            setattr(self.config, "load_checkpoint", True)
         else:
             self.label6.setText("Create a new checkpoint to proceed with the learning")
+            setattr(self.config, "load_checkpoint", False)
 
-    def fileSearch(self, labelName):
+    def fileSearch(self, labelName, configLabel):
         filename = ""
         filename = Searchfile.add_open(self, filename)
         labelName.setText(filename)
+        setattr(self.config, configLabel, filename)
 
-    def dirSearch(self, labelName):
+    def dirSearch(self, labelName, configLabel):
         filename = ""
         filename = Searchfile.find_folder(self, filename)
         labelName.setText(filename)
+        setattr(self.config, configLabel, filename)
