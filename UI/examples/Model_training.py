@@ -329,12 +329,12 @@ class Model_training(QDialog):
             setattr(self.config, "load_checkpoint", False)
 
     def fileSearch(self, labelName, configLabel, extension):
-        fileOpen = QFileDialog.getOpenFileName(self, 'Open file', './', filter=extension)
+        fileOpen = QFileDialog.getOpenFileName(self, 'Open file', filter=extension)
         filename = fileOpen[0]
         labelName.setText(filename)
         setattr(self.config, configLabel, filename)
 
     def dirSearch(self, labelName, configLabel):
-        filename = QFileDialog.getExistingDirectory(self, 'Find folder', './')
+        filename = QFileDialog.getExistingDirectory(self, 'Find folder')
         labelName.setText(filename)
         setattr(self.config, configLabel, filename)

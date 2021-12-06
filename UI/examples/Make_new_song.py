@@ -259,23 +259,23 @@ class Make_new_song(QDialog):
         self.ibtnl.clicked.connect(lambda: self.toast.rise(3))
 
     def fileSearch(self, labelName, configLabel, extension):
-        fileOpen = QFileDialog.getOpenFileName(self, 'open file', './', filter=extension)
+        fileOpen = QFileDialog.getOpenFileName(self, 'open file', filter=extension)
         filename = fileOpen[0]
         labelName.setText(filename)
         setattr(self.config, configLabel, filename)
 
     def fileSave(self, labelName, extension):
-        filename = QFileDialog.getSaveFileName(self, 'Target path', './', filter=extension)[0]
+        filename = QFileDialog.getSaveFileName(self, 'Target path', filter=extension)[0]
         labelName.setText(filename)
         if filename:
             setattr(self.config, 'target_path', filename)
 
     def default_checkpoint(self, labelName):
-        config.checkpoint_file = '..\\..\\..\\pretrained_sample.pt'
+        config.checkpoint_file = '../../../pretrained_sample.pt'
         labelName.setText(config.checkpoint_file)
 
     def CheckPointSearch(self, labelName):
         filename = ""
         #filename = Searchfile.add_open(self, filename)
-        filename = QFileDialog.getOpenFileName(self,'Load Checkpoint', '..\\..\\..\\', filter = '*.pt')
+        filename = QFileDialog.getOpenFileName(self,'Load Checkpoint', '../../../', filter = '*.pt')
         labelName.setText(filename)
