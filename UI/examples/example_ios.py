@@ -18,6 +18,7 @@ from pyqt5Custom import ToggleSwitch, StyledButton, ImageBox, ColorPicker, Color
 import Make_new_song, Model_training
 from config_data_input import *
 from config_parser import Config
+from progressbar import Progressbar
 
 class MainWindow(QDialog):
     def __init__(self):
@@ -143,6 +144,9 @@ if __name__ == "__main__":
 
     ns = Make_new_song.Make_new_song(switchWidget) # index [2]
     wg.addWidget(ns)
+
+    pb1 = Progressbar(switchWidget) # index [3]
+    wg.addWidget(pb1)
 
     wg.setFixedHeight(800)
     wg.setFixedWidth(1200)

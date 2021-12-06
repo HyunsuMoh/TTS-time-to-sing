@@ -2,16 +2,16 @@
 #                GPL 3.0 - Kadir Aksoy                #
 #   https://github.com/kadir014/pyqt5-custom-widgets  #
 
-
+import os
+import sys
 import random
-
+sys.path.append(os.path.join(os.path.dirname(__file__), "./pyqt5Custom"))
 from PyQt5.QtCore    import Qt, QRect, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel, QGraphicsDropShadowEffect
 from PyQt5.QtGui     import QColor, QPainter, QPen, QBrush
 
-from .animation import Animation, AnimationHandler
-from .styledbutton import StyledButton
-
+from animation import Animation, AnimationHandler
+from styledbutton import StyledButton
 
 class EmbedWindow(QWidget):
 
@@ -22,7 +22,7 @@ class EmbedWindow(QWidget):
 
         if pos is None:
             pos = (random.randint(0, self.parent().width()-285), random.randint(0, self.parent().height()-190))
-        self.setFixedSize(285, 190)
+        self.setFixedSize(300, 170)
         self.setGeometry(pos[0], pos[1], 285, 190)
 
         self.shadow = QGraphicsDropShadowEffect(self)
@@ -60,7 +60,7 @@ class EmbedWindow(QWidget):
         self.layout.addWidget(self.contentwdt)
 
         self.title = QLabel(title)
-        self.title.setStyleSheet("color:black; font-size:14px;")
+        self.title.setStyleSheet("color:white; font-size:14px;")
 
         self.close_btn = StyledButton("✕")
         self.close_btn.setFixedSize(self.headerHeight, self.headerHeight)
