@@ -7,8 +7,8 @@ from PyQt5.QtCore    import Qt, QPointF
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QLabel, QAbstractButton, QGraphicsDropShadowEffect, QGraphicsOpacityEffect
 from PyQt5.QtGui     import QColor, QPainter, QPen, QBrush, QFont
 
-from .animation import Animation, AnimationHandler
-from .imagebox import ImageBox
+from animation import Animation, AnimationHandler
+from imagebox import ImageBox
 
 
 

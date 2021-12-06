@@ -8,14 +8,16 @@ import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../ML/utils"))
 sys.path.append(os.path.join(os.path.dirname(__file__), "../bridge"))
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QHBoxLayout, QFileDialog, QVBoxLayout, QLabel, QCheckBox
-from PyQt5.QtGui import QColor, QFontDatabase
+sys.path.append(os.path.join(os.path.dirname(__file__), "../pyqt5Custom"))
+from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtWidgets import QDialog, QPushButton, QHBoxLayout, QFileDialog, QVBoxLayout, QLabel, QCheckBox
+from PyQt5.QtGui import QColor, QFontDatabase, QIcon, QPixmap
 from pyqt5Custom import StyledButton, Spinner
 from input_config import input_config
 from config_parser import Config
 from training_ui import train_test
 from preprocess_ui import start_preprocess
+from embedwindow import EmbedWindow
 
 
 class Model_training(QDialog):
@@ -78,14 +80,19 @@ class Model_training(QDialog):
         self.findBtns = QVBoxLayout()
         self.texts = QVBoxLayout()
         self.labels = QVBoxLayout()
+        self.lights = QVBoxLayout()
         self.findBtns.setSpacing(33)
         self.texts.setSpacing(27)
-        self.texts.setContentsMargins(40, 0, 10, 0)
+        self.lights.setSpacing(27)
+        self.texts.setContentsMargins(20, 0, 0, 0)
         self.labels.setSpacing(35)
-        self.findBtns.setAlignment(Qt.AlignVCenter)
+        self.lights.setAlignment(Qt.AlignLeft)
+        self.findBtns.setAlignment(Qt.AlignLeft)
         self.list.addLayout(self.texts)
+        self.list.addLayout(self.lights)
         self.list.addLayout(self.findBtns)
         self.list.addLayout(self.labels)
+        self.ewlist = list()
 
         button_style = {
             'normal': {
@@ -162,8 +169,15 @@ class Model_training(QDialog):
         self.btn1.setStyleDict(button_style['press'], "press")
         self.btn1.clicked.connect(lambda: self.dirSearch(self.label1, "dataset_text_path"))
         self.btn1.setContentsMargins(0, 3, 0, 0)
+        self.light1 = QPushButton('')
+        self.light1.setStyleSheet("background-color:#ffffff")
+        self.light1.setStyleSheet("border: None")
+        self.light1.setIcon(QIcon('bulb.png'))
+        self.light1.setIconSize(QSize(35,35))
+        self.light1.clicked.connect(lambda : self.infoWindow("Dataset text path", "Path for raw dataset containing .txt files"))
         self.text1.setContentsMargins(20, 3, 0, 0)
         self.label1.setContentsMargins(20, 5, 0, 0)
+        self.light1.setContentsMargins(0, 3, 0, 0)
 
         self.label2 = QLabel('', self)
         self.text2 = QLabel(
@@ -175,9 +189,16 @@ class Model_training(QDialog):
         self.btn2.setStyleDict(button_style['hover'], "hover")
         self.btn2.setStyleDict(button_style['press'], "press")
         self.btn2.clicked.connect(lambda: self.dirSearch(self.label2, "dataset_midi_path"))
+        self.light2 = QPushButton('')
+        self.light2.setStyleSheet("background-color:#ffffff")
+        self.light2.setStyleSheet("border: None")
+        self.light2.setIcon(QIcon('bulb.png'))
+        self.light2.setIconSize(QSize(35, 35))
+        self.light2.clicked.connect(
+            lambda: self.infoWindow("Dataset midi path", "Path for raw dataset containing .mid files"))
         self.btn2.setContentsMargins(0, 3, 0, 0)
         self.text2.setContentsMargins(20, 3, 0, 0)
-        self.label2.setContentsMargins(20, 5, 0, 0)
+        self.label2.setContentsMargins(0, 5, 0, 0)
 
         self.label3 = QLabel('', self)
         self.text3 = QLabel(
@@ -189,6 +210,13 @@ class Model_training(QDialog):
         self.btn3.setStyleDict(button_style['hover'], "hover")
         self.btn3.setStyleDict(button_style['press'], "press")
         self.btn3.clicked.connect(lambda: self.dirSearch(self.label3, "dataset_wav_path"))
+        self.light3 = QPushButton('')
+        self.light3.setStyleSheet("background-color:#ffffff")
+        self.light3.setStyleSheet("border: None")
+        self.light3.setIcon(QIcon('bulb.png'))
+        self.light3.setIconSize(QSize(35, 35))
+        self.light3.clicked.connect(
+            lambda: self.infoWindow("Dataset wav path", "Path for raw dataset containing .wav files"))
         self.text3.setContentsMargins(20, 3, 0, 0)
         self.label3.setContentsMargins(20, 5, 0, 0)
 
@@ -202,6 +230,13 @@ class Model_training(QDialog):
         self.btn4.setStyleDict(button_style['hover'], "hover")
         self.btn4.setStyleDict(button_style['press'], "press")
         self.btn4.clicked.connect(lambda: self.dirSearch(self.label4, "feature_path"))
+        self.light4 = QPushButton('')
+        self.light4.setStyleSheet("background-color:#ffffff")
+        self.light4.setStyleSheet("border: None")
+        self.light4.setIcon(QIcon('bulb.png'))
+        self.light4.setIconSize(QSize(35, 35))
+        self.light4.clicked.connect(
+            lambda: self.infoWindow("Feature path", "Path for feature created using preprocess.py"))
         self.text4.setContentsMargins(20, 3, 0, 0)
         self.label4.setContentsMargins(20, 5, 0, 0)
 
@@ -215,12 +250,26 @@ class Model_training(QDialog):
         self.btn5.setStyleDict(button_style['hover'], "hover")
         self.btn5.setStyleDict(button_style['press'], "press")
         self.btn5.clicked.connect(lambda: self.dirSearch(self.label5, "checkpoint_path"))
+        self.light5 = QPushButton('')
+        self.light5.setStyleSheet("background-color:#ffffff")
+        self.light5.setStyleSheet("border: None")
+        self.light5.setIcon(QIcon('bulb.png'))
+        self.light5.setIconSize(QSize(35, 35))
+        self.light5.clicked.connect(
+            lambda: self.infoWindow("Checkpoint path", "Path for checkpoint and tensorboard log created when training"))
         self.text5.setContentsMargins(20, 3, 0, 0)
         self.label5.setContentsMargins(20, 5, 0, 0)
 
         self.label6 = QLabel('', self)
         self.text6 = QLabel(
             "<span style='font-size:21px; font-family:SF Pro Display; color:rgb(28,28,30);'>Load checkpoint</span>")
+        self.light6 = QPushButton('')
+        self.light6.setStyleSheet("background-color:#ffffff")
+        self.light6.setStyleSheet("border: None")
+        self.light6.setIcon(QIcon('bulb.png'))
+        self.light6.setIconSize(QSize(35, 35))
+        self.light6.clicked.connect(
+            lambda: self.infoWindow("Load checkpoint", "Option to choose whether to resume learning or proceed with new learning using saved checkpoints.T"))
         self.checkbox6 = QCheckBox("")
         self.checkbox6.setStyleSheet(
             "QCheckBox::indicator"
@@ -244,6 +293,13 @@ class Model_training(QDialog):
         self.btn7.setStyleDict(button_style['hover'], "hover")
         self.btn7.setStyleDict(button_style['press'], "press")
         self.btn7.clicked.connect(lambda: self.fileSearch(self.label7, "loaded_checkpoint_path_G", '*.pt'))
+        self.light7 = QPushButton('')
+        self.light7.setStyleSheet("background-color:#ffffff")
+        self.light7.setStyleSheet("border: None")
+        self.light7.setIcon(QIcon('bulb.png'))
+        self.light7.setIconSize(QSize(35, 35))
+        self.light7.clicked.connect(
+            lambda: self.infoWindow("Loaded checkpoint path G", "Path for checkpoint(Generator)"))
         self.text7.setContentsMargins(20, 3, 0, 0)
         self.label7.setContentsMargins(20, 5, 0, 0)
 
@@ -257,6 +313,13 @@ class Model_training(QDialog):
         self.btn8.setStyleDict(button_style['hover'], "hover")
         self.btn8.setStyleDict(button_style['press'], "press")
         self.btn8.clicked.connect(lambda: self.fileSearch(self.label8, "loaded_checkpoint_path_D", '*.pt'))
+        self.light8 = QPushButton('')
+        self.light8.setStyleSheet("background-color:#ffffff")
+        self.light8.setStyleSheet("border: None")
+        self.light8.setIcon(QIcon('bulb.png'))
+        self.light8.setIconSize(QSize(35, 35))
+        self.light8.clicked.connect(
+            lambda: self.infoWindow("Loaded checkpoint path D", "Path for checkpoint(Discriminator)"))
         self.text8.setContentsMargins(20, 3, 0, 0)
         self.label8.setContentsMargins(20, 5, 0, 0)
 
@@ -270,6 +333,13 @@ class Model_training(QDialog):
         self.btn9.setStyleDict(button_style['hover'], "hover")
         self.btn9.setStyleDict(button_style['press'], "press")
         self.btn9.clicked.connect(lambda: self.fileSearch(self.label9, "dataset_train_list", '*.txt'))
+        self.light9 = QPushButton('')
+        self.light9.setStyleSheet("background-color:#ffffff")
+        self.light9.setStyleSheet("border: None")
+        self.light9.setIcon(QIcon('bulb.png'))
+        self.light9.setIconSize(QSize(35, 35))
+        self.light9.clicked.connect(
+            lambda: self.infoWindow("Dataset train list", "List for training dataset"))
         self.text9.setContentsMargins(20, 3, 0, 0)
         self.label9.setContentsMargins(20, 5, 0, 0)
 
@@ -283,6 +353,13 @@ class Model_training(QDialog):
         self.btn10.setStyleDict(button_style['hover'], "hover")
         self.btn10.setStyleDict(button_style['press'], "press")
         self.btn10.clicked.connect(lambda: self.fileSearch(self.label10, "dataset_valid_list", '*.txt'))
+        self.light10 = QPushButton('')
+        self.light10.setStyleSheet("background-color:#ffffff")
+        self.light10.setStyleSheet("border: None")
+        self.light10.setIcon(QIcon('bulb.png'))
+        self.light10.setIconSize(QSize(35, 35))
+        self.light10.clicked.connect(
+            lambda: self.infoWindow("Dataset valid list", "List for validating dataset"))
         self.text10.setContentsMargins(20, 3, 0, 0)
         self.label10.setContentsMargins(20, 5, 0, 0)
 
@@ -319,6 +396,18 @@ class Model_training(QDialog):
         self.labels.addWidget(self.label9)
         self.labels.addWidget(self.label10)
 
+        self.lights.addWidget(self.light1)
+        self.lights.addWidget(self.light2)
+        self.lights.addWidget(self.light3)
+        self.lights.addWidget(self.light4)
+        self.lights.addWidget(self.light5)
+        self.lights.addWidget(self.light6)
+        self.lights.addWidget(self.light7)
+        self.lights.addWidget(self.light8)
+        self.lights.addWidget(self.light9)
+        self.lights.addWidget(self.light10)
+
+
 
     def changeCheckState(self, state):
         if state == Qt.Checked:
@@ -338,3 +427,15 @@ class Model_training(QDialog):
         filename = QFileDialog.getExistingDirectory(self, 'Find folder', './')
         labelName.setText(filename)
         setattr(self.config, configLabel, filename)
+
+    def infoWindow(self, _title, _content):
+        content = QLabel()
+        content.setText(_content)
+        ew = EmbedWindow(self, title=_title)
+        ew.headerColor = QColor(154, 84, 237)
+        ew.content.setAlignment(Qt.AlignVCenter)
+        ew.content.addWidget(content)
+        ew.closed.connect(lambda : self.ewlist.remove(ew))
+        self.ewlist.append(ew)
+        ew.show()
+        ew.raise_()
