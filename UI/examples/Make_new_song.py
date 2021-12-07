@@ -18,13 +18,12 @@ from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QHBoxLayout, QVBoxLa
 from PyQt5.QtGui import QColor, QFontDatabase, QFont
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner, Toast
-from inference_ui import infer_test
+from inference_ui import start_infer
 from input_config import input_config
 from config_parser import Config
 
 from input_config import input_config
 from config_parser import Config
-# from training_ui import train_test
 
 class Make_new_song(QDialog):
     def __init__(self, switchWidget):
@@ -244,7 +243,7 @@ class Make_new_song(QDialog):
         self.ibtnl.setStyleDict(button_style2['hover'], "hover")
         self.ibtnl.setStyleDict(button_style2['press'], "press")
 
-        self.ibtnl.clicked.connect(infer_test)
+        self.ibtnl.clicked.connect(lambda: start_infer(self.config))
 
         self.btnlyt2.addSpacing(15)
         self.btnlyt2.addWidget(self.ibtnl, alignment=Qt.AlignHCenter)

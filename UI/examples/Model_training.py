@@ -14,7 +14,7 @@ from PyQt5.QtGui import QColor, QFontDatabase
 from pyqt5Custom import StyledButton, Spinner
 from input_config import input_config
 from config_parser import Config
-from training_ui import train_test
+from training_ui import start_train
 from preprocess_ui import start_preprocess
 
 
@@ -63,7 +63,7 @@ class Model_training(QDialog):
         self.preprocess = StyledButton("Preprocess")
         self.back.clicked.connect(lambda: switchWidget(0))
         self.next.clicked.connect(self.configWidget.load)
-        self.start.clicked.connect(train_test)
+        self.start.clicked.connect(lambda: start_train(self.config))
         self.preprocess.clicked.connect(lambda: start_preprocess(self.config))
         # self.start.clicked.connect()
 
