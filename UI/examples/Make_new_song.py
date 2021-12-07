@@ -21,9 +21,6 @@ from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, D
 from inference_ui import start_infer
 from input_config import input_config
 from config_parser import Config
-
-from input_config import input_config
-from config_parser import Config
 from embedwindow import EmbedWindow
 from progressbar import Progressbar
 
@@ -37,7 +34,7 @@ class Make_new_song(QDialog):
         self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_infer.yml"),
                               os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
         self.config.checkpoint_file = os.path.join(__file__[0:__file__.find('UI')], 'default_checkpoint.pt')
-        self.configWidget = input_config('infer', self.config)
+        self.configWidget = input_config(self, 'infer', self.config)
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -336,3 +333,9 @@ class Make_new_song(QDialog):
         #filename = Searchfile.add_open(self, filename)
         filename = QFileDialog.getOpenFileName(self,'Load Checkpoint', '../../../', filter = '*.pt')
         labelName.setText(filename)
+
+    def update(self):
+        self.label2.setText(self.config.checkpoint_file)
+        self.label4.setText(self.config.target_path)
+        self.label3.setText(self.config.text_file)
+        self.label5.setText(self.config.midi_file)

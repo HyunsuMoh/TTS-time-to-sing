@@ -19,10 +19,15 @@ from config_data_input import *
 from config_parser import Config
 
 class input_config(QDialog):
-    def __init__(self, mode, config):
+    def __init__(self, parent, mode, config):
         def ok_action():
             self.table.setConfig(config)
             self.close()
+            parent.update()
+
+        def cancel_action():
+            self.close()
+            parent_update()
 
         super(input_config, self).__init__()
         self.config = config
@@ -106,7 +111,7 @@ class input_config(QDialog):
         save_button.clicked.connect(lambda: {self.table.saveConfigFile(config)})
         load_button.clicked.connect(lambda: {self.table.loadConfigFile(config)})
         ok_button.clicked.connect(ok_action)
-        cancel_button.clicked.connect(self.close)
+        cancel_button.clicked.connect(cancel_action)
 
         button_layout.addStretch()
         button_layout.addWidget(save_button, alignment=Qt.AlignVCenter)
@@ -216,7 +221,7 @@ if __name__ == "__main__":
     #application.setFont(font);
 
     config = Config(["../bridge/config/default_train.yml"])
-    mw = input_config('train', config)
+    mw = input_config(None, 'train', config)
     mw.show()
 
     sys.exit(app.exec_())

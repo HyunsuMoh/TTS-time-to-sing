@@ -27,7 +27,7 @@ class Model_training(QDialog):
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
         self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
-        self.configWidget = input_config('train', self.config)
+        self.configWidget = input_config(self, 'train', self.config)
 
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -439,3 +439,15 @@ class Model_training(QDialog):
         self.ewlist.append(ew)
         ew.show()
         ew.raise_()
+
+    def update(self):
+        self.label1.setText(self.config.dataset_text_path)
+        self.label2.setText(self.config.dataset_midi_path)
+        self.label3.setText(self.config.dataset_wav_path)
+        self.label4.setText(self.config.feature_path)
+        self.label5.setText(self.config.checkpoint_path)
+        self.label7.setText(self.config.loaded_checkpoint_path_G)
+        self.label8.setText(self.config.loaded_checkpoint_path_D)
+        self.label9.setText(self.config.dataset_train_list)
+        self.label10.setText(self.config.dataset_valid_list)
+        self.checkbox6.setChecked(self.config.load_checkpoint)
