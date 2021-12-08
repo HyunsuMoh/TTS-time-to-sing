@@ -118,7 +118,7 @@ class Progressbar(QDialog):
 
             if msg['action'] == 'reset':
                 bar.setMaximum(msg['value'])
-                bar.reset()
+                bar.setValue(0)
             elif msg['action'] == 'set':
                 bar.setValue(msg['value'])
             elif msg['action'] == 'increment':

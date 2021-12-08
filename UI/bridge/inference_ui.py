@@ -32,7 +32,7 @@ def start_infer(config, queue):
     y_prev = torch.zeros(1, config.prev_length, config.fft_size//2 + 1)
     queue.put_nowait({'index': 1, 'action': 'reset', 'value': 1})
     queue.put_nowait({'index': 1, 'action': 'set', 'value': 1})
-    queue.put_nowait({'index': 2, 'action': 'reset', 'value': len(dataloader)})
+    queue.put_nowait({'index': 2, 'action': 'reset', 'value': len(dataloader) + 1})
     for x in tqdm(dataloader, leave=False, ascii=True):
         queue.put_nowait({'index': 2, 'action': 'increment'})
         x, y_prev = set_device((x, y_prev), config.device, config.use_cpu)
@@ -50,7 +50,8 @@ def start_infer(config, queue):
     dsp.save(savename, wave, config.sample_rate)
 
     print("Audio saved to \'%s\'." % (savename))
-    queue.put_nowait({'index':1, 'action': 'quit'})
+    queue.put_nowait({'index': 2, 'action': 'increment'})
+    queue.put_nowait({'index': 1, 'action': 'quit'})
 
 def infer_test():
     print('test started')

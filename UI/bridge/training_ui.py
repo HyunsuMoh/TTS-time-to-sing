@@ -105,7 +105,9 @@ def start_train(config, queue):
         # Validation Loop
         G.eval()
         D.eval()
+        queue.put_nowait({'index': 2, 'action': 'reset', 'value': len(dataloader.valid)})
         for batch in tqdm(dataloader.valid, leave=False, ascii=True):
+            queue.put_nowait({'index': 2, 'action': 'increment'})
             x, y_prev, y = set_device(batch, config.device, config.use_cpu)
             y = y.unsqueeze(1)
 

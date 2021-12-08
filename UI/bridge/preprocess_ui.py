@@ -108,7 +108,7 @@ def start_preprocess(config, queue):
         torch.save(file_indices, os.path.join(config.feature_path, set_type + '_indices.pt'))
 
     print("Feature saved to \'%s\'." % (config.feature_path))
-    queue.put_nowait({'index':1, 'action': 'quit'})
+    queue.put_nowait({'index': 1, 'action': 'quit'})
 
 
 if __name__ == "__main__":
