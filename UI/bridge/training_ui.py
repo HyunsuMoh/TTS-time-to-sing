@@ -23,7 +23,7 @@ from train import AverageMeter, criterionAdv
 
 def start_train(config, queue):
     queue.put_nowait({'index': 1, 'action': 'reset', 'value': config.stop_epoch})
-    config_basename = os.path.basename(config.config[0])
+    config_basename = 'config.yml'
     print("Configuration file: \'%s\'" % (config_basename))
 
     checkpoint_path = create_path(config.checkpoint_path, action='overwrite')

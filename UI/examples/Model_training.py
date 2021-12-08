@@ -37,7 +37,6 @@ class Model_training(QDialog):
         def train():
             queue = Queue()
             p_train = Process(target=start_train, args=(self.config, queue,))
-            p_train.daemon = True
             t_train = Thread(target=progressBar.update, args=(queue,))
             p_train.start()
             t_train.start()
