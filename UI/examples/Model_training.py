@@ -18,10 +18,31 @@ from config_parser import Config
 from training_ui import start_train
 from preprocess_ui import start_preprocess
 from embedwindow import EmbedWindow
+from progressbar import Progressbar
+from multiprocessing import Process, Queue
+from threading import Thread
 
 
 class Model_training(QDialog):
-    def __init__(self, switchWidget):
+    def __init__(self, switchWidget, progressBar):
+        def preprocess():
+            pbtemp = Progressbar((lambda x: x))
+            queue = Queue()
+            p_pp = Process(target=start_preprocess, args=(self.config, queue,))
+            t_pp = Thread(target=pbtemp.update, args=(queue,))
+            p_pp.start()
+            t_pp.start()
+            pbtemp.show()
+
+        def train():
+            queue = Queue()
+            p_train = Process(target=start_train, args=(self.config, queue,))
+            p_train.daemon = True
+            t_train = Thread(target=progressBar.update, args=(queue,))
+            p_train.start()
+            t_train.start()
+            switchWidget(3)
+
         super(Model_training, self).__init__()
         QFontDatabase.addApplicationFont("data/SFPro.ttf")
         self.setMinimumSize(150, 37)
@@ -65,8 +86,8 @@ class Model_training(QDialog):
         self.preprocess = StyledButton("Preprocess")
         self.back.clicked.connect(lambda: switchWidget(0))
         self.next.clicked.connect(self.configWidget.load)
-        self.start.clicked.connect(lambda: start_train(self.config))
-        self.preprocess.clicked.connect(lambda: start_preprocess(self.config))
+        self.start.clicked.connect(train)
+        self.preprocess.clicked.connect(preprocess)
         # self.start.clicked.connect()
 
         self.switchButton.addWidget(self.back)

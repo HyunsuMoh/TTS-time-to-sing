@@ -23,10 +23,20 @@ from input_config import input_config
 from config_parser import Config
 from embedwindow import EmbedWindow
 from progressbar import Progressbar
+from multiprocessing import Process, Queue
+from threading import Thread
 
 
 class Make_new_song(QDialog):
-    def __init__(self, switchWidget):
+    def __init__(self, switchWidget, progressBar):
+        def infer():
+            queue = Queue()
+            p_infer = Process(target=start_infer, args=(self.config, queue,))
+            t_infer = Thread(target=progressBar.update, args=(queue,))
+            p_infer.start()
+            t_infer.start()
+            switchWidget(3)
+
         super(Make_new_song, self).__init__()
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
         self.setMinimumSize(150, 37)
@@ -294,7 +304,7 @@ class Make_new_song(QDialog):
         self.ibtnl.setStyleDict(button_style2['hover'], "hover")
         self.ibtnl.setStyleDict(button_style2['press'], "press")
 
-        self.ibtnl.clicked.connect(lambda: start_infer(self.config))
+        self.ibtnl.clicked.connect(infer)
 
         self.btnlyt2.addSpacing(15)
         self.btnlyt2.addWidget(self.ibtnl, alignment=Qt.AlignHCenter)

@@ -139,13 +139,14 @@ if __name__ == "__main__":
     mw = MainWindow() # index [0]
     wg.addWidget(mw)
 
-    ml = Model_training.Model_training(switchWidget) # index [1]
+    pb1 = Progressbar(switchWidget) # index [3]
+
+    ml = Model_training.Model_training(switchWidget, pb1) # index [1]
     wg.addWidget(ml)
 
-    ns = Make_new_song.Make_new_song(switchWidget) # index [2]
+    ns = Make_new_song.Make_new_song(switchWidget, pb1) # index [2]
     wg.addWidget(ns)
 
-    pb1 = Progressbar(switchWidget) # index [3]
     wg.addWidget(pb1)
 
     wg.setFixedHeight(800)

@@ -68,7 +68,7 @@ def preprocess(config, txt_file, mid_file, wav_file='', set_type='infer'):
     return data_list
 
 
-def start_preprocess(config):
+def start_preprocess(config, queue):
     set_list = ['train', 'valid']
     file_list = {}
 
@@ -90,8 +90,12 @@ def start_preprocess(config):
         for set_type in set_list:
             p.map(partial(preprocess, set_type=set_type, config=config), file_list[set_type])
     else:
+        queue.put_nowait({'index': 1, 'action': 'reset', 'value': len(set_list)})
         for set_type in set_list:
+            queue.put_nowait({'index': 1, 'action': 'increment'})
+            queue.put_nowait({'index': 2, 'action': 'reset', 'value': len(file_list[set_type])})
             for f in file_list[set_type]:
+                queue.put_nowait({'index': 2, 'action': 'increment'})
                 f_txt = os.path.join(config.dataset_text_path, (f + '.txt'))
                 f_mid = os.path.join(config.dataset_midi_path, (f + '.mid'))
                 f_wav = os.path.join(config.dataset_wav_path, (f + '.wav'))
@@ -104,6 +108,7 @@ def start_preprocess(config):
         torch.save(file_indices, os.path.join(config.feature_path, set_type + '_indices.pt'))
 
     print("Feature saved to \'%s\'." % (config.feature_path))
+    queue.put_nowait({'index':1, 'action': 'quit'})
 
 
 if __name__ == "__main__":

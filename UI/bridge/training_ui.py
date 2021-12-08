@@ -21,7 +21,8 @@ from models import Generator, Discriminator
 from logger import Logger
 from train import AverageMeter, criterionAdv
 
-def start_train(config):
+def start_train(config, queue):
+    queue.put_nowait({'index': 1, 'action': 'reset', 'value': config.stop_epoch})
     config_basename = os.path.basename(config.config[0])
     print("Configuration file: \'%s\'" % (config_basename))
 
@@ -64,9 +65,12 @@ def start_train(config):
     for epoch in range(cnt + 1, config.stop_epoch + 1):
         # Training Loop
         # print("epoch in for loop : " + str(epoch))
+        queue.put_nowait({'index': 1, 'action': 'set', 'value': epoch})
         G.train()
         D.train()
+        queue.put_nowait({'index': 2, 'action': 'reset', 'value': len(dataloader.train)})
         for batch in tqdm(dataloader.train, leave=False, ascii=True):
+            queue.put_nowait({'index': 2, 'action': 'increment'})
             x, y_prev, y = set_device(batch, config.device, config.use_cpu)
             y = y.unsqueeze(1)
 
@@ -132,6 +136,7 @@ def start_train(config):
             save_checkpoint(savename + 'D.pt', D, optimizerD, learn_rate, lossD_train.steps, False, epoch + 1)
 
     print('Training finished')
+    queue.put_nowait({'index':1, 'action': 'quit'})
 
 def train_test():
     print('train started')

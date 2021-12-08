@@ -10,9 +10,6 @@ from PyQt5.QtWidgets import QDialog, QWidget, QProgressBar, QApplication, QHBoxL
 from PyQt5.QtGui import QColor, QFontDatabase, QFont
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner
-from inference_ui import infer_test
-from input_config import input_config
-from config_parser import Config
 
 DEFAULT_STYLE = """
 QProgressBar{
@@ -111,4 +108,20 @@ class Progressbar(QDialog):
         self.conlyt.addWidget(self.label2)
         self.conlyt.addWidget(self.underPb)
 
+    def update(self, queue):
+        while(True):
+            msg = queue.get()
+            if msg['index'] == 1:
+                bar = self.topPb
+            elif msg['index'] == 2:
+                bar = self.underPb
 
+            if msg['action'] == 'reset':
+                bar.setMaximum(msg['value'])
+                bar.reset()
+            elif msg['action'] == 'set':
+                bar.setValue(msg['value'])
+            elif msg['action'] == 'increment':
+                bar.setValue(bar.value() + 1)
+            elif msg['action'] == 'quit':
+                break

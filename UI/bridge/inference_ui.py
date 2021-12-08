@@ -16,7 +16,7 @@ import preprocess_ui
 import dataprocess
 from models import Generator
 
-def start_infer(config):
+def start_infer(config, queue):
     print("Processing text for \'%s\'." % (config.text_file))
     data = preprocess_ui.preprocess(config=config, txt_file=config.text_file, mid_file=config.midi_file, set_type='infer')
     dataloader = dataprocess.load_infer(data, config)
@@ -30,7 +30,11 @@ def start_infer(config):
 
     spec = []
     y_prev = torch.zeros(1, config.prev_length, config.fft_size//2 + 1)
+    queue.put_nowait({'index': 1, 'action': 'reset', 'value': 1})
+    queue.put_nowait({'index': 1, 'action': 'set', 'value': 1})
+    queue.put_nowait({'index': 2, 'action': 'reset', 'value': len(dataloader)})
     for x in tqdm(dataloader, leave=False, ascii=True):
+        queue.put_nowait({'index': 2, 'action': 'increment'})
         x, y_prev = set_device((x, y_prev), config.device, config.use_cpu)
 
         y_gen = G(x, y_prev)
@@ -46,6 +50,7 @@ def start_infer(config):
     dsp.save(savename, wave, config.sample_rate)
 
     print("Audio saved to \'%s\'." % (savename))
+    queue.put_nowait({'index':1, 'action': 'quit'})
 
 def infer_test():
     print('test started')
