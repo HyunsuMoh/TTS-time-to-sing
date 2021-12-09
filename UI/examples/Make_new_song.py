@@ -6,15 +6,15 @@
 
 import os
 import sys
+
 sys.path.append(os.path.join(os.path.dirname(__file__), "../pyqt5Custom"))
 sys.path.append(os.path.join(os.path.dirname(__file__), "../bridge"))
-
-import os
-import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../ML/utils"))
+
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QFrame, QGridLayout,QFileDialog, QLabel
+from PyQt5.QtWidgets import QDialog, QWidget, QApplication, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QFrame, \
+    QGridLayout, QFileDialog, QLabel
 from PyQt5.QtGui import QColor, QFontDatabase, QFont, QIcon
 from pyqt5Custom import ToggleSwitch, StyledButton, ColorPicker, ColorPreview, DragDropFile, EmbedWindow, \
     TitleBar, CodeTextEdit, SegmentedButtonGroup, Spinner
@@ -59,7 +59,7 @@ class Make_new_song(QDialog):
 
         self.conlyt = QVBoxLayout()
         self.conlyt.setSpacing(0)
-        self.conlyt.setContentsMargins(70,15,70,60)
+        self.conlyt.setContentsMargins(70, 15, 70, 60)
         self.switchButton = QHBoxLayout()
         self.switchButton.setSpacing(50)
         self.layout.addLayout(self.conlyt)
@@ -84,6 +84,8 @@ class Make_new_song(QDialog):
 
         self.list = QHBoxLayout()
         self.list.setSpacing(15)
+        self.voice = QHBoxLayout()
+        self.conlyt.addLayout(self.voice)
         self.conlyt.addLayout(self.list)
 
         self.findBtns = QVBoxLayout()
@@ -157,17 +159,35 @@ class Make_new_song(QDialog):
         self.next.setStyleDict(button_style2['hover'], "hover")
         self.next.setStyleDict(button_style2['press'], "press")
 
-        self.label1 = QLabel('', self)
+        self.segbg = SegmentedButtonGroup(radio=True)
+        self.segbg.setFixedSize(349, 36)
+        self.segbg.setStyleDict({
+            "background-color": (255, 255, 255),
+            "border-color": (154, 84, 237),
+            "border-radius": 7,
+            "color": (154, 84, 237),
+            "font-family": "SF Pro Display",
+            "font-size": 15,
+            "font-subpixel-aa": True
+        })
+        self.segbg.setStyleDict({
+            "background-color": (154, 84, 237),
+            "color": (255, 255, 255),
+        }, "hover")
+        self.segbg.setStyleDict({
+            "background-color": (154, 84, 237),
+            "color": (255, 255, 255),
+        }, "press")
+        self.segbg.setStyleDict({
+            "background-color": (154, 84, 237),
+            "color": (255, 255, 255),
+        }, "check-hover")
+        self.segbg.addButton("Male", tag=0)
+        self.segbg.addButton("Female", tag=1)
+        self.segbg.addButton("Girl", tag=2)
+        # self.segbg.clicked.connect(self.segSlot())
         self.text1 = QLabel(
             "<span style='font-size:24px; font-family:SF Pro Display; color:rgb(28,28,30);'>Default voice</span>")
-        self.btn1 = StyledButton("Choose")
-        self.btn1.setFixedSize(100, 34)
-        self.btn1.anim_press.speed = 7.3
-        self.btn1.setStyleDict(button_style['normal'])
-        self.btn1.setStyleDict(button_style['hover'], "hover")
-        self.btn1.setStyleDict(button_style['press'], "press")
-        self.btn1.clicked.connect(lambda: self.fileSearch(self.label1, "checkpoint_file", '*.pt'))
-        self.btn1.setContentsMargins(0, 3, 0, 0)
         self.light1 = QPushButton('')
         self.light1.setStyleSheet("background-color:#ffffff")
         self.light1.setStyleSheet("border: None")
@@ -176,8 +196,14 @@ class Make_new_song(QDialog):
         self.light1.clicked.connect(
             lambda: self.infoWindow("Checkpoint file", "Model checkpoint file path to load"))
         self.text1.setContentsMargins(20, 3, 0, 0)
-        self.label1.setContentsMargins(20, 5, 0, 0)
         self.light1.setContentsMargins(0, 3, 0, 0)
+
+        self.voice.addWidget(self.text1)
+        self.voice.addWidget(self.light1)
+        self.voice.addWidget(self.segbg)
+        self.voice.setContentsMargins(50, 0, 0, 30)
+        self.voice.setSpacing(25)
+        self.voice.setAlignment(Qt.AlignLeft)
 
         self.label2 = QLabel('', self)
         self.text2 = QLabel(
@@ -198,7 +224,7 @@ class Make_new_song(QDialog):
         self.light2.clicked.connect(
             lambda: self.infoWindow("Another voice", "Model checkpoint file path to load except default voice"))
         self.text2.setContentsMargins(20, 3, 0, 0)
-        self.label2.setContentsMargins(20, 5, 0, 0)
+        self.label2.setContentsMargins(0, 5, 0, 0)
         self.light2.setContentsMargins(0, 3, 0, 0)
 
         self.label3 = QLabel('', self)
@@ -220,7 +246,7 @@ class Make_new_song(QDialog):
         self.light3.clicked.connect(
             lambda: self.infoWindow("Lyrics", "Text file path for inference"))
         self.text3.setContentsMargins(20, 3, 0, 0)
-        self.label3.setContentsMargins(20, 5, 0, 0)
+        self.label3.setContentsMargins(0, 5, 0, 0)
         self.light3.setContentsMargins(0, 3, 0, 0)
 
         self.label4 = QLabel('', self)
@@ -241,7 +267,7 @@ class Make_new_song(QDialog):
         self.light4.clicked.connect(
             lambda: self.infoWindow("Sheet music", "Midi file path for inference"))
         self.text4.setContentsMargins(20, 3, 0, 0)
-        self.label4.setContentsMargins(20, 5, 0, 0)
+        self.label4.setContentsMargins(0, 5, 0, 0)
         self.light4.setContentsMargins(0, 3, 0, 0)
 
         self.label5 = QLabel('', self)
@@ -260,30 +286,27 @@ class Make_new_song(QDialog):
         self.light5.setIcon(QIcon('bulb.png'))
         self.light5.setIconSize(QSize(35, 35))
         self.light5.clicked.connect(
-            lambda: self.infoWindow("Target path", "Path to save the .wav file sung by \nthe virtual singer after the inference."))
+            lambda: self.infoWindow("Target path",
+                                    "Path to save the .wav file sung by \nthe virtual singer after the inference."))
         self.text5.setContentsMargins(20, 3, 0, 0)
-        self.label5.setContentsMargins(20, 5, 0, 0)
+        self.label5.setContentsMargins(0, 5, 0, 0)
         self.light5.setContentsMargins(0, 3, 0, 0)
 
-        self.texts.addWidget(self.text1)
         self.texts.addWidget(self.text2)
         self.texts.addWidget(self.text5)
         self.texts.addWidget(self.text3)
         self.texts.addWidget(self.text4)
 
-        self.findBtns.addWidget(self.btn1)
         self.findBtns.addWidget(self.btn2)
         self.findBtns.addWidget(self.btn5)
         self.findBtns.addWidget(self.btn3)
         self.findBtns.addWidget(self.btn4)
 
-        self.labels.addWidget(self.label1)
         self.labels.addWidget(self.label2)
         self.labels.addWidget(self.label5)
         self.labels.addWidget(self.label3)
         self.labels.addWidget(self.label4)
 
-        self.lights.addWidget(self.light1)
         self.lights.addWidget(self.light2)
         self.lights.addWidget(self.light5)
         self.lights.addWidget(self.light3)
@@ -294,7 +317,6 @@ class Make_new_song(QDialog):
         self.btnlyt2 = QVBoxLayout()
         self.btnlyt2.setSpacing(16)
         self.btnslyt.addLayout(self.btnlyt2)
-
 
         self.ibtnl = StyledButton("Generate", icon=Spinner(1.5, QColor(0, 255, 255)))
         self.ibtnl.setFixedSize(200, 47)
@@ -308,6 +330,15 @@ class Make_new_song(QDialog):
 
         self.btnlyt2.addSpacing(15)
         self.btnlyt2.addWidget(self.ibtnl, alignment=Qt.AlignHCenter)
+
+        @self.segbg.clicked.connect
+        def segSlot(tag):
+            if tag == 0:
+                self.config.checkpoint_file = '../../../default_male.pt'
+            elif tag == 1:
+                self.config.checkpoint_file = "../../../default_female.pt"
+            else:
+                self.config.checkpoint_file = "../../../default_child.pt"
 
     def fileSearch(self, labelName, configLabel, extension):
         fileOpen = QFileDialog.getOpenFileName(self, 'open file', filter=extension)
