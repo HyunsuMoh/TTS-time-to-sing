@@ -373,6 +373,6 @@ class Make_new_song(QDialog):
 
     def update(self):
         self.label2.setText(self.config.checkpoint_file)
-        self.label4.setText(self.config.target_path)
         self.label3.setText(self.config.text_file)
-        self.label5.setText(self.config.midi_file)
+        self.label4.setText(self.config.midi_file)
+        self.label5.setText(self.config.target_path)
