@@ -27,7 +27,7 @@ class input_config(QDialog):
 
         def cancel_action():
             self.close()
-            parent_update()
+            parent.update()
 
         super(input_config, self).__init__()
         self.config = config

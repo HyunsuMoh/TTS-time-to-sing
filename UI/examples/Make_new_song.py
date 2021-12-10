@@ -41,9 +41,9 @@ class Make_new_song(QDialog):
         QFontDatabase.addApplicationFont("data/BMDOHYEON_ttf.ttf")
         self.setMinimumSize(150, 37)
         self.setGeometry(100, 100, 890, 610)
-        self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_infer.yml"),
-                              os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml")])
-        self.config.checkpoint_file = os.path.join(__file__[0:__file__.find('UI')], 'default_checkpoint.pt')
+        self.config = Config([os.path.join(os.path.dirname(__file__), "../bridge/config/default_train.yml"),
+                              os.path.join(os.path.dirname(__file__), "../bridge/config/default_infer.yml")])
+        self.config.checkpoint_file = os.path.join(__file__[0:__file__.find('UI')], 'default_female.pt')
         self.configWidget = input_config(self, 'infer', self.config)
 
         self.setAutoFillBackground(True)
@@ -334,11 +334,11 @@ class Make_new_song(QDialog):
         @self.segbg.clicked.connect
         def segSlot(tag):
             if tag == 0:
-                self.config.checkpoint_file = '../../../default_male.pt'
+                self.config.checkpoint_file = os.path.join(__file__[0:__file__.find('UI')], 'default_male.pt')
             elif tag == 1:
-                self.config.checkpoint_file = "../../../default_female.pt"
+                self.config.checkpoint_file = os.path.join(__file__[0:__file__.find('UI')], "default_female.pt")
             else:
-                self.config.checkpoint_file = "../../../default_child.pt"
+                self.config.checkpoint_file = os.path.join(__file__[0:__file__.find('UI')], "default_child.pt")
 
     def fileSearch(self, labelName, configLabel, extension):
         fileOpen = QFileDialog.getOpenFileName(self, 'open file', filter=extension)
@@ -364,10 +364,6 @@ class Make_new_song(QDialog):
         self.ewlist.append(ew)
         ew.show()
         ew.raise_()
-
-    def default_checkpoint(self, labelName):
-        config.checkpoint_file = '../../../pretrained_sample.pt'
-        labelName.setText(config.checkpoint_file)
 
     def CheckPointSearch(self, labelName):
         filename = ""
