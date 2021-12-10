@@ -24,7 +24,12 @@ https://drive.google.com/drive/folders/1nxq9F-OhZ-8pAQais38_7x2ym-6mIzEy?usp=sha
 
 ## 프로그램 실행
 
-(추후 업데이트)
+`UI/examples/main.py` 파일을 실행한다.
+
+```
+cd UI/examples
+python main.py
+```
 
 ## 음성 합성 결과 확인
 
