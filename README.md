@@ -1,5 +1,11 @@
 # TTS(Time to Sing) -  Team SSG(Sogang & SmileGate)
 
+## 테스트 환경
+
+OS: Windows 10, 11
+Python version: 3.7 or 3.8
+CUDA toolkit: 11.1
+
 ## Python 환경 구축
 
 프로젝트의 루트 디렉토리에는 anaconda 가상 환경 생성을 위한 conda_env.yaml 파일이 제공된다.
