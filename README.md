@@ -3,7 +3,9 @@
 ## 테스트 환경
 
 OS: Windows 10, 11
+
 Python version: 3.7 or 3.8
+
 CUDA toolkit: 11.1
 
 ## Python 환경 구축
